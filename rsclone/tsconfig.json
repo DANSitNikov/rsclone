@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "removeComments": true,
+    "sourceMap": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "**/*.ts"
+  ],
+}
