@@ -7,7 +7,8 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export class GameScene extends Phaser.Scene {
-  private player: Phaser.GameObjects.Rectangle & { body: Phaser.Physics.Arcade.Body };
+  private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  private objects: Phaser.Physics.Arcade.StaticGroup;
 
   constructor() {
     super(sceneConfig);
@@ -15,16 +16,16 @@ export class GameScene extends Phaser.Scene {
 
   public create() {
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'bg');
-// @ts-ignore
+
     this.player = this.physics.add.sprite(400, 900, 'player');
-// @ts-ignore
-    this.player.setBounce(0.02);// @ts-ignore
+
+    this.player.setBounce(0.02);
     this.player.setCollideWorldBounds(true);
-// @ts-ignore
+
     this.objects = this.physics.add.staticGroup();
-    // @ts-ignore
+
     this.objects.create(window.innerWidth / 2, window.innerHeight / 2 + 100, 'tree').refreshBody();
-// @ts-ignore
+
     this.physics.add.collider(this.player, this.objects);
 
   }
