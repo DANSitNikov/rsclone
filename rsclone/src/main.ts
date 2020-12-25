@@ -1,4 +1,3 @@
-// @ts-ignore
 import * as Phaser from 'phaser';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -16,15 +15,16 @@ export class GameScene extends Phaser.Scene {
 
   public create() {
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'bg');
-
+// @ts-ignore
     this.player = this.physics.add.sprite(400, 900, 'player');
-
-    this.player.setBounce(0.02);
+// @ts-ignore
+    this.player.setBounce(0.02);// @ts-ignore
     this.player.setCollideWorldBounds(true);
-
+// @ts-ignore
     this.objects = this.physics.add.staticGroup();
+    // @ts-ignore
     this.objects.create(window.innerWidth / 2, window.innerHeight / 2 + 100, 'tree').refreshBody();
-
+// @ts-ignore
     this.physics.add.collider(this.player, this.objects);
 
   }
