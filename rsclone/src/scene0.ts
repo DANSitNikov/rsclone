@@ -50,7 +50,7 @@ export class Scene0 extends Phaser.Scene {
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
       progressBar.fillRect(680, 525, 300 * value, 30);
-      percentText.setText(Number(value * 100) + '%');
+      percentText.setText(`${parseInt((value * 100).toString())}%`);
     });
     this.load.on('fileprogress', function(file) {
       assetText.setText('Loading asset: ' + file.key);
