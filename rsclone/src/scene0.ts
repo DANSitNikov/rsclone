@@ -17,21 +17,25 @@ export class Scene0 extends Phaser.Scene {
     this.load.image('bg', 'assets/world/bg.png');
     this.load.atlas('playerWalk', 'assets/character/walk/playerWalk.png', 'assets/character/walk/playerWalk.json');
     this.load.atlas('playerIdle', 'assets/character/idle/playerIdle.png', 'assets/character/idle/playerIdle.json');
+    this.load.atlas('playerJump', 'assets/character/jump/playerJump.png', 'assets/character/jump/playerJump.json');
     this.load.image('tree', 'assets/world/tree.png');
     this.load.image('house', 'assets/world/house.png');
+    this.load.image('ground', 'assets/world/ground.png');
   }
 
   public create() {
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'bg');
 
-    this.player = this.physics.add.sprite(400, 900, 'playerIdle');
+    this.player = this.physics.add.sprite(400, 300, 'playerIdle');
 
     this.player.setBounce(0.02);
     this.player.setCollideWorldBounds(true);
 
     this.objects = this.physics.add.staticGroup();
 
-    this.objects.create(window.innerWidth / 2, window.innerHeight / 2 + 100, 'tree').refreshBody();
+    this.objects.create(window.innerWidth / 2 + 200, window.innerHeight / 2 + 150, 'house').refreshBody();
+
+    this.objects.create(window.innerWidth / 2, window.innerHeight / 2 + 410 , 'ground')
 
     this.physics.add.collider(this.player, this.objects);
 
@@ -56,6 +60,16 @@ export class Scene0 extends Phaser.Scene {
       repeat: -1
     });
 
+    this.anims.create({
+      key: 'jump',
+      frames: this.anims.generateFrameNames('playerJump', {
+        start: 1, end: 3,
+        prefix: '', suffix: '.png'
+      }),
+      frameRate: 6,
+      repeat: -1
+    });
+
   }
 
   public update() {
@@ -65,24 +79,26 @@ export class Scene0 extends Phaser.Scene {
 
     if (cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
-      this.player.anims.play('walk', true);
+      if(this.player.body.touching.down) this.player.anims.play('walk', true);
       this.player.flipX = true;
 
     } else if (cursors.right.isDown) {
 
       this.player.body.setVelocityX(speed);
-      this.player.anims.play('walk', true);
+      if(this.player.body.touching.down) this.player.anims.play('walk', true);
       this.player.flipX = false;
 
     } else {
-
+      if(this.player.body.touching.down) {
+        this.player.anims.play('idle', true);
+      }
       this.player.body.setVelocityX(0);
-      this.player.anims.play('idle', true);
-
 
     }
-    if (cursors.up.isDown) { //  && this.player.body.touching.down
-      this.player.body.setVelocityY(-speed * 2);
+
+    if (cursors.up.isDown && this.player.body.touching.down) {
+      this.player.body.setVelocityY(-speed * 3);
+      this.player.anims.play('jump', true);
     }
   }
 }
