@@ -4,7 +4,7 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   visible: false,
   key: 'Game',
 };
-
+var enemy;
 export class Scene0 extends Phaser.Scene {
   private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private objects: Phaser.Physics.Arcade.StaticGroup;
@@ -17,7 +17,9 @@ export class Scene0 extends Phaser.Scene {
     this.load.image('bg', 'assets/world/bg.png');
     this.load.atlas('playerWalk', 'assets/character/walk/playerWalk.png', 'assets/character/walk/playerWalk.json');
     this.load.atlas('playerIdle', 'assets/character/idle/playerIdle.png', 'assets/character/idle/playerIdle.json');
-    this.load.atlas('playerJump', 'assets/character/jump/playerJump.png', 'assets/character/jump/playerJump.json');
+		this.load.atlas('playerJump', 'assets/character/jump/playerJump.png', 'assets/character/jump/playerJump.json');
+		this.load.spritesheet('enemyWalk', 'assets/enemies/enemy.png', { frameWidth: 500, frameHeight: 500 });
+		this.load.image('enemy', 'assets/enemies/walk1.png');
     this.load.image('tree', 'assets/world/tree.png');
     this.load.image('house', 'assets/world/house.png');
     this.load.image('ground', 'assets/world/ground.png');
@@ -33,11 +35,15 @@ export class Scene0 extends Phaser.Scene {
 
     this.objects = this.physics.add.staticGroup();
 
-    this.objects.create(window.innerWidth / 2 + 200, window.innerHeight / 2 + 150, 'house').refreshBody();
+    //this.objects.create(window.innerWidth / 2 + 200, window.innerHeight / 2 + 150, 'house').refreshBody();
 
     this.objects.create(window.innerWidth / 2, window.innerHeight / 2 + 410 , 'ground')
 
-    this.physics.add.collider(this.player, this.objects);
+		this.physics.add.collider(this.player, this.objects);
+		
+		enemy = this.physics.add.sprite(800, 500, 'enemyWalk');
+		enemy.setCollideWorldBounds(true);
+		enemy.setBounce(0.05);
 
 
     this.anims.create({
@@ -68,7 +74,15 @@ export class Scene0 extends Phaser.Scene {
       }),
       frameRate: 6,
       repeat: -1
-    });
+		});
+		
+		this.anims.create({
+			key: 'enemyWalk',
+			frames: this.anims.generateFrameNumbers('enemyWalk', {
+				start: 0, end: 2 }),
+			frameRate: 3,
+			repeat: -1
+		});
 
   }
 
@@ -99,6 +113,9 @@ export class Scene0 extends Phaser.Scene {
     if (cursors.up.isDown && this.player.body.touching.down) {
       this.player.body.setVelocityY(-speed * 3);
       this.player.anims.play('jump', true);
-    }
+		}
+		
+		//Enemy animation
+			enemy.anims.play('enemyWalk', true);
   }
 }
