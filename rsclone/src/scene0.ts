@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
-  key: 'Game',
+  key: 'game',
 };
 
 export class Scene0 extends Phaser.Scene {
@@ -24,7 +24,9 @@ export class Scene0 extends Phaser.Scene {
   }
 
   public create() {
-    this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'bg');
+    const centerX = 840;
+    const centerY = 525;
+    this.add.image(centerX, centerY, 'bg');
 
     this.player = this.physics.add.sprite(400, 300, 'playerIdle');
 
@@ -33,9 +35,9 @@ export class Scene0 extends Phaser.Scene {
 
     this.objects = this.physics.add.staticGroup();
 
-    this.objects.create(window.innerWidth / 2 + 200, window.innerHeight / 2 + 150, 'house').refreshBody();
+    this.objects.create(centerX + 200, centerY + 150, 'house').refreshBody();
 
-    this.objects.create(window.innerWidth / 2, window.innerHeight / 2 + 410 , 'ground')
+    this.objects.create(centerX, centerY + 410 , 'ground')
 
     this.physics.add.collider(this.player, this.objects);
 
