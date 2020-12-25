@@ -1,6 +1,5 @@
 import * as Phaser from 'phaser';
-import {Scene0} from './scene0';
-
+import Scene0 from './scene0.js';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Long Legs journey',
@@ -21,10 +20,11 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     },
   },
 
-  scene:  [Scene0],
+  scene: [Scene0],
 
   parent: 'game',
   backgroundColor: '#000000',
 };
 
-export const main = new Phaser.Game(gameConfig);
+const main = new Phaser.Game(gameConfig);
+export default main;

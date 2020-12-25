@@ -6,7 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   entry: {
     app: './src/main.ts',
-    vendors: [ 'phaser' ],
+    vendors: ['phaser'],
   },
 
   module: {
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: [ '.ts', '.tsx', '.js' ],
+    extensions: ['.ts', '.tsx', '.js'],
   },
 
   output: {

@@ -3,7 +3,7 @@
     "target": "es6",
     "removeComments": true,
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
   },
   "include": [
     "**/*.ts"
