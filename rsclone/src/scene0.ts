@@ -24,7 +24,7 @@ export class Scene0 extends Phaser.Scene {
   public create() {
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'bg');
 
-    this.player = this.physics.add.sprite(400, 900, 'playerIdle');
+    this.player = this.physics.add.sprite(400, 900, 'playerWalk');
 
     this.player.setBounce(0.02);
     this.player.setCollideWorldBounds(true);
@@ -39,7 +39,7 @@ export class Scene0 extends Phaser.Scene {
     this.anims.create({
       key: 'walk',
       frames: this.anims.generateFrameNames('playerWalk', {
-        start: 1, end: 8,
+        start: 2, end: 8,
         prefix: '', suffix: '.png'
       }),
       frameRate: 11,
@@ -63,21 +63,24 @@ export class Scene0 extends Phaser.Scene {
     const cursors = this.input.keyboard.createCursorKeys();
     const speed = 400;
     if (cursors.left.isDown) {
+
       this.player.body.setVelocityX(-speed);
       this.player.anims.play('walk', true);
-      this.player.flipX= true;
+      this.player.flipX = true;
+
     } else if (cursors.right.isDown) {
+
       this.player.body.setVelocityX(speed);
       this.player.anims.play('walk', true);
-      this.player.flipX= false;
-    }
-    else
-    {
+      this.player.flipX = false;
+
+    } else {
+
       this.player.body.setVelocityX(0);
       this.player.anims.play('idle');
+
     }
-    if (cursors.up.isDown) //  && this.player.body.touching.down
-    {
+    if (cursors.up.isDown) { //  && this.player.body.touching.down
       this.player.body.setVelocityY(-speed * 2);
     }
   }

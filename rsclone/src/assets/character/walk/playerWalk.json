@@ -14,11 +14,11 @@
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 198,
+						"w":  65,
 						"h": 198
 					},
 					"spriteSourceSize": {
-						"x": 72,
+						"x": 0,
 						"y": 9,
 						"w": 59,
 						"h": 178
@@ -39,11 +39,11 @@
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 198,
+						"w":  65,
 						"h": 198
 					},
 					"spriteSourceSize": {
-						"x": 51,
+						"x": 0,
 						"y": 7,
 						"w": 93,
 						"h": 180
@@ -64,11 +64,11 @@
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 198,
+						"w":  65,
 						"h": 198
 					},
 					"spriteSourceSize": {
-						"x": 27,
+						"x": 0,
 						"y": 7,
 						"w": 93,
 						"h": 175
@@ -89,11 +89,11 @@
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 198,
+						"w":  65,
 						"h": 198
 					},
 					"spriteSourceSize": {
-						"x": 46,
+						"x": 0,
 						"y": 8,
 						"w": 69,
 						"h": 175
@@ -114,11 +114,11 @@
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 198,
+						"w":  65,
 						"h": 198
 					},
 					"spriteSourceSize": {
-						"x": 60,
+						"x": 0,
 						"y": 10,
 						"w": 59,
 						"h": 176
@@ -139,11 +139,11 @@
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 198,
+						"w":  65,
 						"h": 198
 					},
 					"spriteSourceSize": {
-						"x": 46,
+						"x": 0,
 						"y": 10,
 						"w": 88,
 						"h": 177
@@ -160,15 +160,15 @@
 					}
 				},
 				{
-					"filename": "7-2.png",
+					"filename": "7.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 198,
+						"w":  65,
 						"h": 198
 					},
 					"spriteSourceSize": {
-						"x": 54,
+						"x": 0,
 						"y": 14,
 						"w": 85,
 						"h": 171
@@ -189,11 +189,11 @@
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 198,
+						"w":  65,
 						"h": 198
 					},
 					"spriteSourceSize": {
-						"x": 64,
+						"x": 0,
 						"y": 9,
 						"w": 57,
 						"h": 173
