@@ -43,9 +43,9 @@ export class Scene0 extends Phaser.Scene {
         font: '18px monospace',
       },
     });
-    assetText.setOrigin(0.5, 0.5);
+    assetText.setOrigin(0.5, 0.3);
     loadingText.setOrigin(0.5, 0.5);
-    percentText.setOrigin(0.5, 0.5);
+    percentText.setOrigin(0.5, -0.5);
     this.load.on('progress', function(value) {
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
