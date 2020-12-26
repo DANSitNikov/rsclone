@@ -35,8 +35,21 @@ export class Scene0 extends Phaser.Scene {
 	}
 
 	//Check player and enemy coordinates
-	public checkPlayerCoord() {
-		
+	public checkPlayerDied() {
+		const approxPlayerX = Math.round(this.player.x / 50);
+		const approxEnemyX = Math.round(enemy.x / 50);
+		console.log(approxPlayerX + ' = ' + approxEnemyX);
+		if (approxEnemyX === approxPlayerX) {
+			this.playerDie();
+		}
+	}
+
+	//Kill the character!
+	public playerDie() {
+		this.player.anims.play('die', true);
+		console.log('died!');
+		this.game.input.keyboard.enabled = false;
+		this.player.setVelocityX(0);
 	}
 
   public preload ()
@@ -45,7 +58,7 @@ export class Scene0 extends Phaser.Scene {
     this.load.atlas('playerWalk', 'assets/character/walk/playerWalk.png', 'assets/character/walk/playerWalk.json');
     this.load.atlas('playerIdle', 'assets/character/idle/playerIdle.png', 'assets/character/idle/playerIdle.json');
 		this.load.atlas('playerJump', 'assets/character/jump/playerJump.png', 'assets/character/jump/playerJump.json');
-		this.load.spritesheet('playerDie', 'assets/character/die/playerDie.png', { frameWidth: 395, frameHeight: 396 });
+		this.load.spritesheet('playerDie', 'assets/character/die/playerDie.png', { frameWidth: 198, frameHeight: 198 });
 		this.load.spritesheet('enemyWalk', 'assets/enemies/enemy.png', { frameWidth: 500, frameHeight: 500 });
 		this.load.image('enemy', 'assets/enemies/walk1.png');
     this.load.image('tree', 'assets/world/tree.png');
@@ -109,7 +122,7 @@ export class Scene0 extends Phaser.Scene {
         start: 0, end: 8,
       }),
       frameRate: 6,
-      repeat: 0
+      repeat: -1
 		});
 		
 		this.anims.create({
@@ -137,7 +150,7 @@ export class Scene0 extends Phaser.Scene {
       this.player.body.setVelocityX(speed);
       if(this.player.body.touching.down) this.player.anims.play('walk', true);
       this.player.flipX = false;
-
+			this.checkPlayerDied();
     } else {
       if(this.player.body.touching.down) {
         this.player.anims.play('idle', true);
