@@ -18,9 +18,10 @@ export default class Scene0 extends Phaser.Scene {
 	public addEnemy(): void {
 		if (this.player.x > 500) {
 			console.log(enemy.x + ' ' + enemy.y);
+			console.log(this.player.x + ' ' + this.player.y);
 				if (!enemyOnScene) {
+					enemy.y = 500;
 					this.enemyFadeIn();
-					enemy.setCollideWorldBounds(true);
 				}
 				setTimeout(this.enemyStop, 900);
 		}	
@@ -32,6 +33,7 @@ export default class Scene0 extends Phaser.Scene {
 	}
 	public enemyStop(): void {
 		enemy.setVelocityX(0);
+		enemy.setCollideWorldBounds(true);
 		enemyOnScene = true;
 	}
 
@@ -39,7 +41,6 @@ export default class Scene0 extends Phaser.Scene {
 	public checkPlayerDied(): void {
 		const approxPlayerX = Math.round(this.player.x / 50);
 		const approxEnemyX = Math.round(enemy.x / 50);
-		console.log(approxPlayerX + ' = ' + approxEnemyX);
 		if (approxEnemyX === approxPlayerX) {
 			this.playerDie();
 		}
@@ -121,8 +122,16 @@ export default class Scene0 extends Phaser.Scene {
     this.load.image('tree', 'assets/world/tree.png');
     this.load.image('house', 'assets/world/house.png');
 		this.load.image('ground', 'assets/world/ground.png');
-		this.load.spritesheet('playerDie', 'assets/character/die/playerDie.png', { frameWidth: 198, frameHeight: 198 });
-		this.load.spritesheet('enemyWalk', 'assets/enemies/enemy.png', { frameWidth: 500, frameHeight: 500 });
+		this.load.spritesheet(
+			'playerDie',
+			'assets/character/die/playerDie.png',
+			{ frameWidth: 198, frameHeight: 198 }
+		);
+		this.load.spritesheet(
+			'enemyWalk', 
+			'assets/enemies/enemy.png', 
+			{ frameWidth: 500, frameHeight: 500 }
+		);
   }
 
   public create() {
@@ -137,7 +146,7 @@ export default class Scene0 extends Phaser.Scene {
 
     this.objects = this.physics.add.staticGroup();
 
-    this.objects.create(centerX + 200, centerY + 150, 'house').refreshBody();
+    this.objects.create(centerX + 100, centerY + 150, 'house').refreshBody();
 
     this.objects.create(centerX, centerY + 410, 'ground');
 
