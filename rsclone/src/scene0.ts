@@ -8,6 +8,8 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 export default class Scene0 extends Phaser.Scene {
   private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private objects: Phaser.Physics.Arcade.StaticGroup;
+  private cloudOne: Phaser.GameObjects.Image;
+  private cloudTwo: Phaser.GameObjects.Image;
 
   constructor() {
     super(sceneConfig);
@@ -80,6 +82,8 @@ export default class Scene0 extends Phaser.Scene {
     this.load.image('tree', 'assets/world/tree.png');
     this.load.image('house', 'assets/world/house.png');
     this.load.image('ground', 'assets/world/ground.png');
+    this.load.image('cloud1', 'assets/world/cloud1.png');
+    this.load.image('cloud2', 'assets/world/cloud2.png');
   }
 
   public create() {
@@ -135,6 +139,9 @@ export default class Scene0 extends Phaser.Scene {
       frameRate: 6,
       repeat: -1,
     });
+
+    this.cloudOne = this.add.image(window.innerWidth / 2 + 300, window.innerHeight / 3, 'cloud1');
+    this.cloudTwo = this.add.image(window.innerWidth / 5, window.innerHeight / 8, 'cloud2');
   }
 
   public update() {
@@ -160,5 +167,19 @@ export default class Scene0 extends Phaser.Scene {
       this.player.body.setVelocityY(-speed * 3);
       this.player.anims.play('jump', true);
     }
+
+    this.moveCloud(this.cloudOne, 1);
+    this.moveCloud(this.cloudTwo, 0.7);
+  }
+
+  public moveCloud(cloud, speed) {
+    cloud.x += speed;
+    if (cloud.x > window.innerWidth + 400) {
+      this.resetCloudPosition(cloud);
+    }
+  }
+
+  public resetCloudPosition(cloud) {
+    cloud.x = -400;
   }
 }
