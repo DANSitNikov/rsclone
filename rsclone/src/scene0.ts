@@ -86,8 +86,6 @@ export class Scene0 extends Phaser.Scene {
   }
 
   public update() {
-    let c = 0
-    if(!this.player.body.blocked.down) console.log( ++c)
     const cursors = this.input.keyboard.createCursorKeys();
     const speed = 400;
 
