@@ -15,7 +15,7 @@ export class Scene0 extends Phaser.Scene {
     super(sceneConfig);
 	}
 	//Add enemy to scene
-	public addEnemy() {
+	public addEnemy(): void {
 		if (this.player.x > 500) {
 				if (!enemyOnScene) {
 					this.enemyFadeIn();
@@ -26,16 +26,16 @@ export class Scene0 extends Phaser.Scene {
 	}
 
 	//Enemy fade-in
-	public enemyFadeIn() {
+	public enemyFadeIn(): void {
 		enemy.setVelocityX(-300);
 	}
-	public enemyStop() {
+	public enemyStop(): void {
 		enemy.setVelocityX(0);
 		enemyOnScene = true;
 	}
 
 	//Check player and enemy coordinates
-	public checkPlayerDied() {
+	public checkPlayerDied(): void {
 		const approxPlayerX = Math.round(this.player.x / 50);
 		const approxEnemyX = Math.round(enemy.x / 50);
 		console.log(approxPlayerX + ' = ' + approxEnemyX);
@@ -45,14 +45,14 @@ export class Scene0 extends Phaser.Scene {
 	}
 
 	//Kill the character!
-	public playerDie() {
+	public playerDie(): void {
 		this.player.anims.play('die', true);
 		console.log('died!');
 		this.game.input.keyboard.enabled = false;
 		this.player.setVelocityX(0);
 	}
 
-  public preload ()
+  public preload (): void
   {
     this.load.image('bg', 'assets/world/bg.png');
     this.load.atlas('playerWalk', 'assets/character/walk/playerWalk.png', 'assets/character/walk/playerWalk.json');
@@ -66,17 +66,17 @@ export class Scene0 extends Phaser.Scene {
     this.load.image('ground', 'assets/world/ground.png');
   }
 
-  public create() {
+  public create(): void {
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'bg');
 
     this.player = this.physics.add.sprite(400, 300, 'playerIdle');
 
     this.player.setBounce(0.02);
-    this.player.setCollideWorldBounds(false);
+    this.player.setCollideWorldBounds(true);
 
     this.objects = this.physics.add.staticGroup();
 
-    //this.objects.create(window.innerWidth / 2 + 200, window.innerHeight / 2 + 150, 'house').refreshBody();
+    this.objects.create(window.innerWidth / 2 + 200, window.innerHeight / 2 + 150, 'house').refreshBody();
 
     this.objects.create(window.innerWidth / 2, window.innerHeight / 2 + 410 , 'ground')
 
