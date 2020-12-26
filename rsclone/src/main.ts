@@ -1,16 +1,17 @@
 import * as Phaser from 'phaser';
-import {Scene0} from './scene0';
-
+import Scene0 from './scene0';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Long Legs journey',
 
   type: Phaser.AUTO,
-
   scale: {
     mode: Phaser.Scale.FIT,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    //width: window.innerWidth,
+    width: 1680,
+    //height: window.innerHeight,
+    height: 1050,
   },
 
   physics: {
@@ -21,10 +22,10 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     },
   },
 
-  scene:  [Scene0],
-
-  parent: 'game',
+  scene: [Scene0],
   backgroundColor: '#000000',
+  parent: 'game',
 };
 
-export const main = new Phaser.Game(gameConfig);
+const main = new Phaser.Game(gameConfig);
+export default main;
