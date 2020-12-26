@@ -13,6 +13,54 @@ export default class Scene0 extends Phaser.Scene {
     super(sceneConfig);
   }
   public preload() {
+    const progressBar = this.add.graphics();
+    const progressBox = this.add.graphics();
+    const width = this.cameras.main.width;
+    const height = this.cameras.main.height;
+    progressBox.fillStyle(0x222222, 0.8);
+    progressBox.fillRect(670, 515, 320, 50);
+    const percentText = this.make.text({
+      x: width / 2,
+      y: height / 2 - 5,
+      text: '0%',
+      style: {
+        font: '18px monospace',
+      },
+    });
+    const loadingText = this.make.text({
+      x: width / 2,
+      y: height / 2 - 50,
+      text: 'Loading...',
+      style: {
+        font: '20px monospace',
+      },
+    });
+    const assetText = this.make.text({
+      x: width / 2,
+      y: height / 2 + 50,
+      text: '',
+      style: {
+        font: '18px monospace',
+      },
+    });
+    assetText.setOrigin(0.5, 0.3);
+    loadingText.setOrigin(0.5, 0.5);
+    percentText.setOrigin(0.5, -0.5);
+    this.load.on('progress', function(value) {
+      progressBar.clear();
+      progressBar.fillStyle(0xffffff, 1);
+      progressBar.fillRect(680, 525, 300 * value, 30);
+      percentText.setText(`${parseInt((value * 100).toString())}%`);
+    });
+    this.load.on('fileprogress', function(file) {
+      assetText.setText('Loading asset: ' + file.key);
+    });
+    this.load.on('complete', function() {
+      loadingText.destroy();
+      percentText.destroy();
+      assetText.destroy();
+    });
+
     this.load.image('bg', 'assets/world/bg.png');
     this.load.atlas(
       'playerWalk',
