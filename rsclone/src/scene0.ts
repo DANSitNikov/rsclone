@@ -10,6 +10,7 @@ export default class Scene0 extends Phaser.Scene {
   private objects: Phaser.Physics.Arcade.StaticGroup;
   private cloudOne: Phaser.GameObjects.Image;
   private cloudTwo: Phaser.GameObjects.Image;
+  private soundWalk: boolean;
 
   constructor() {
     super(sceneConfig);
@@ -84,6 +85,8 @@ export default class Scene0 extends Phaser.Scene {
     this.load.image('ground', 'assets/world/ground.png');
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
+
+    this.load.audio('walk', ['assets/sounds/walk.mp3', 'assets/sounds/walk.ogg']);
   }
 
   public create() {
@@ -142,6 +145,8 @@ export default class Scene0 extends Phaser.Scene {
 
     this.cloudOne = this.add.image(window.innerWidth / 2 + 300, window.innerHeight / 3, 'cloud1');
     this.cloudTwo = this.add.image(window.innerWidth / 5, window.innerHeight / 8, 'cloud2');
+
+    this.soundWalk = true;
   }
 
   public update() {
@@ -152,10 +157,18 @@ export default class Scene0 extends Phaser.Scene {
       this.player.body.setVelocityX(-speed);
       if (this.player.body.touching.down) this.player.anims.play('walk', true);
       this.player.flipX = true;
+
+      if (this.soundWalk === true && this.player.body.onFloor()) {
+        this.makeSound();
+      }
     } else if (cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
       if (this.player.body.touching.down) this.player.anims.play('walk', true);
       this.player.flipX = false;
+
+      if (this.soundWalk === true && this.player.body.onFloor()) {
+        this.makeSound();
+      }
     } else {
       if (this.player.body.touching.down) {
         this.player.anims.play('idle', true);
@@ -181,5 +194,13 @@ export default class Scene0 extends Phaser.Scene {
 
   public resetCloudPosition(cloud) {
     cloud.x = -400;
+  }
+
+  public makeSound() {
+    this.sound.add('walk').play({loop: false});
+    this.soundWalk = false;
+    setTimeout(() => {
+      this.soundWalk = true;
+    }, 250)
   }
 }
