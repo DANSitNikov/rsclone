@@ -5,7 +5,7 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   key: 'game',
 };
 
-export class Scene0 extends Phaser.Scene {
+export default class Scene0 extends Phaser.Scene {
   private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private objects: Phaser.Physics.Arcade.StaticGroup;
 
