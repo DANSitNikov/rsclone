@@ -29,11 +29,11 @@ export class Scene0 extends Phaser.Scene {
   public create() {
     const centerX = 840;
     const centerY = 525;
-
+    this.add.image(centerX, centerY, 'bg');
     const map = this.make.tilemap({ key: "map" });
     const tileset = map.addTilesetImage("bg", "bg");
-    this.groundLayer = map.createLayer('Ground', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true });
+    this.groundLayer = map.createLayer('BackGround', tileset);
+    this.groundLayer.setCollisionByProperty({ collides: true }, true, false);
 
     const debugGraphics = this.add.graphics().setAlpha(0.75);
     this.groundLayer.renderDebug(debugGraphics, {
@@ -42,21 +42,15 @@ export class Scene0 extends Phaser.Scene {
       faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
     });
 
-    //this.add.image(centerX, centerY, 'bg');
 
-    this.player = this.physics.add.sprite(400, 300, 'playerIdle');
+    this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.7);
 
-    this.player.setBounce(0.02);
     this.player.setCollideWorldBounds(true);
 
-    this.objects = this.physics.add.staticGroup();
-
-
-    //this.objects.create(centerX + 200, centerY + 150, 'house').refreshBody();
-    //this.objects.create(centerX, centerY + 410 , 'ground')
-
-    this.physics.add.collider(this.player, this.objects);
+    //this.objects = this.physics.add.staticGroup();
+    //this.physics.add.collider(this.player, this.objects);
     this.physics.add.collider(this.player, this.groundLayer);
+    this.physics.collide(this.player, this.groundLayer);
 
 
     this.anims.create({
@@ -92,31 +86,32 @@ export class Scene0 extends Phaser.Scene {
   }
 
   public update() {
+    let c = 0
+    if(!this.player.body.blocked.down) console.log( ++c)
     const cursors = this.input.keyboard.createCursorKeys();
     const speed = 400;
 
-
     if (cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
-      if(this.player.body.touching.down) this.player.anims.play('walk', true);
+      if(this.player.body.blocked.down) this.player.anims.play('walk', true);
       this.player.flipX = true;
 
     } else if (cursors.right.isDown) {
 
       this.player.body.setVelocityX(speed);
-      if(this.player.body.touching.down) this.player.anims.play('walk', true);
+      if(this.player.body.blocked.down) this.player.anims.play('walk', true);
       this.player.flipX = false;
 
     } else {
-      if(this.player.body.touching.down) {
+      if(this.player.body.blocked.down) {
         this.player.anims.play('idle', true);
       }
       this.player.body.setVelocityX(0);
 
     }
 
-    if (cursors.up.isDown) {// && this.player.body.touching.down
-      this.player.body.setVelocityY(-speed * 3);
+    if (cursors.up.isDown && this.player.body.blocked.down) { //
+      this.player.body.setVelocityY(-810);
       this.player.anims.play('jump', true);
     }
   }
