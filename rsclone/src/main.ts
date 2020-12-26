@@ -22,7 +22,9 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       debug: true,
     },
   },
+  plugins: {
 
+  },
   scene:  [Scene0],
   backgroundColor: '#000000',
   parent: 'game'
