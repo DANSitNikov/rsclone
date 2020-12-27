@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import {checkPropertyChange} from "json-schema";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -7,8 +8,7 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export class Scene0 extends Phaser.Scene {
-  private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-  private objects: Phaser.Physics.Arcade.StaticGroup;
+  public player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
 
   constructor() {
@@ -21,37 +21,32 @@ export class Scene0 extends Phaser.Scene {
     this.load.atlas('playerWalk', 'assets/character/walk/playerWalk.png', 'assets/character/walk/playerWalk.json');
     this.load.atlas('playerIdle', 'assets/character/idle/playerIdle.png', 'assets/character/idle/playerIdle.json');
     this.load.atlas('playerJump', 'assets/character/jump/playerJump.png', 'assets/character/jump/playerJump.json');
-    this.load.image('tree', 'assets/world/tree.png');
-    this.load.image('house', 'assets/world/house.png');
-    //this.load.image('ground', 'assets/world/ground.png');
   }
 
   public create() {
     const centerX = 840;
     const centerY = 525;
     this.add.image(centerX, centerY, 'bg');
+
+    //creation collide blocks
     const map = this.make.tilemap({ key: "map" });
     const tileset = map.addTilesetImage("bg", "bg");
     this.groundLayer = map.createLayer('BackGround', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true }, true, false);
+    this.groundLayer.setCollisionByProperty({ collides: true });
 
-    const debugGraphics = this.add.graphics().setAlpha(0.75);
+
+    // coloring the colliding tiles
+    const debugGraphics = this.add.graphics().setAlpha(0.5);
     this.groundLayer.renderDebug(debugGraphics, {
       tileColor: null, // Color of non-colliding tiles
       collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
       faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
     });
 
-
-    this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.7);
-
+    this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.8);
     this.player.setCollideWorldBounds(true);
 
-    //this.objects = this.physics.add.staticGroup();
-    //this.physics.add.collider(this.player, this.objects);
     this.physics.add.collider(this.player, this.groundLayer);
-    this.physics.collide(this.player, this.groundLayer);
-
 
     this.anims.create({
       key: 'walk',
@@ -101,16 +96,14 @@ export class Scene0 extends Phaser.Scene {
       this.player.flipX = false;
 
     } else {
-      if(this.player.body.blocked.down) {
-        this.player.anims.play('idle', true);
-      }
+      if(this.player.body.blocked.down) this.player.anims.play('idle', true);
       this.player.body.setVelocityX(0);
-
     }
 
-    if (cursors.up.isDown && this.player.body.blocked.down) { //
+    if (cursors.up.isDown && this.player.body.blocked.down) {
       this.player.body.setVelocityY(-810);
       this.player.anims.play('jump', true);
     }
+
   }
 }
