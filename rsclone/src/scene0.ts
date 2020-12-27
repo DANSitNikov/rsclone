@@ -26,7 +26,6 @@ export class Scene0 extends Phaser.Scene {
   public create() {
     const centerX = 840;
     const centerY = 525;
-    this.add.image(centerX, centerY, 'bg');
 
     //creation collide blocks
     const map = this.make.tilemap({ key: "map" });
