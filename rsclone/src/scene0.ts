@@ -95,10 +95,12 @@ export default class Scene0 extends Phaser.Scene {
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
 
-    this.load.audio('walk', ['assets/sounds/walk.mp3', 'assets/sounds/walk.ogg']);
+    this.load.audio('walk', ['assets/sounds/walk/walk.mp3', 'assets/sounds/walk/walk.ogg']);
 
     this.load.image('switchOff', 'assets/objects/switchRed.png');
     this.load.image('switchOn', 'assets/objects/switchGreen.png');
+
+    this.load.audio('switch', ['assets/sounds/switch/switch.mp3', 'assets/sounds/switch/switch.ogg'])
   }
 
   public create() {
@@ -183,6 +185,7 @@ export default class Scene0 extends Phaser.Scene {
           this.switch.setTexture('switchOff');
           this.switchStatus = false;
         }
+        this.sound.add('switch').play({loop: false});
       }
     })
   }
