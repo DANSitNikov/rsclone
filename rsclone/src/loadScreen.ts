@@ -6,8 +6,6 @@ export default class LoadScreen extends Phaser.Scene {
     super({ key: 'LoadScreen', active: false });
   }
 
-  init(): void {}
-
   preload(): void {
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
@@ -53,9 +51,9 @@ export default class LoadScreen extends Phaser.Scene {
       assetText.setText('Loading asset: ' + file.key);
     });
     this.load.on('complete', function() {
-      // loadingText.destroy();
-      // percentText.destroy();
-      // assetText.destroy();
+      loadingText.destroy();
+      percentText.destroy();
+      assetText.destroy();
     });
 
     this.load.image('bg', 'assets/world/bg.png');
