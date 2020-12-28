@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import LoadScreen from './loadScreen';
 import Menu from './menu';
 import Scene0 from './scene0';
 
@@ -23,7 +24,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     },
   },
   plugins: {},
-  scene: [Menu, Scene0],
+  scene: [LoadScreen, Menu, Scene0],
 
   backgroundColor: '#000000',
 };
