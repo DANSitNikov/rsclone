@@ -107,12 +107,12 @@ export default class Scene0 extends Phaser.Scene {
     this.groundLayer.setCollisionByProperty({ collides: true });
 
     // coloring the colliding tiles
-    const debugGraphics = this.add.graphics().setAlpha(0.5);
+    /*const debugGraphics = this.add.graphics().setAlpha(0.5);
     this.groundLayer.renderDebug(debugGraphics, {
       tileColor: null, // Color of non-colliding tiles
       collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
       faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-    });
+    });*/
     this.cloudOne = this.add.image(centerX + 300, centerY / 4, 'cloud1').setAlpha(0.6);
     this.cloudTwo = this.add.image(centerX / 5, centerY / 8, 'cloud2').setAlpha(0.6);
 
