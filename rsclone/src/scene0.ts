@@ -216,7 +216,7 @@ export default class Scene0 extends Phaser.Scene {
     this.soundWalk = false;
     setTimeout(() => {
       this.soundWalk = true;
-    }, 250)
+    }, 350)
 
   }
 }
