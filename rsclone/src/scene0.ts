@@ -15,6 +15,8 @@ export default class Scene0 extends Phaser.Scene {
   private cloudOne: Phaser.GameObjects.Image;
   private cloudTwo: Phaser.GameObjects.Image;
   private soundWalk: boolean;
+  private switch: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+  private switchStatus: boolean;
 
 
   constructor() {
@@ -95,6 +97,8 @@ export default class Scene0 extends Phaser.Scene {
 
     this.load.audio('walk', ['assets/sounds/walk.mp3', 'assets/sounds/walk.ogg']);
 
+    this.load.image('switchOff', 'assets/objects/switchRed.png');
+    this.load.image('switchOn', 'assets/objects/switchGreen.png');
   }
 
   public create() {
@@ -164,9 +168,23 @@ export default class Scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
-
-
     this.soundWalk = true;
+
+    this.switch = this.physics.add.staticSprite(1450, 300, 'switchOff').setScale(0.3);
+    this.switch.angle += 10;
+    this.switchStatus = false;
+
+    this.input.keyboard.on('keydown-SPACE', () => {
+      if (this.player.x >= 1400 && this.player.y < 1470 && this.player.y === 328) {
+        if (!this.switchStatus) {
+          this.switch.setTexture('switchOn');
+          this.switchStatus = true;
+        } else {
+          this.switch.setTexture('switchOff');
+          this.switchStatus = false;
+        }
+      }
+    })
   }
 
   public update() {
@@ -200,7 +218,6 @@ export default class Scene0 extends Phaser.Scene {
       this.player.body.setVelocityY(-810);
       this.player.anims.play('jump', true);
     }
-
 
     this.moveCloud(this.cloudOne, 0.7);
     this.moveCloud(this.cloudTwo, 0.3);
