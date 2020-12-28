@@ -72,6 +72,7 @@ export default class Scene0 extends Phaser.Scene {
     });
 
     this.load.image('bg', 'assets/world/bg.png');
+    this.load.image('ground', 'assets/world/ground.png');
     this.load.tilemapTiledJSON('map', 'assets/world/bg.json', null)
     this.load.atlas(
       'playerWalk',
@@ -121,7 +122,7 @@ export default class Scene0 extends Phaser.Scene {
 
     // additional ground layer
     this.objects = this.physics.add.staticGroup();
-    this.objects.create(centerX, 1280, 'bg', '', false, true).refreshBody();
+    this.objects.create(centerX, 900, 'ground', '', false).refreshBody();
 
 
     this.physics.add.collider(this.player, this.groundLayer);
