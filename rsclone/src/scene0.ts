@@ -8,10 +8,9 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 
-export class Scene0 extends Phaser.Scene {
+export default class Scene0 extends Phaser.Scene {
   public player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
-  private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private objects: Phaser.Physics.Arcade.StaticGroup;
   private cloudOne: Phaser.GameObjects.Image;
   private cloudTwo: Phaser.GameObjects.Image;
@@ -89,7 +88,7 @@ export class Scene0 extends Phaser.Scene {
       'assets/character/jump/playerJump.png',
       'assets/character/jump/playerJump.json',
     );
-    
+
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
 
