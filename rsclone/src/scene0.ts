@@ -119,8 +119,13 @@ export default class Scene0 extends Phaser.Scene {
     this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.8);
     this.player.setCollideWorldBounds(true);
 
+    // additional ground layer
+    this.objects = this.physics.add.staticGroup();
+    this.objects.create(centerX, 1280, 'bg', '', false, true).refreshBody();
+
 
     this.physics.add.collider(this.player, this.groundLayer);
+    this.physics.add.collider(this.player, this.objects);
 
     this.anims.create({
       key: 'walk',
