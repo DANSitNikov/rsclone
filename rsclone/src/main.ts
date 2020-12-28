@@ -17,12 +17,14 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 3000 },
+      gravity: { y: 1550 },
       debug: true,
     },
   },
+  plugins: {
+  },
+  scene:  [Scene0],
 
-  scene: [Scene0],
   backgroundColor: '#000000',
   parent: 'game',
 };
