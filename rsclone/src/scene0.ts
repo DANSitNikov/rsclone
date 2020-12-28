@@ -72,6 +72,7 @@ export default class Scene0 extends Phaser.Scene {
     });
 
     this.load.image('bg', 'assets/world/bg.png');
+    this.load.image('ground', 'assets/world/ground.png');
     this.load.tilemapTiledJSON('map', 'assets/world/bg.json', null)
     this.load.atlas(
       'playerWalk',
@@ -107,20 +108,25 @@ export default class Scene0 extends Phaser.Scene {
     this.groundLayer.setCollisionByProperty({ collides: true });
 
     // coloring the colliding tiles
-    const debugGraphics = this.add.graphics().setAlpha(0.5);
+    /*const debugGraphics = this.add.graphics().setAlpha(0.5);
     this.groundLayer.renderDebug(debugGraphics, {
       tileColor: null, // Color of non-colliding tiles
       collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
       faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-    });
+    });*/
     this.cloudOne = this.add.image(centerX + 300, centerY / 4, 'cloud1').setAlpha(0.6);
     this.cloudTwo = this.add.image(centerX / 5, centerY / 8, 'cloud2').setAlpha(0.6);
 
     this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.8);
     this.player.setCollideWorldBounds(true);
 
+    // additional ground layer
+    this.objects = this.physics.add.staticGroup();
+    this.objects.create(centerX, 900, 'ground', '', false).refreshBody();
+
 
     this.physics.add.collider(this.player, this.groundLayer);
+    this.physics.add.collider(this.player, this.objects);
 
     this.anims.create({
       key: 'walk',
