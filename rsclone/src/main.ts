@@ -11,7 +11,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     //width: window.innerWidth,
     width: 1680,
     //height: window.innerHeight,
-    height: 1050,
+    height: 1040,
   },
 
   physics: {

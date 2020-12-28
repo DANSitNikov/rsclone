@@ -98,7 +98,7 @@ export default class Scene0 extends Phaser.Scene {
 
   public create() {
     const centerX = 840;
-    const centerY = 525;
+    const centerY = 520;
 
     //creation collide blocks
     const map = this.make.tilemap({ key: "map" });
@@ -113,7 +113,8 @@ export default class Scene0 extends Phaser.Scene {
       collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
       faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
     });
-
+    this.cloudOne = this.add.image(centerX + 300, centerY / 4, 'cloud1').setAlpha(0.6);
+    this.cloudTwo = this.add.image(centerX / 5, centerY / 8, 'cloud2').setAlpha(0.6);
 
     this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.8);
     this.player.setCollideWorldBounds(true);
@@ -157,8 +158,7 @@ export default class Scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.cloudOne = this.add.image(window.innerWidth / 2 + 300, window.innerHeight / 3, 'cloud1');
-    this.cloudTwo = this.add.image(window.innerWidth / 5, window.innerHeight / 8, 'cloud2');
+
 
     this.soundWalk = true;
   }
@@ -196,8 +196,8 @@ export default class Scene0 extends Phaser.Scene {
     }
 
 
-    this.moveCloud(this.cloudOne, 1);
-    this.moveCloud(this.cloudTwo, 0.7);
+    this.moveCloud(this.cloudOne, 0.7);
+    this.moveCloud(this.cloudTwo, 0.3);
   }
 
   public moveCloud(cloud, speed) {
