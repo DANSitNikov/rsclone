@@ -4,8 +4,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   visible: false,
   key: 'game',
 };
-var enemy;
-var enemyOnScene = false;
 
 export default class Scene0 extends Phaser.Scene {
   private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -19,22 +17,19 @@ export default class Scene0 extends Phaser.Scene {
 		if (this.player.x > 500) {
 			console.log(enemy.x + ' ' + enemy.y);
 			console.log(this.player.x + ' ' + this.player.y);
-				if (!enemyOnScene) {
-					enemy.y = 500;
-					this.enemyFadeIn();
-				}
+					this.enemy.y = 500;
 				setTimeout(this.enemyStop, 900);
 		}	
 	}
 
 	//Enemy fade-in
 	public enemyFadeIn(): void {
-		enemy.setVelocityX(-300);
+		this.enemy.setVelocityX(-300);
 	}
 	public enemyStop(): void {
-		enemy.setVelocityX(0);
-		enemy.setCollideWorldBounds(true);
-		enemyOnScene = true;
+		this.enemy.setVelocityX(0);
+		this.enemy.setCollideWorldBounds(true);
+		this.enemyOnScene = true;
 	}
 
 	//Check player and enemy coordinates
@@ -46,7 +41,7 @@ export default class Scene0 extends Phaser.Scene {
 		}
 	}
 
-	//Kill the character!
+	// //Kill the character!
 	public playerDie(): void {
 		this.player.anims.play('die', true);
 		console.log('died!');
@@ -152,8 +147,9 @@ export default class Scene0 extends Phaser.Scene {
 
 		this.physics.add.collider(this.player, this.objects);
 		
-		enemy = this.physics.add.sprite(2000, 500, 'enemyWalk');
-		this.physics.add.collider(enemy, this.objects);
+		this.enemy = this.physics.add.sprite(800, 500, 'enemyWalk');
+		this.enemy.setCollideWorldBounds(true);
+		
 
     this.anims.create({
       key: 'walk',
@@ -219,11 +215,9 @@ export default class Scene0 extends Phaser.Scene {
       if (this.player.body.touching.down) this.player.anims.play('walk', true);
       this.player.flipX = true;
     } else if (cursors.right.isDown) {
-			this.addEnemy();
       this.player.body.setVelocityX(speed);
       if (this.player.body.touching.down) this.player.anims.play('walk', true);
       this.player.flipX = false;
-			this.checkPlayerDied();
     } else {
       if (this.player.body.touching.down) {
         this.player.anims.play('idle', true);
@@ -237,6 +231,6 @@ export default class Scene0 extends Phaser.Scene {
 		}
 		
 		//Enemy animation
-			enemy.anims.play('enemyWalk', true);
+			this.enemy.anims.play('enemyWalk', true);
 	}
 }
