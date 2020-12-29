@@ -96,6 +96,7 @@ export default class Scene0 extends Phaser.Scene {
 
     this.soundWalk = true;
     this.ladderSound = 1;
+    this.sound.add('wind').play({ loop: true })
   }
 
   public update() {

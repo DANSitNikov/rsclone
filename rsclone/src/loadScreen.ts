@@ -80,6 +80,7 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('cloud2', 'assets/world/cloud2.png');
 
     this.load.audio('walk', ['assets/sounds/walk.mp3', 'assets/sounds/walk.ogg']);
+    this.load.audio('wind', 'assets/sounds/wind.mp3');
 
     this.load.audio('ladder1', 'assets/sounds/ladder/1.mp3');
     this.load.audio('ladder2', 'assets/sounds/ladder/2.mp3');
