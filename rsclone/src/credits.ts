@@ -12,8 +12,8 @@ export default class Credits extends Phaser.Scene {
 
   create(): void {
     this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height / 8, 'Credits', {
-        font: '32px monospace',
+      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, 'Credits', {
+        font: '42px monospace',
       })
       .setOrigin(0.5);
 
