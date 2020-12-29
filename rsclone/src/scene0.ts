@@ -14,6 +14,9 @@ export default class Scene0 extends Phaser.Scene {
   private cloudOne: Phaser.GameObjects.Image;
   private cloudTwo: Phaser.GameObjects.Image;
   private soundWalk: boolean;
+  private ladderSound: number;
+  private ladder: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+
 
   constructor() {
     super(sceneConfig);
@@ -22,6 +25,7 @@ export default class Scene0 extends Phaser.Scene {
   public preload() {}
 
   public create() {
+
     const centerX = 840;
     const centerY = 520;
 
@@ -32,14 +36,16 @@ export default class Scene0 extends Phaser.Scene {
     this.groundLayer.setCollisionByProperty({ collides: true });
 
     // coloring the colliding tiles
-    /*const debugGraphics = this.add.graphics().setAlpha(0.5);
+    const debugGraphics = this.add.graphics().setAlpha(0.5);
     this.groundLayer.renderDebug(debugGraphics, {
       tileColor: null, // Color of non-colliding tiles
       collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
       faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-    });*/
+    });
     this.cloudOne = this.add.image(centerX + 300, centerY / 4, 'cloud1').setAlpha(0.6);
     this.cloudTwo = this.add.image(centerX / 5, centerY / 8, 'cloud2').setAlpha(0.6);
+
+    this.ladder = this.add.sprite(centerX + 680, centerY+20 , 'ladder') as any;
 
     this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.8);
     this.player.setCollideWorldBounds(true);
@@ -50,6 +56,7 @@ export default class Scene0 extends Phaser.Scene {
 
     this.physics.add.collider(this.player, this.groundLayer);
     this.physics.add.collider(this.player, this.objects);
+
 
     this.anims.create({
       key: 'walk',
@@ -88,11 +95,29 @@ export default class Scene0 extends Phaser.Scene {
     });
 
     this.soundWalk = true;
+    this.ladderSound = 1;
   }
 
   public update() {
     const cursors = this.input.keyboard.createCursorKeys();
     const speed = 400;
+    const PlayerVerticalCenter = new Phaser.Geom.Line(
+        this.player.getBottomCenter().x,
+        this.player.getCenter().y,
+        this.player.getTopCenter().x,
+        this.player.getTopCenter().y
+    );
+
+    if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.ladder.getBounds())) {
+      if (cursors.up.isDown) {
+        this.player.body.setVelocityY(-speed / 1.5);
+        this.player.anims.play('idle', true);  // there will be ladder animation
+        if (this.soundWalk) this.makeSound(`ladder${this.ladderSound}`);
+        this.ladderSound = (this.ladderSound + 1) % 5;
+
+      }
+    }
+
 
     if (cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
@@ -102,7 +127,7 @@ export default class Scene0 extends Phaser.Scene {
       this.player.flipX = true;
 
       if (this.soundWalk === true && this.player.body.onFloor()) {
-        this.makeSound();
+        this.makeSound('walk');
       }
     } else if (cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
@@ -110,7 +135,7 @@ export default class Scene0 extends Phaser.Scene {
       this.player.flipX = false;
 
       if (this.soundWalk === true && this.player.body.onFloor()) {
-        this.makeSound();
+        this.makeSound('walk');
       }
     } else {
       if (this.player.body.blocked.down) this.player.anims.play('idle', true);
@@ -137,8 +162,8 @@ export default class Scene0 extends Phaser.Scene {
     cloud.x = -400;
   }
 
-  public makeSound() {
-    this.sound.add('walk').play({ loop: false });
+  public makeSound(key) {
+    this.sound.add(key).play({ loop: false });
     this.soundWalk = false;
     setTimeout(() => {
       this.soundWalk = true;

@@ -58,6 +58,7 @@ export default class LoadScreen extends Phaser.Scene {
 
     this.load.image('bg', 'assets/world/bg.png');
     this.load.image('ground', 'assets/world/ground.png');
+    this.load.image('ladder', 'assets/objects/ladder.png');
     this.load.tilemapTiledJSON('map', 'assets/world/bg.json', null);
     this.load.atlas(
       'playerWalk',
@@ -79,6 +80,12 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('cloud2', 'assets/world/cloud2.png');
 
     this.load.audio('walk', ['assets/sounds/walk.mp3', 'assets/sounds/walk.ogg']);
+
+    this.load.audio('ladder1', 'assets/sounds/ladder/1.mp3');
+    this.load.audio('ladder2', 'assets/sounds/ladder/2.mp3');
+    this.load.audio('ladder3', 'assets/sounds/ladder/3.mp3');
+    this.load.audio('ladder4', 'assets/sounds/ladder/4.mp3');
+    this.load.audio('ladder0', 'assets/sounds/ladder/0.mp3');
   }
 
   create(): void {
