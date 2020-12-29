@@ -82,6 +82,15 @@ export default class LoadScreen extends Phaser.Scene {
   }
 
   create(): void {
+    this.loadVolume();
     this.scene.start('Menu');
+  }
+
+  private loadVolume(): void {
+    console.log(this, 'volume' in localStorage);
+    const volume = 'volume' in localStorage ? Number(localStorage.getItem('volume')) : 0.5;
+
+    this.sound.volume = volume;
+    localStorage.setItem('volume', String(volume));
   }
 }

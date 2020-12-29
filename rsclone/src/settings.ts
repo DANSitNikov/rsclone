@@ -36,9 +36,10 @@ export default class Settings extends Phaser.Scene {
         indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xffffff),
         thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 12, 0xffffff),
 
-        input: 'click', // 'drag'|'click'
+        input: 'click',
         valuechangeCallback: (value) => {
           this.sound.volume = value;
+          localStorage.setItem('volume', value);
         },
       })
       .layout();
