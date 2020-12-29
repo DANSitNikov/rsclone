@@ -14,7 +14,7 @@ export default class Scene0 extends Phaser.Scene {
   private cloudOne: Phaser.GameObjects.Image;
   private cloudTwo: Phaser.GameObjects.Image;
   private soundWalk: boolean;
-  private ladderSound: number;
+  private soundQueue: object;
   private ladder: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 
 
@@ -95,7 +95,11 @@ export default class Scene0 extends Phaser.Scene {
     });
 
     this.soundWalk = true;
-    this.ladderSound = 1;
+    this.soundQueue = {
+      ladder: 0,
+      walk: 0
+    }
+
     this.sound.add('wind').play({ loop: true })
   }
 
@@ -109,40 +113,41 @@ export default class Scene0 extends Phaser.Scene {
         this.player.getTopCenter().y
     );
 
+    // ladder
     if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.ladder.getBounds())) {
       if (cursors.up.isDown) {
         this.player.body.setVelocityY(-speed / 1.5);
         this.player.anims.play('idle', true);  // there will be ladder animation
-        if (this.soundWalk) this.makeSound(`ladder${this.ladderSound}`);
-        this.ladderSound = (this.ladderSound + 1) % 5;
-
+        if (this.soundWalk) {
+          this.makeSound(`ladder${this.soundQueue["ladder"]}`);
+          this.soundQueue["ladder"] = (this.soundQueue["ladder"] + 1) % 5;
+        }
       }
     }
 
-
+    // walk
     if (cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
-
       if (this.player.body.blocked.down) this.player.anims.play('walk', true);
-
       this.player.flipX = true;
-
       if (this.soundWalk === true && this.player.body.onFloor()) {
-        this.makeSound('walk');
+        this.makeSound(`walk${this.soundQueue["walk"]}`);
+        this.soundQueue["walk"] = (this.soundQueue["walk"] + 1) % 4;
       }
     } else if (cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
       if (this.player.body.blocked.down) this.player.anims.play('walk', true);
       this.player.flipX = false;
-
       if (this.soundWalk === true && this.player.body.onFloor()) {
-        this.makeSound('walk');
+        this.makeSound(`walk${this.soundQueue["walk"]}`);
+        this.soundQueue["walk"] = (this.soundQueue["walk"] + 1) % 4;
       }
     } else {
       if (this.player.body.blocked.down) this.player.anims.play('idle', true);
       this.player.body.setVelocityX(0);
     }
 
+    // jump
     if (cursors.up.isDown && this.player.body.blocked.down) {
       this.player.body.setVelocityY(-810);
       this.player.anims.play('jump', true);
