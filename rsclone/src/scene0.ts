@@ -1,12 +1,11 @@
 import * as Phaser from 'phaser';
-import {checkPropertyChange} from "json-schema";
+import { checkPropertyChange } from 'json-schema';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
-  key: 'game',
+  key: 'Scene0',
 };
-
 
 export default class Scene0 extends Phaser.Scene {
   public player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -16,94 +15,19 @@ export default class Scene0 extends Phaser.Scene {
   private cloudTwo: Phaser.GameObjects.Image;
   private soundWalk: boolean;
 
-
   constructor() {
     super(sceneConfig);
   }
 
-  public preload ()
-  {
-    const progressBar = this.add.graphics();
-    const progressBox = this.add.graphics();
-    const width = this.cameras.main.width;
-    const height = this.cameras.main.height;
-    progressBox.fillStyle(0x222222, 0.8);
-    progressBox.fillRect(670, 515, 320, 50);
-    const percentText = this.make.text({
-      x: width / 2,
-      y: height / 2 - 5,
-      text: '0%',
-      style: {
-        font: '18px monospace',
-      },
-    });
-    const loadingText = this.make.text({
-      x: width / 2,
-      y: height / 2 - 50,
-      text: 'Loading...',
-      style: {
-        font: '20px monospace',
-      },
-    });
-    const assetText = this.make.text({
-      x: width / 2,
-      y: height / 2 + 50,
-      text: '',
-      style: {
-        font: '18px monospace',
-      },
-    });
-    assetText.setOrigin(0.5, 0.3);
-    loadingText.setOrigin(0.5, 0.5);
-    percentText.setOrigin(0.5, -0.5);
-    this.load.on('progress', function(value) {
-      progressBar.clear();
-      progressBar.fillStyle(0xffffff, 1);
-      progressBar.fillRect(680, 525, 300 * value, 30);
-      percentText.setText(`${parseInt((value * 100).toString())}%`);
-    });
-    this.load.on('fileprogress', function(file) {
-      assetText.setText('Loading asset: ' + file.key);
-    });
-    this.load.on('complete', function() {
-      loadingText.destroy();
-      percentText.destroy();
-      assetText.destroy();
-    });
-
-    this.load.image('bg', 'assets/world/bg.png');
-    this.load.image('ground', 'assets/world/ground.png');
-    this.load.tilemapTiledJSON('map', 'assets/world/bg.json', null)
-    this.load.atlas(
-      'playerWalk',
-      'assets/character/walk/playerWalk.png',
-      'assets/character/walk/playerWalk.json',
-    );
-    this.load.atlas(
-      'playerIdle',
-      'assets/character/idle/playerIdle.png',
-      'assets/character/idle/playerIdle.json',
-    );
-    this.load.atlas(
-      'playerJump',
-      'assets/character/jump/playerJump.png',
-      'assets/character/jump/playerJump.json',
-    );
-
-    this.load.image('cloud1', 'assets/world/cloud1.png');
-    this.load.image('cloud2', 'assets/world/cloud2.png');
-
-    this.load.audio('walk', ['assets/sounds/walk.mp3', 'assets/sounds/walk.ogg']);
-
-  }
+  public preload() {}
 
   public create() {
     const centerX = 840;
     const centerY = 520;
 
     //creation collide blocks
-    const map = this.make.tilemap({ key: "map" });
-    const tileset = map.addTilesetImage("bg", "bg");
+    const map = this.make.tilemap({ key: 'map' });
+    const tileset = map.addTilesetImage('bg', 'bg');
     this.groundLayer = map.createLayer('BackGround', tileset);
     this.groundLayer.setCollisionByProperty({ collides: true });
 
@@ -123,7 +47,6 @@ export default class Scene0 extends Phaser.Scene {
     // additional ground layer
     this.objects = this.physics.add.staticGroup();
     this.objects.create(centerX, 900, 'ground', '', false).refreshBody();
-
 
     this.physics.add.collider(this.player, this.groundLayer);
     this.physics.add.collider(this.player, this.objects);
@@ -164,8 +87,6 @@ export default class Scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
-
-
     this.soundWalk = true;
   }
 
@@ -176,7 +97,7 @@ export default class Scene0 extends Phaser.Scene {
     if (cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
 
-      if(this.player.body.blocked.down) this.player.anims.play('walk', true);
+      if (this.player.body.blocked.down) this.player.anims.play('walk', true);
 
       this.player.flipX = true;
 
@@ -185,14 +106,14 @@ export default class Scene0 extends Phaser.Scene {
       }
     } else if (cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
-      if(this.player.body.blocked.down) this.player.anims.play('walk', true);
+      if (this.player.body.blocked.down) this.player.anims.play('walk', true);
       this.player.flipX = false;
 
       if (this.soundWalk === true && this.player.body.onFloor()) {
         this.makeSound();
       }
     } else {
-      if(this.player.body.blocked.down) this.player.anims.play('idle', true);
+      if (this.player.body.blocked.down) this.player.anims.play('idle', true);
       this.player.body.setVelocityX(0);
     }
 
@@ -200,7 +121,6 @@ export default class Scene0 extends Phaser.Scene {
       this.player.body.setVelocityY(-810);
       this.player.anims.play('jump', true);
     }
-
 
     this.moveCloud(this.cloudOne, 0.7);
     this.moveCloud(this.cloudTwo, 0.3);
@@ -218,11 +138,10 @@ export default class Scene0 extends Phaser.Scene {
   }
 
   public makeSound() {
-    this.sound.add('walk').play({loop: false});
+    this.sound.add('walk').play({ loop: false });
     this.soundWalk = false;
     setTimeout(() => {
       this.soundWalk = true;
-    }, 350)
-
+    }, 350);
   }
 }

@@ -1,4 +1,7 @@
 import * as Phaser from 'phaser';
+import LoadScreen from './loadScreen';
+import Menu from './menu';
+import Credits from './credits';
 import Scene0 from './scene0';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
@@ -21,12 +24,10 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       debug: true,
     },
   },
-  plugins: {
-  },
-  scene:  [Scene0],
+  plugins: {},
+  scene: [LoadScreen, Menu, Credits, Scene0],
 
   backgroundColor: '#000000',
-  parent: 'game',
 };
 
 const main = new Phaser.Game(gameConfig);
