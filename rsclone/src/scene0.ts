@@ -120,7 +120,7 @@ export default class Scene0 extends Phaser.Scene {
         this.player.anims.play('idle', true);  // there will be ladder animation
         if (this.soundWalk) {
           this.makeSound(`ladder${this.soundQueue["ladder"]}`);
-          this.soundQueue["ladder"] = (this.soundQueue["ladder"] + 1) % 5;
+          this.soundQueue["ladder"] = (this.soundQueue["ladder"] + 1) % 4;
         }
       }
     }
