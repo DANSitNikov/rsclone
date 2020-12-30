@@ -47,7 +47,7 @@ export default class Scene0 extends Phaser.Scene {
 
     this.ladder = this.add.sprite(centerX + 680, centerY+20 , 'ladder') as any;
 
-    this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.8);
+    this.player = this.physics.add.sprite(300, 720, 'playerIdle').setScale(0.8);
     this.player.setCollideWorldBounds(true);
 
     // additional ground layer
@@ -56,7 +56,6 @@ export default class Scene0 extends Phaser.Scene {
 
     this.physics.add.collider(this.player, this.groundLayer);
     this.physics.add.collider(this.player, this.objects);
-
 
     this.anims.create({
       key: 'walk',
@@ -155,6 +154,10 @@ export default class Scene0 extends Phaser.Scene {
 
     this.moveCloud(this.cloudOne, 0.7);
     this.moveCloud(this.cloudTwo, 0.3);
+
+    if (this.player.x >= 1656) { // уровень пройден, если игрок уперся в правую стенку?
+      this.scene.start('Scene1');
+    }
   }
 
   public moveCloud(cloud, speed) {
