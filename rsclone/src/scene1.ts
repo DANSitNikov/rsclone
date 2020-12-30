@@ -44,6 +44,41 @@ export default class Scene1 extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.objects);
         this.physics.add.collider(this.player, this.groundLayer);
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNames('playerWalk', {
+                start: 2,
+                end: 8,
+                prefix: '',
+                suffix: '.png',
+            }),
+            frameRate: 11,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNames('playerIdle', {
+                start: 1,
+                end: 8,
+                prefix: '',
+                suffix: '.png',
+            }),
+            frameRate: 6,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'jump',
+            frames: this.anims.generateFrameNames('playerJump', {
+                start: 1,
+                end: 3,
+                prefix: '',
+                suffix: '.png',
+            }),
+            frameRate: 6,
+            repeat: -1,
+        });
 
         this.soundWalk = true;
         this.soundQueue = {
