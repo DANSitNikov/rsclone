@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser';
+import { Engine, Render, World, Bodies, Body, Events } from "matter-js";
 import { checkPropertyChange } from 'json-schema';
+
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -8,14 +10,13 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene0 extends Phaser.Scene {
-  public player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
-  private objects: Phaser.Physics.Arcade.StaticGroup;
-  private cloudOne: Phaser.GameObjects.Image;
-  private cloudTwo: Phaser.GameObjects.Image;
+  private player: Phaser.Physics.Matter.Sprite;
+  private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private soundWalk: boolean;
   private soundQueue: object;
-  private ladder: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+  private playerIsTouching: { left: boolean; ground: boolean; right: boolean };
+
 
 
   constructor() {
@@ -25,37 +26,59 @@ export default class Scene0 extends Phaser.Scene {
   public preload() {}
 
   public create() {
-
-    const centerX = 840;
-    const centerY = 520;
-
     //creation collide blocks
     const map = this.make.tilemap({ key: 'map' });
     const tileset = map.addTilesetImage('bg', 'bg');
     this.groundLayer = map.createLayer('BackGround', tileset);
     this.groundLayer.setCollisionByProperty({ collides: true });
 
-    // coloring the colliding tiles
-    const debugGraphics = this.add.graphics().setAlpha(0.5);
-    this.groundLayer.renderDebug(debugGraphics, {
-      tileColor: null, // Color of non-colliding tiles
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+    this.player = this.matter.add.sprite(30, 100, "playerIdle", 0);
+    this.player.setScale(0.8);
+
+    const { width: w, height: h } = this.player;
+
+    // @ts-ignore
+    const Bodies = Phaser.Physics.Matter.Matter.Bodies;
+    const rect = Bodies.rectangle(25, 76, 50, 140);
+    const bottomSensor = Bodies.rectangle(25, h * 0.5 + 55, w * 0.25, 12, { isSensor: true, label: 'bottom' });
+    const rightSensor = Bodies.rectangle(w * 0.35 + 25, 55, 12, h * 0.5, { isSensor: true, label: 'right' });
+    const leftSensor = Bodies.rectangle(-w * 0.35 + 25, 55, 12, h * 0.5, { isSensor: true, label: 'left' });
+
+
+    // @ts-ignore
+    const compoundBody = Phaser.Physics.Matter.Matter.Body.create({
+      parts: [ rect, bottomSensor, rightSensor, leftSensor ],
+      inertia: Infinity
     });
-    this.cloudOne = this.add.image(centerX + 300, centerY / 4, 'cloud1').setAlpha(0.6);
-    this.cloudTwo = this.add.image(centerX / 5, centerY / 8, 'cloud2').setAlpha(0.6);
 
-    this.ladder = this.add.sprite(centerX + 680, centerY+20 , 'ladder') as any;
+    this.player.setFixedRotation()
+        .setExistingBody(compoundBody);
 
-    this.player = this.physics.add.sprite(300, 720, 'playerIdle').setScale(0.8);
-    this.player.setCollideWorldBounds(true);
+    this.playerIsTouching = { left: false, right: false, ground: false };
 
-    // additional ground layer
-    this.objects = this.physics.add.staticGroup();
-    this.objects.create(centerX, 900, 'ground', '', false).refreshBody();
+    // Before matter's update, reset our record of what surfaces the player is touching.
+    this.matter.world.on("beforeupdate", this.resetTouching, this);
 
-    this.physics.add.collider(this.player, this.groundLayer);
-    this.physics.add.collider(this.player, this.objects);
+    this.matter.world.on('collisionactive',  (event) => {
+      event.pairs.forEach(pair => {
+        let bodyA = pair.bodyA;
+        let bodyB = pair.bodyB;
+        if (pair.isSensor) {
+          let playerBody = bodyA.isSensor ? bodyA : bodyB;
+          if (playerBody.label === 'left') {
+            this.playerIsTouching.left = true;
+          } else if (playerBody.label === 'right') {
+            this.playerIsTouching.right = true;
+          } else if (playerBody.label === 'bottom') {
+            this.playerIsTouching.ground = true;
+          }
+        }
+      });
+
+    });
+
+
+    this.matter.world.convertTilemapLayer(this.groundLayer);
 
     this.anims.create({
       key: 'walk',
@@ -99,78 +122,61 @@ export default class Scene0 extends Phaser.Scene {
       walk: 0
     }
 
+    this.matter.world.setBounds(0, 0, 1680, 1040);
     this.sound.add('wind').play({ loop: true })
+
   }
 
   public update() {
     const cursors = this.input.keyboard.createCursorKeys();
-    const speed = 400;
-    const PlayerVerticalCenter = new Phaser.Geom.Line(
-        this.player.getBottomCenter().x,
-        this.player.getCenter().y,
-        this.player.getTopCenter().x,
-        this.player.getTopCenter().y
-    );
+    const isOnGround = this.playerIsTouching.ground;
+    const speed = 8;
 
-    // ladder
-    if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.ladder.getBounds())) {
-      if (cursors.up.isDown) {
-        this.player.body.setVelocityY(-speed / 1.5);
-        this.player.anims.play('idle', true);  // there will be ladder animation
-        if (this.soundWalk) {
-          this.makeSound(`ladder${this.soundQueue["ladder"]}`);
-          this.soundQueue["ladder"] = (this.soundQueue["ladder"] + 1) % 4;
+    if (cursors.left.isDown) {
+      this.player.setVelocityX(-speed);
+      if (isOnGround) {
+        this.player.anims.play('walk', true);
+        if (this.soundWalk === true) {
+          this.makeSound(`walk${this.soundQueue["walk"]}`);
+          this.soundQueue["walk"] = (this.soundQueue["walk"] + 1) % 4;
         }
       }
-    }
-
-    // walk
-    if (cursors.left.isDown) {
-      this.player.body.setVelocityX(-speed);
-      if (this.player.body.blocked.down) this.player.anims.play('walk', true);
       this.player.flipX = true;
-      if (this.soundWalk === true && this.player.body.onFloor()) {
-        this.makeSound(`walk${this.soundQueue["walk"]}`);
-        this.soundQueue["walk"] = (this.soundQueue["walk"] + 1) % 4;
-      }
     } else if (cursors.right.isDown) {
-      this.player.body.setVelocityX(speed);
-      if (this.player.body.blocked.down) this.player.anims.play('walk', true);
-      this.player.flipX = false;
-      if (this.soundWalk === true && this.player.body.onFloor()) {
-        this.makeSound(`walk${this.soundQueue["walk"]}`);
-        this.soundQueue["walk"] = (this.soundQueue["walk"] + 1) % 4;
+      this.player.setVelocityX(speed);
+      if (!this.player.body.velocity.y) {
+        this.player.anims.play('walk', true);
+        if (this.soundWalk === true) {
+          this.makeSound(`walk${this.soundQueue["walk"]}`);
+          this.soundQueue["walk"] = (this.soundQueue["walk"] + 1) % 4;
+        }
       }
+      this.player.flipX = false;
     } else {
-      if (this.player.body.blocked.down) this.player.anims.play('idle', true);
-      this.player.body.setVelocityX(0);
+      if (isOnGround) this.player.anims.play('idle', true);
+      this.player.setVelocityX(0);
     }
 
     // jump
-    if (cursors.up.isDown && this.player.body.blocked.down) {
-      this.player.body.setVelocityY(-810);
+    if (cursors.up.isDown && isOnGround) {
+      this.player.setVelocityY(-22);
+    }
+
+    if(!isOnGround) {
       this.player.anims.play('jump', true);
     }
 
-    this.moveCloud(this.cloudOne, 0.7);
-    this.moveCloud(this.cloudTwo, 0.3);
+    // speed regulation
+    const velocity = this.player.body.velocity;
+    if (velocity.x > speed) this.player.setVelocityX(speed);
+    else if (velocity.x < -speed) this.player.setVelocityX(-speed);
 
-    if (this.player.x >= 1656) { // уровень пройден, если игрок уперся в правую стенку?
+    if (this.player.getBottomCenter().x >= 1640) {
       this.scene.start('Scene1');
     }
-  }
 
-  public moveCloud(cloud, speed) {
-    cloud.x += speed;
-    if (cloud.x > window.innerWidth + 400) {
-      this.resetCloudPosition(cloud);
-    }
-  }
 
-  public resetCloudPosition(cloud) {
-    cloud.x = -400;
   }
-
   public makeSound(key) {
     this.sound.add(key).play({ loop: false });
     this.soundWalk = false;
@@ -178,4 +184,10 @@ export default class Scene0 extends Phaser.Scene {
       this.soundWalk = true;
     }, 350);
   }
+  public resetTouching() {
+    this.playerIsTouching.left = false;
+    this.playerIsTouching.right = false;
+    this.playerIsTouching.ground = false;
+  }
+
 }

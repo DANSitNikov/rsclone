@@ -21,11 +21,11 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   },
 
   physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: 1500 },
-      debug: true,
-    },
+    default: "matter",
+    matter: {
+      gravity: { y: 3 },
+      debug: true
+    }
   },
   plugins: {
     scene: [
