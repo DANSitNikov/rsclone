@@ -21,7 +21,7 @@ export default class Player {
         // @ts-ignore
         const Bodies = Phaser.Physics.Matter.Matter.Bodies;
         const rect = Bodies.rectangle(25, 76, 50, 140);
-        const bottomSensor = Bodies.rectangle(25, h * 0.5 + 55, w * 0.25, 12, {isSensor: true, label: 'bottom'});
+        const bottomSensor = Bodies.rectangle(25, h * 0.5 + 55, w * 0.75, 15, {isSensor: true, label: 'bottom'});
         const rightSensor = Bodies.rectangle(w * 0.35 + 25, 55, 12, h * 0.5, {isSensor: true, label: 'right'});
         const leftSensor = Bodies.rectangle(-w * 0.35 + 25, 55, 12, h * 0.5, {isSensor: true, label: 'left'});
         this.playerIsTouching = { left: false, ground: false, right: false };
@@ -121,9 +121,13 @@ export default class Player {
             }
         }
 
+        // gravity bug fix
+        if (isOnGround) this.player.setIgnoreGravity(true)
+        else this.player.setIgnoreGravity(false)
+
         // walk
         if (cursors.left.isDown) {
-            this.player.setVelocityX(-speed);
+            if (!this.playerIsTouching.left) this.player.setVelocityX(-speed);
             if (isOnGround) {
                 this.player.anims.play('walk', true);
                 if (this.soundWalk === true) {
@@ -133,7 +137,7 @@ export default class Player {
             }
             this.player.flipX = true;
         } else if (cursors.right.isDown) {
-            this.player.setVelocityX(speed);
+            if (!this.playerIsTouching.right) this.player.setVelocityX(speed);
             if (!this.player.body.velocity.y) {
                 this.player.anims.play('walk', true);
                 if (this.soundWalk === true) {
@@ -150,9 +154,6 @@ export default class Player {
         // jump
         if (cursors.up.isDown && isOnGround) {
             this.player.setVelocityY(-22);
-        }
-
-        if (!isOnGround) {
             this.player.anims.play('jump', true);
         }
 
