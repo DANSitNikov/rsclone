@@ -163,7 +163,7 @@ export default class Player {
 
         // end level
          if (this.player.getBottomCenter().x >= 1640) {
-           this.scene.scene.start(this.nextScene);
+           if (this.nextScene) this.scene.scene.start(this.nextScene);
           }
 
     }

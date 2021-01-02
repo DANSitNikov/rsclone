@@ -25,7 +25,7 @@ export default class Scene1 extends Phaser.Scene {
         this.groundLayer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(this.groundLayer);
         this.matter.world.setBounds(0, 0, 1680, 1040);
-        this.player = new Player(this, 'Scene0')
+        this.player = new Player(this, '')
         this.sound.add('wind2').play({ loop: true })
     }
 
