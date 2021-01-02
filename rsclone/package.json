@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "copy-webpack-plugin": "^7.0.0",
+    "matter-js": "^0.15.0",
     "phaser": "^3.50.1",
     "phaser3-rex-plugins": "^1.1.35",
     "ts-loader": "^8.0.12",

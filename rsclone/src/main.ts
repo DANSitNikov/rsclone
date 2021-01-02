@@ -5,6 +5,7 @@ import Menu from './menu';
 import Credits from './credits';
 import Settings from './settings';
 import Scene0 from './scene0';
+import Scene1 from './scene1';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Long Legs journey',
@@ -20,11 +21,11 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   },
 
   physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: 1500 },
-      debug: true,
-    },
+    default: "matter",
+    matter: {
+      gravity: { y: 3 },
+      debug: true
+    }
   },
   plugins: {
     scene: [
@@ -36,7 +37,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       // ...
     ],
   },
-  scene: [LoadScreen, Menu, Settings, Credits, Scene0],
+  scene: [LoadScreen, Menu, Settings, Credits, Scene0, Scene1],
 
   backgroundColor: '#000000',
 };
