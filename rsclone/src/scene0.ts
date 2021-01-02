@@ -10,6 +10,8 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene0 extends Phaser.Scene {
+  private cloudOne: Phaser.GameObjects.Image;
+  private cloudTwo: Phaser.GameObjects.Image;
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
   private player: Phaser.Physics.Matter.Sprite;
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -17,13 +19,9 @@ export default class Scene0 extends Phaser.Scene {
   private soundQueue: object;
   private playerIsTouching: { left: boolean; ground: boolean; right: boolean };
 
-
-
   constructor() {
     super(sceneConfig);
   }
-
-  public preload() {}
 
   public create() {
     //creation collide blocks
@@ -31,6 +29,9 @@ export default class Scene0 extends Phaser.Scene {
     const tileset = map.addTilesetImage('bg', 'bg');
     this.groundLayer = map.createLayer('BackGround', tileset);
     this.groundLayer.setCollisionByProperty({ collides: true });
+
+    this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6);
+    this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6);
 
     this.player = this.matter.add.sprite(30, 100, "playerIdle", 0);
     this.player.setScale(0.8);
@@ -174,9 +175,20 @@ export default class Scene0 extends Phaser.Scene {
     if (this.player.getBottomCenter().x >= 1640) {
       this.scene.start('Scene1');
     }
-
-
+    this.moveCloud(this.cloudOne, 0.7);
+    this.moveCloud(this.cloudTwo, 0.3);
   }
+
+  public moveCloud(cloud, speed) {
+    cloud.x += speed;
+    if (cloud.x > window.innerWidth + 400) {
+      this.resetCloudPosition(cloud);
+    }
+  }
+  public resetCloudPosition(cloud) {
+    cloud.x = -400;
+  }
+
   public makeSound(key) {
     this.sound.add(key).play({ loop: false });
     this.soundWalk = false;
