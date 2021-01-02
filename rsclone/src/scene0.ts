@@ -10,11 +10,11 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene0 extends Phaser.Scene {
+  private ladder: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
   private cloudOne: Phaser.GameObjects.Image;
   private cloudTwo: Phaser.GameObjects.Image;
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
   private player: Phaser.Physics.Matter.Sprite;
-  private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private soundWalk: boolean;
   private soundQueue: object;
   private playerIsTouching: { left: boolean; ground: boolean; right: boolean };
@@ -32,6 +32,8 @@ export default class Scene0 extends Phaser.Scene {
 
     this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6);
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6);
+
+    this.ladder = this.add.sprite(1515, 550 , 'ladder') as any;
 
     this.player = this.matter.add.sprite(30, 100, "playerIdle", 0);
     this.player.setScale(0.8);
@@ -133,6 +135,25 @@ export default class Scene0 extends Phaser.Scene {
     const isOnGround = this.playerIsTouching.ground;
     const speed = 8;
 
+    const PlayerVerticalCenter = new Phaser.Geom.Line(
+        this.player.getBottomCenter().x,
+        this.player.getCenter().y,
+        this.player.getTopCenter().x,
+        this.player.getTopCenter().y
+    );
+
+    // ladder
+    if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.ladder.getBounds())) {
+      if (cursors.up.isDown) {
+        this.player.setVelocityY(-speed / 1.5);
+        this.player.anims.play('idle', true);  // there will be ladder animation
+        if (this.soundWalk) {
+          this.makeSound(`ladder${this.soundQueue["ladder"]}`);
+          this.soundQueue["ladder"] = (this.soundQueue["ladder"] + 1) % 4;
+        }
+      }
+    }
+    // walk
     if (cursors.left.isDown) {
       this.player.setVelocityX(-speed);
       if (isOnGround) {
