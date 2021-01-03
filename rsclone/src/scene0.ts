@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { checkPropertyChange } from 'json-schema';
+import {cursorTo} from "readline";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -16,7 +17,9 @@ export default class Scene0 extends Phaser.Scene {
   private soundWalk: boolean;
   private soundQueue: object;
   private ladder: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
-
+  private switch: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+  private switchStatus: boolean;
+  private switchClicked: boolean;
 
   constructor() {
     super(sceneConfig);
@@ -46,6 +49,9 @@ export default class Scene0 extends Phaser.Scene {
     this.cloudTwo = this.add.image(centerX / 5, centerY / 8, 'cloud2').setAlpha(0.6);
 
     this.ladder = this.add.sprite(centerX + 680, centerY+20 , 'ladder') as any;
+
+    this.switch = this.add.sprite(centerX + 610, centerY - 220, 'switchRed').setScale(0.3) as any;
+    this.switch.angle += 10;
 
     this.player = this.physics.add.sprite(400, 300, 'playerIdle').setScale(0.8);
     this.player.setCollideWorldBounds(true);
@@ -94,6 +100,8 @@ export default class Scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.switchClicked = false;
+    this.switchStatus = false;
     this.soundWalk = true;
     this.soundQueue = {
       ladder: 0,
@@ -124,6 +132,28 @@ export default class Scene0 extends Phaser.Scene {
         }
       }
     }
+
+    //switch
+      if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.switch.getBounds())) {
+        if (cursors.space.isDown && !this.switchClicked) {
+          if (!this.switchStatus) {
+            this.switch.setTexture('switchGreen');
+            setTimeout(() => {
+              this.switchStatus = true;
+            }, 50)
+          } else {
+            this.switch.setTexture('switchRed');
+            setTimeout(() => {
+              this.switchStatus = false;
+            }, 50)
+          }
+          this.switchClicked = true;
+        }
+
+        if (cursors.space.isUp) {
+          this.switchClicked = false;
+        }
+      }
 
     // walk
     if (cursors.left.isDown) {
@@ -174,5 +204,9 @@ export default class Scene0 extends Phaser.Scene {
     setTimeout(() => {
       this.soundWalk = true;
     }, 350);
+  }
+
+  public changeSwitch() {
+
   }
 }

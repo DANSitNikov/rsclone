@@ -59,6 +59,8 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('bg', 'assets/world/bg.png');
     this.load.image('ground', 'assets/world/ground.png');
     this.load.image('ladder', 'assets/objects/ladder.png');
+    this.load.image('switchRed', 'assets/objects/switchRed.png');
+    this.load.image('switchGreen', 'assets/objects/switchGreen.png');
     this.load.tilemapTiledJSON('map', 'assets/world/bg.json', null);
     this.load.atlas(
       'playerWalk',
