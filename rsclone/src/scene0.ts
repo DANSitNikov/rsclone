@@ -35,7 +35,7 @@ export default class Scene0 extends Phaser.Scene {
     this.matter.world.setBounds(0, 0, 1680, 1040);
     this.sound.add('wind').play({ loop: true });
 
-    this.player = new Player(this, 'Scene1');
+    this.player = new Player(this, 'Scene1', 100, 300);
 
   }
 

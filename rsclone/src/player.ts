@@ -11,10 +11,11 @@ export default class Player {
     scene: any;
     private nextScene: any;
 
-    constructor(scene, nextScene) {
+    constructor(scene, nextScene, x, y) {
         this.scene = scene
         this.nextScene = nextScene
-        this.player = scene.matter.add.sprite(30, 100, "playerIdle", 0);
+        this.player = scene.matter.add.sprite(x, y, "playerIdle", 0);
+
         this.player.setScale(0.8);
 
         const {width: w, height: h} = this.player;
@@ -52,6 +53,9 @@ export default class Player {
 
         this.player.setFixedRotation()
             .setExistingBody(compoundBody);
+
+        this.player.x = x;
+        this.player.y = y;
 
         scene.anims.create({
             key: 'walk',
@@ -126,8 +130,16 @@ export default class Player {
         else this.player.setIgnoreGravity(false)
 
         // walk
-        if (cursors.left.isDown) {
-            if (!this.playerIsTouching.left) this.player.setVelocityX(-speed);
+        if (cursors.left.isDown || cursors.right.isDown) {
+                // walking right
+            if (cursors.right.isDown) {
+                if (!this.playerIsTouching.right) this.player.setVelocityX(speed);
+                this.player.flipX = false;
+            } else {
+                // walking left
+                if (!this.playerIsTouching.left) this.player.setVelocityX(-speed);
+                this.player.flipX = true;
+            }
             if (isOnGround) {
                 this.player.anims.play('walk', true);
                 if (this.soundWalk === true) {
@@ -135,18 +147,7 @@ export default class Player {
                     this.soundQueue["walk"] = (this.soundQueue["walk"] + 1) % 4;
                 }
             }
-            this.player.flipX = true;
-        } else if (cursors.right.isDown) {
-            if (!this.playerIsTouching.right) this.player.setVelocityX(speed);
-            if (!this.player.body.velocity.y) {
-                this.player.anims.play('walk', true);
-                if (this.soundWalk === true) {
-                    this.makeSound(`walk${this.soundQueue["walk"]}`);
-                    this.soundQueue["walk"] = (this.soundQueue["walk"] + 1) % 4;
-                }
-            }
-            this.player.flipX = false;
-        } else {
+        }  else {
             if (isOnGround) this.player.anims.play('idle', true);
             this.player.setVelocityX(0);
         }
