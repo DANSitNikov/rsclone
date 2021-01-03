@@ -180,9 +180,11 @@ export default class Player {
                     if (!this.scene.switchStatus) {
                         this.scene.switch.setTexture('switchGreen');
                         this.scene.switchStatus = true;
+                        this.scene.sound.add('switch').play({loop: false});
                     } else {
                         this.scene.switch.setTexture('switchRed');
                         this.scene.switchStatus = false;
+                        this.scene.sound.add('switch').play({loop: false});
                     }
                     this.scene.switchClicked = true;
                 }
