@@ -57,11 +57,13 @@ export default class LoadScreen extends Phaser.Scene {
     });
 
     this.load.image('bg', 'assets/world/bg.png');
+    this.load.image('bg1', 'assets/world/bg1.png');
     this.load.image('ground', 'assets/world/ground.png');
     this.load.image('ladder', 'assets/objects/ladder.png');
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');
     this.load.tilemapTiledJSON('map', 'assets/world/bg.json', null);
+    this.load.tilemapTiledJSON('map2', 'assets/world/bg1.json', null);
     this.load.atlas(
       'playerWalk',
       'assets/character/walk/playerWalk.png',
@@ -81,8 +83,8 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
 
-    //this.load.audio('walk', ['assets/sounds/walk.mp3', 'assets/sounds/walk.ogg']);
     this.load.audio('wind', 'assets/sounds/wind.mp3');
+    this.load.audio('wind2', 'assets/sounds/wind2.mp3');
 
     this.load.audio('ladder1', 'assets/sounds/ladder/1.mp3');
     this.load.audio('ladder2', 'assets/sounds/ladder/2.mp3');
