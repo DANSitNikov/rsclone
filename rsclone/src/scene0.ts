@@ -40,8 +40,8 @@ export default class Scene0 extends Phaser.Scene {
 
         this.player = new Player(this, 'Scene1', 200, 812);
 
-        this.switch = this.add.sprite(600, 230, 'switchRed').setScale(0.3) as any;
-        this.switch.angle = -10;
+        this.switch = this.add.sprite(580, 230, 'switchRed').setScale(-0.3, 0.3) as any;
+        this.switch.angle = 5;
     }
 
     public update() {
