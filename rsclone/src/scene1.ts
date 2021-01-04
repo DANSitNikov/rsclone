@@ -19,14 +19,14 @@ export default class Scene1 extends Phaser.Scene {
     }
 
     public create() {
-        const map = this.make.tilemap({ key: 'map2' });
+        const map = this.make.tilemap({ key: 'map1' });
         const tileset = map.addTilesetImage('bg1', 'bg1');
         this.groundLayer = map.createLayer('Background', tileset);
         this.groundLayer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(this.groundLayer);
         this.matter.world.setBounds(0, 0, 1680, 1040);
-        this.player = new Player(this, '')
-        this.sound.add('wind2').play({ loop: true });
+        this.player = new Player(this, 'Scene2', 0, 300);
+        this.sound.add('wind2').play({ loop: true })
     }
 
     public update() {
