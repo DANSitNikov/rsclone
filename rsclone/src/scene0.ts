@@ -15,7 +15,8 @@ export default class Scene0 extends Phaser.Scene {
   private cloudTwo: Phaser.GameObjects.Image;
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
   private player: Player;
-  private ladder: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+  private ladder: any;
+
 
   constructor() {
     super(sceneConfig);
@@ -25,17 +26,19 @@ export default class Scene0 extends Phaser.Scene {
     //creation collide blocks
     const map = this.make.tilemap({ key: 'map' });
     const tileset = map.addTilesetImage('bg', 'bg');
-    this.groundLayer = map.createLayer('BackGround', tileset);
+    this.groundLayer = map.createLayer('Background', tileset);
     this.groundLayer.setCollisionByProperty({ collides: true });
 
     this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6);
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6);
-    this.ladder = this.add.sprite(1515, 520 , 'ladder') as any;
+
+    this.ladder = this.add.zone(1540, 630 , 77, 513) as any;
+
     this.matter.world.convertTilemapLayer(this.groundLayer);
-    this.matter.world.setBounds(0, 0, 1680, 1040);
+    this.matter.world.setBounds(0, -100, 1680, 1040);
     this.sound.add('wind').play({ loop: true });
 
-    this.player = new Player(this, 'Scene1');
+    this.player = new Player(this, 'Scene1', 200, 812);
 
   }
 
