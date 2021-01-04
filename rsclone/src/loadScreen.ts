@@ -85,6 +85,10 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/character/jump/playerJump.json',
     );
 
+    this.load.image('switchRed', 'assets/objects/switchRed.png');
+    this.load.image('switchGreen', 'assets/objects/switchGreen.png');
+    this.load.audio('switch', ['assets/sounds/switch/switch.mp3', 'assets/sounds/switch/switch.ogg']);
+
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
 

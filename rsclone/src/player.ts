@@ -10,6 +10,8 @@ export default class Player {
     public playerIsTouching: { left: boolean; ground: boolean; right: boolean };
     scene: any;
     private nextScene: any;
+    private switchStatus: boolean;
+    private switchClicked: boolean;
 
     constructor(scene, nextScene, x, y) {
         this.scene = scene
@@ -99,6 +101,9 @@ export default class Player {
             walk: 0
         }
         this.scene.events.on("update", this.update, this);
+
+        this.switchClicked = false;
+        this.switchStatus = false;
     }
 
     update() {
@@ -131,7 +136,7 @@ export default class Player {
 
         // walk
         if (cursors.left.isDown || cursors.right.isDown) {
-                // walking right
+            // walking right
             if (cursors.right.isDown) {
                 if (!this.playerIsTouching.right) this.player.setVelocityX(speed);
                 this.player.flipX = false;
@@ -164,9 +169,31 @@ export default class Player {
         else if (velocity.x < -speed) this.player.setVelocityX(-speed);
 
         // end level
-         if (this.player.getBottomCenter().x >= 1640) {
-           if (this.nextScene) this.scene.scene.start(this.nextScene);
-          }
+        if (this.player.getBottomCenter().x >= 1640) {
+            if (this.nextScene) this.scene.scene.start(this.nextScene);
+        }
+
+        //switch
+        if (this.scene.switch) {
+            if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.scene.switch.getBounds())) {
+                if (cursors.space.isDown && !this.scene.switchClicked) {
+                    if (!this.scene.switchStatus) {
+                        this.scene.switch.setTexture('switchGreen');
+                        this.scene.switchStatus = true;
+                        this.scene.sound.add('switch').play({loop: false});
+                    } else {
+                        this.scene.switch.setTexture('switchRed');
+                        this.scene.switchStatus = false;
+                        this.scene.sound.add('switch').play({loop: false});
+                    }
+                    this.scene.switchClicked = true;
+                }
+
+                if (cursors.space.isUp) {
+                    this.scene.switchClicked = false;
+                }
+            }
+        }
 
     }
 
