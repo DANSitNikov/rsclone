@@ -154,7 +154,7 @@ export default class Player {
 
         // jump
         if (cursors.up.isDown && isOnGround) {
-            this.player.setVelocityY(-22);
+            this.player.setVelocityY(-18);
             this.player.anims.play('jump', true);
         }
 
