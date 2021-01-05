@@ -12,7 +12,12 @@ export default class LoadScreen extends Phaser.Scene {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
     progressBox.fillStyle(0x222222, 0.8);
-    progressBox.fillRect(840 - 320 / 2, 515, 320, 50);
+    progressBox.fillRect(
+      this.game.renderer.width / 2 - 160,
+      this.game.renderer.height / 2 - 5,
+      320,
+      50,
+    );
     const percentText = this.make.text({
       x: width / 2,
       y: height / 2 - 5,
@@ -41,10 +46,15 @@ export default class LoadScreen extends Phaser.Scene {
     assetText.setOrigin(0.5, -0.5);
     loadingText.setOrigin(0.5, 0);
     percentText.setOrigin(0.5, -0.5);
-    this.load.on('progress', function(value) {
+    this.load.on('progress', (value) => {
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
-      progressBar.fillRect(840 - 300 / 2, 525, 300 * value, 30);
+      progressBar.fillRect(
+        this.game.renderer.width / 2 - 150,
+        this.game.renderer.height / 2 + 5,
+        300 * value,
+        30,
+      );
       percentText.setText(`${parseInt((value * 100).toString())}%`);
     });
     this.load.on('fileprogress', function(file) {
@@ -87,7 +97,10 @@ export default class LoadScreen extends Phaser.Scene {
 
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');
-    this.load.audio('switch', ['assets/sounds/switch/switch.mp3', 'assets/sounds/switch/switch.ogg']);
+    this.load.audio('switch', [
+      'assets/sounds/switch/switch.mp3',
+      'assets/sounds/switch/switch.ogg',
+    ]);
 
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
