@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 
 export default class Player {
@@ -222,7 +223,7 @@ export default class Player {
     }, 350);
   }
 
-  public resetTouching() {
+  public resetTouching(): void {
     this.playerIsTouching.left = false;
     this.playerIsTouching.right = false;
     this.playerIsTouching.ground = false;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 
 export default class Settings extends Phaser.Scene {

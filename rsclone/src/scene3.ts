@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import Player from './player';
 
