@@ -13,9 +13,9 @@ export default class Credits extends Phaser.Scene {
 
   openLink: (link: string) => void;
 
-  credits: string[][];
-
   creditsList: Phaser.GameObjects.Text[];
+
+  credits: (string | (string | boolean)[])[];
 
   constructor() {
     super({ key: 'Credits', active: false });
@@ -39,16 +39,27 @@ export default class Credits extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.credits = [
+      'Developers',
       ['Alisa Pavlova', 'https://github.com/Alisa-Pavlova'],
       ['Saidazizkhon Akbarov', 'https://github.com/dazik'],
       ['Daniil Sitnikov', 'https://github.com/DANSitNikov'],
       ['Gregory Moskalev', 'https://github.com/GregoryMoskalev'],
+      'artist',
+      ['Sofya Ostrovskaya', false],
     ];
 
-    this.creditsList = this.credits.map((name, index) => this.add
-      .text(this.game.renderer.width / 2, 400 + index * 100, name[0], { font: '32px monospace' })
-      .setOrigin(0.5)
-      .setInteractive());
+    this.creditsList = this.credits.map((name, index) => {
+      let style = { font: '32px monospace' };
+      let n = String(name[0]);
+      if (name.length !== 2) {
+        style = { font: '24px monospace' };
+        n = String(name);
+      }
+      return this.add
+        .text(this.game.renderer.width / 2, 250 + index * 70, n, style)
+        .setOrigin(0.5)
+        .setInteractive();
+    });
 
     this.backButton = this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height - 100, 'back to menu', {
@@ -58,7 +69,10 @@ export default class Credits extends Phaser.Scene {
       .setInteractive();
 
     this.creditsList.forEach((name, index) => {
-      name.on('pointerup', () => this.openLink(this.credits[index][1]));
+      if (!this.credits[index][1] || this.credits[index].length !== 2) {
+        return;
+      }
+      name.on('pointerup', () => this.openLink(String(this.credits[index][1])));
     });
     this.backButton.on('pointerup', this.backToMenu, this);
   }
