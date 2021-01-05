@@ -13,6 +13,10 @@ export default class Credits extends Phaser.Scene {
 
   openLink: (link: string) => void;
 
+  credits: string[][];
+
+  creditsList: Phaser.GameObjects.Text[];
+
   constructor() {
     super({ key: 'Credits', active: false });
 
@@ -34,25 +38,17 @@ export default class Credits extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    this.alisa = this.add
-      .text(this.game.renderer.width / 2, 400, 'Alisa Pavlova')
-      .setOrigin(0.5)
-      .setInteractive();
+    this.credits = [
+      ['Alisa Pavlova', 'https://github.com/Alisa-Pavlova'],
+      ['Saidazizkhon Akbarov', 'https://github.com/dazik'],
+      ['Daniil Sitnikov', 'https://github.com/DANSitNikov'],
+      ['Gregory Moskalev', 'https://github.com/GregoryMoskalev'],
+    ];
 
-    this.saidazizkhon = this.add
-      .text(this.game.renderer.width / 2, 500, 'Saidazizkhon Akbarov', { font: '32px monospace' })
+    this.creditsList = this.credits.map((name, index) => this.add
+      .text(this.game.renderer.width / 2, 400 + index * 100, name[0], { font: '32px monospace' })
       .setOrigin(0.5)
-      .setInteractive();
-
-    this.daniil = this.add
-      .text(this.game.renderer.width / 2, 600, 'Daniil Sitnikov', { font: '32px monospace' })
-      .setOrigin(0.5)
-      .setInteractive();
-
-    this.gregory = this.add
-      .text(this.game.renderer.width / 2, 700, 'Gregory Moskalev', { font: '32px monospace' })
-      .setOrigin(0.5)
-      .setInteractive();
+      .setInteractive());
 
     this.backButton = this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height - 100, 'back to menu', {
@@ -61,10 +57,9 @@ export default class Credits extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive();
 
-    this.alisa.on('pointerup', () => this.openLink('https://github.com/Alisa-Pavlova'));
-    this.saidazizkhon.on('pointerup', () => this.openLink('https://github.com/dazik'));
-    this.daniil.on('pointerup', () => this.openLink('https://github.com/DANSitNikov'));
-    this.gregory.on('pointerup', () => this.openLink('https://github.com/GregoryMoskalev'));
+    this.creditsList.forEach((name, index) => {
+      name.on('pointerup', () => this.openLink(this.credits[index][1]));
+    });
     this.backButton.on('pointerup', this.backToMenu, this);
   }
 
