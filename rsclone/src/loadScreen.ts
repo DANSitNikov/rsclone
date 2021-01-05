@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 
 export default class LoadScreen extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
+
   constructor() {
     super({ key: 'LoadScreen', active: false });
   }
@@ -9,8 +10,8 @@ export default class LoadScreen extends Phaser.Scene {
   preload(): void {
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
-    const width = this.cameras.main.width;
-    const height = this.cameras.main.height;
+    const { width } = this.cameras.main;
+    const { height } = this.cameras.main;
     progressBox.fillStyle(0x222222, 0.8);
     progressBox.fillRect(
       this.game.renderer.width / 2 - 160,
@@ -55,12 +56,12 @@ export default class LoadScreen extends Phaser.Scene {
         300 * value,
         30,
       );
-      percentText.setText(`${parseInt((value * 100).toString())}%`);
+      percentText.setText(`${parseInt((value * 100).toString(), 10)}%`);
     });
-    this.load.on('fileprogress', function(file) {
-      assetText.setText('Loading asset: ' + file.key);
+    this.load.on('fileprogress', (file) => {
+      assetText.setText(`Loading asset: ${file.key}`);
     });
-    this.load.on('complete', function() {
+    this.load.on('complete', () => {
       loadingText.destroy();
       percentText.destroy();
       assetText.destroy();
@@ -125,7 +126,6 @@ export default class LoadScreen extends Phaser.Scene {
   }
 
   private loadVolume(): void {
-    console.log(this, 'volume' in localStorage);
     const volume = 'volume' in localStorage ? Number(localStorage.getItem('volume')) : 0.5;
 
     this.sound.volume = volume;

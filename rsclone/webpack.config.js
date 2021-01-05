@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
@@ -47,8 +48,12 @@ module.exports = {
           from: './src/assets',
           to: './assets',
         },
+        {
+          from: './src/main.css',
+        },
       ],
     }),
+    new ESLintPlugin(),
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'typeof CANVAS_RENDERER': JSON.stringify(true),

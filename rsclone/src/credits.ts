@@ -2,12 +2,29 @@ import * as Phaser from 'phaser';
 
 export default class Credits extends Phaser.Scene {
   backButton: Phaser.GameObjects.Text;
+
   alisa: Phaser.GameObjects.Text;
+
   saidazizkhon: Phaser.GameObjects.Text;
+
   daniil: Phaser.GameObjects.Text;
+
   gregory: Phaser.GameObjects.Text;
+
+  openLink: (link: string) => void;
+
   constructor() {
     super({ key: 'Credits', active: false });
+
+    this.openLink = (link: string): void => {
+      const s = window.open(link, '_blank');
+
+      if (s && s.focus) {
+        s.focus();
+      } else if (!s) {
+        window.location.href = link;
+      }
+    };
   }
 
   create(): void {
@@ -18,7 +35,7 @@ export default class Credits extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.alisa = this.add
-      .text(this.game.renderer.width / 2, 400, 'Alisa Pavlova', { font: '32px monospace' })
+      .text(this.game.renderer.width / 2, 400, 'Alisa Pavlova')
       .setOrigin(0.5)
       .setInteractive();
 
@@ -53,15 +70,5 @@ export default class Credits extends Phaser.Scene {
 
   backToMenu(): void {
     this.scene.start('Menu');
-  }
-
-  openLink(link): void {
-    const s = window.open(link, '_blank');
-
-    if (s && s.focus) {
-      s.focus();
-    } else if (!s) {
-      window.location.href = link;
-    }
   }
 }
