@@ -4,12 +4,18 @@ export default class Menu extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
   settingsButton: Phaser.GameObjects.Text;
   creditsButton: Phaser.GameObjects.Text;
+  menu: string[] | Phaser.GameObjects.Text[];
+
+  btn = {
+    font: '32px monospace',
+  };
 
   constructor() {
     super({ key: 'Menu', active: false });
   }
 
   create(): void {
+    this.menu = ['play', 'Settings', 'Credits'];
     this.add
       .text(
         this.game.renderer.width / 2,
@@ -21,41 +27,34 @@ export default class Menu extends Phaser.Scene {
       )
       .setOrigin(0.5);
 
-    this.playButton = this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 80, 'play', {
-        font: '32px monospace',
-      })
-      .setOrigin(0.5)
-      .setInteractive();
+    this.menu = this.menu.map((button, index) =>
+      this.add
+        .text(
+          this.game.renderer.width / 2,
+          this.game.renderer.height / 2 - 80 + index * 80,
+          button,
+          this.btn,
+        )
+        .setOrigin(0.5)
+        .setInteractive(),
+    );
 
-    this.settingsButton = this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'Settings', {
-        font: '32px monospace',
-      })
-      .setOrigin(0.5)
-      .setInteractive();
-
-    this.creditsButton = this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 + 80, 'Credits', {
-        font: '32px monospace',
-      })
-      .setOrigin(0.5)
-      .setInteractive();
-
-    this.playButton.on('pointerup', this.playGame, this);
-    this.settingsButton.on('pointerup', this.settings, this);
-    this.creditsButton.on('pointerup', this.credits, this);
+    this.menu.forEach((button, index) => {
+      button.on('pointerup', this.onClick[index], this);
+    });
   }
 
-  private playGame(): void {
-    this.scene.start('Scene0');
-  }
+  onClick = [
+    () => {
+      this.scene.start('Scene0');
+    },
 
-  private settings(): void {
-    this.scene.start('Settings');
-  }
+    () => {
+      this.scene.start('Settings');
+    },
 
-  private credits(): void {
-    this.scene.start('Credits');
-  }
+    () => {
+      this.scene.start('Credits');
+    },
+  ];
 }
