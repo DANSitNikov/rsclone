@@ -9,16 +9,20 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 
 export default class Scene2 extends Phaser.Scene {
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
+
   private player: Player;
+
   private boat: any;
+
   private boatSprite: any;
+
   private boatActive: boolean;
 
   constructor() {
     super(sceneConfig);
   }
 
-  public create() {
+  public create():void {
     const map = this.make.tilemap({ key: 'map2' });
     const tileset = map.addTilesetImage('bg2', 'bg2');
     this.groundLayer = map.createLayer('Background', tileset);
@@ -32,7 +36,7 @@ export default class Scene2 extends Phaser.Scene {
     this.boatActive = false;
   }
 
-  public update() {
+  public update():void {
     const boatSpeed = 2;
     const boatVelocity = this.boat.body.velocity;
 

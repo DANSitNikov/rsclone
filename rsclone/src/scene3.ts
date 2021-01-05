@@ -9,15 +9,18 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 
 export default class Scene3 extends Phaser.Scene {
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
+
   private player: Player;
+
   private boat: any;
+
   private boatSprite: any;
 
   constructor() {
     super(sceneConfig);
   }
 
-  public create() {
+  public create():void {
     const map = this.make.tilemap({ key: 'map3' });
     const tileset = map.addTilesetImage('bg3', 'bg3');
     this.groundLayer = map.createLayer('Background', tileset);
@@ -30,7 +33,7 @@ export default class Scene3 extends Phaser.Scene {
     this.player = new Player(this, '', 150, 890);
   }
 
-  public update() {
+  public update():void {
     const boatSpeed = 2;
     const boatVelocity = this.boat.body.velocity;
 

@@ -2,8 +2,11 @@ import * as Phaser from 'phaser';
 
 export default class Settings extends Phaser.Scene {
   soundButton: Phaser.GameObjects.Text;
+
   backButton: Phaser.GameObjects.Text;
+
   rexUI: any;
+
   constructor() {
     super({ key: 'Settings', active: false });
   }
@@ -54,7 +57,7 @@ export default class Settings extends Phaser.Scene {
     this.backButton.on('pointerup', this.backToMenu, this);
   }
 
-  soundToggle() {
+  soundToggle():void {
     this.sound.mute = !this.sound.mute;
   }
 

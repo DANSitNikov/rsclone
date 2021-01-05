@@ -1,19 +1,24 @@
 import * as Phaser from 'phaser';
 
-const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
-  key: 'Player',
-};
 export default class Player {
   public player: Phaser.Physics.Matter.Sprite;
+
   private soundWalk: boolean;
-  private soundQueue: object;
+
+  private soundQueue: Record<string, unknown>;
+
   public playerIsTouching: { left: boolean; ground: boolean; right: boolean };
-  scene: any;
+
+  private scene: any;
+
   private nextScene: any;
+
   private switchStatus: boolean;
+
   private switchClicked: boolean;
 
-  constructor(scene, nextScene, x, y) {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  constructor(scene, nextScene, x:number, y:number) {
     this.scene = scene;
     this.nextScene = nextScene;
     this.player = scene.matter.add.sprite(x, y, 'playerIdle', 0);
@@ -21,8 +26,9 @@ export default class Player {
     this.player.setScale(0.8);
 
     const { width: w, height: h } = this.player;
-    // @ts-ignore
-    const Bodies = Phaser.Physics.Matter.Matter.Bodies;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Property 'Matter' does not exist on type 'typeof Matter'.
+    const { Bodies } = Phaser.Physics.Matter.Matter;
     const rect = Bodies.rectangle(25, 76, 50, 140);
     const bottomSensor = Bodies.rectangle(25, h * 0.5 + 55, w * 0.75, 15, {
       isSensor: true,
@@ -40,10 +46,10 @@ export default class Player {
     scene.matter.world.on('beforeupdate', this.resetTouching, this);
     scene.matter.world.on('collisionactive', (event) => {
       event.pairs.forEach((pair) => {
-        let bodyA = pair.bodyA;
-        let bodyB = pair.bodyB;
+        const { bodyA } = pair;
+        const { bodyB } = pair;
         if (pair.isSensor) {
-          let playerBody = bodyA.isSensor ? bodyA : bodyB;
+          const playerBody = bodyA.isSensor ? bodyA : bodyB;
           if (playerBody.label === 'left') {
             this.playerIsTouching.left = true;
           } else if (playerBody.label === 'right') {
@@ -55,7 +61,8 @@ export default class Player {
       });
     });
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Property 'Matter' does not exist on type 'typeof Matter'.
     const compoundBody = Phaser.Physics.Matter.Matter.Body.create({
       parts: [rect, bottomSensor, rightSensor, leftSensor],
       inertia: Infinity,
@@ -113,7 +120,7 @@ export default class Player {
     this.switchStatus = false;
   }
 
-  update() {
+  update():void {
     const cursors = this.scene.input.keyboard.createCursorKeys();
     const isOnGround = this.playerIsTouching.ground;
     const speed = 8;
@@ -132,8 +139,8 @@ export default class Player {
           this.player.setVelocityY(-speed / 1.5);
           this.player.anims.play('idle', true); // there will be ladder animation
           if (this.soundWalk) {
-            this.makeSound(`ladder${this.soundQueue['ladder']}`);
-            this.soundQueue['ladder'] = (this.soundQueue['ladder'] + 1) % 4;
+            this.makeSound(`ladder${this.soundQueue.ladder}`);
+            this.soundQueue.ladder = (Number(this.soundQueue.ladder) + 1) % 4;
           }
         }
       }
@@ -157,8 +164,8 @@ export default class Player {
       if (isOnGround) {
         this.player.anims.play('walk', true);
         if (this.soundWalk === true) {
-          this.makeSound(`walk${this.soundQueue['walk']}`);
-          this.soundQueue['walk'] = (this.soundQueue['walk'] + 1) % 4;
+          this.makeSound(`walk${this.soundQueue.walk}`);
+          this.soundQueue.walk = (Number(this.soundQueue.walk) + 1) % 4;
         }
       }
     } else {
@@ -173,7 +180,7 @@ export default class Player {
     }
 
     // speed regulation
-    const velocity = this.player.body.velocity;
+    const { velocity } = this.player.body;
     if (velocity.x > speed) this.player.setVelocityX(speed);
     else if (velocity.x < -speed) this.player.setVelocityX(-speed);
 
@@ -182,7 +189,7 @@ export default class Player {
       if (this.nextScene) this.scene.scene.start(this.nextScene);
     }
 
-    //switch
+    // switch
     if (this.scene.switch) {
       if (
         Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.scene.switch.getBounds())
@@ -207,7 +214,7 @@ export default class Player {
     }
   }
 
-  public makeSound(key) {
+  public makeSound(key: string):void {
     this.scene.sound.add(key).play({ loop: false });
     this.soundWalk = false;
     setTimeout(() => {
