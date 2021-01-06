@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 
 export default class LoadScreen extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
+
   constructor() {
     super({ key: 'LoadScreen', active: false });
   }
@@ -9,13 +10,18 @@ export default class LoadScreen extends Phaser.Scene {
   preload(): void {
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
-    const width = this.cameras.main.width;
-    const height = this.cameras.main.height;
+    const { width } = this.cameras.main;
+    const { height } = this.cameras.main;
     progressBox.fillStyle(0x222222, 0.8);
-    progressBox.fillRect(840 - 320 / 2, 515, 320, 50);
+    progressBox.fillRect(
+      this.game.renderer.width / 2 - 160,
+      this.game.renderer.height / 2 - 5,
+      320,
+      50,
+    );
     const percentText = this.make.text({
       x: width / 2,
-      y: height / 2 - 5,
+      y: height / 2,
       text: '0%',
       style: {
         font: '18px monospace',
@@ -41,16 +47,21 @@ export default class LoadScreen extends Phaser.Scene {
     assetText.setOrigin(0.5, -0.5);
     loadingText.setOrigin(0.5, 0);
     percentText.setOrigin(0.5, -0.5);
-    this.load.on('progress', function(value) {
+    this.load.on('progress', (value) => {
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
-      progressBar.fillRect(840 - 300 / 2, 525, 300 * value, 30);
-      percentText.setText(`${parseInt((value * 100).toString())}%`);
+      progressBar.fillRect(
+        this.game.renderer.width / 2 - 150,
+        this.game.renderer.height / 2 + 5,
+        300 * value,
+        30,
+      );
+      percentText.setText(`${parseInt((value * 100).toString(), 10)}%`);
     });
-    this.load.on('fileprogress', function(file) {
-      assetText.setText('Loading asset: ' + file.key);
+    this.load.on('fileprogress', (file) => {
+      assetText.setText(`Loading asset: ${file.key}`);
     });
-    this.load.on('complete', function() {
+    this.load.on('complete', () => {
       loadingText.destroy();
       percentText.destroy();
       assetText.destroy();
@@ -87,7 +98,10 @@ export default class LoadScreen extends Phaser.Scene {
 
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');
-    this.load.audio('switch', ['assets/sounds/switch/switch.mp3', 'assets/sounds/switch/switch.ogg']);
+    this.load.audio('switch', [
+      'assets/sounds/switch/switch.mp3',
+      'assets/sounds/switch/switch.ogg',
+    ]);
 
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
@@ -112,7 +126,6 @@ export default class LoadScreen extends Phaser.Scene {
   }
 
   private loadVolume(): void {
-    console.log(this, 'volume' in localStorage);
     const volume = 'volume' in localStorage ? Number(localStorage.getItem('volume')) : 0.5;
 
     this.sound.volume = volume;

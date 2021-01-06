@@ -16,18 +16,18 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    //width: window.innerWidth,
+    // width: window.innerWidth,
     width: 1680,
-    //height: window.innerHeight,
+    // height: window.innerHeight,
     height: 1040,
   },
 
   physics: {
-    default: "matter",
+    default: 'matter',
     matter: {
       gravity: { y: 3 },
-      //debug: true
-    }
+      // debug: true
+    },
   },
   plugins: {
     scene: [
@@ -36,7 +36,6 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
         plugin: UIPlugin,
         mapping: 'rexUI',
       },
-      // ...
     ],
   },
   scene: [LoadScreen, Menu, Settings, Credits, Scene0, Scene1, Scene2, Scene3],
