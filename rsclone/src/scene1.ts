@@ -24,6 +24,7 @@ export default class Scene1 extends Phaser.Scene {
     this.matter.world.convertTilemapLayer(this.groundLayer);
     this.matter.world.setBounds(0, 0, 1680, 1040);
     this.player = new Player(this, 'Scene2', 0, 300);
+    this.sound.removeByKey('wind');
     this.sound.add('wind2').play({ loop: true });
   }
 }
