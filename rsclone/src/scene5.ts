@@ -6,10 +6,10 @@ import Player from './player';
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
-  key: 'Scene0',
+  key: 'Scene5',
 };
 
-export default class Scene0 extends Phaser.Scene {
+export default class Scene5 extends Phaser.Scene {
   private cloudOne: Phaser.GameObjects.Image;
 
   private cloudTwo: Phaser.GameObjects.Image;
@@ -34,8 +34,8 @@ export default class Scene0 extends Phaser.Scene {
 
   public create():void {
     // creation collide blocks
-    const map = this.make.tilemap({ key: 'map' });
-    const tileset = map.addTilesetImage('bg', 'bg');
+    const map = this.make.tilemap({ key: 'map5' });
+    const tileset = map.addTilesetImage('bg5', 'bg5');
     this.groundLayer = map.createLayer('Background', tileset);
     this.groundLayer.setCollisionByProperty({ collides: true });
 
@@ -46,9 +46,8 @@ export default class Scene0 extends Phaser.Scene {
 
     this.matter.world.convertTilemapLayer(this.groundLayer);
     this.matter.world.setBounds(0, -100, 1680, 1040);
-    this.sound.add('wind').play({ loop: true });
 
-    this.player = new Player(this, 'Scene1', 200, 812);
+    this.player = new Player(this, '', 200, 812);
 
     this.switch = this.add.sprite(580, 230, 'switchRed').setScale(-0.3, 0.3) as any;
     this.switch.angle = 5;

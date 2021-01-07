@@ -46,7 +46,7 @@ export default class Menu extends Phaser.Scene {
 
   onClick = [
     (): void => {
-      this.scene.start('Scene0');
+      this.scene.start('Scene1');
     },
 
     (): void => {

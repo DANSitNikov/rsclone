@@ -31,7 +31,7 @@ export default class Scene3 extends Phaser.Scene {
     this.boat = this.matter.add.sprite(140, 990, 'boatCollides') as any;
     this.boat.setIgnoreGravity(true).setFixedRotation();
     this.boatSprite = this.add.sprite(140, 950, 'boat') as any;
-    this.player = new Player(this, '', 150, 890);
+    this.player = new Player(this, 'Scene4', 150, 890);
   }
 
   public update():void {

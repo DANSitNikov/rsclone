@@ -4,10 +4,11 @@ import LoadScreen from './loadScreen';
 import Menu from './menu';
 import Credits from './credits';
 import Settings from './settings';
-import Scene0 from './scene0';
 import Scene1 from './scene1';
 import Scene2 from './scene2';
 import Scene3 from './scene3';
+import Scene4 from './scene4';
+import Scene5 from './scene5';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Long Legs journey',
@@ -26,7 +27,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     default: 'matter',
     matter: {
       gravity: { y: 3 },
-      // debug: true
+     //  debug: true
     },
   },
   plugins: {
@@ -38,7 +39,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       },
     ],
   },
-  scene: [LoadScreen, Menu, Settings, Credits, Scene0, Scene1, Scene2, Scene3],
+  scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2, Scene3, Scene4, Scene5],
 
   backgroundColor: '#000000',
 };
