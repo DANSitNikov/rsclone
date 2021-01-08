@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import initScene from "./initScene";
+import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,

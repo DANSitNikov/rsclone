@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import initScene from "./initScene";
+import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,

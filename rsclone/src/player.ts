@@ -124,9 +124,11 @@ export default class Player {
     this.switchStatus = false;
     this.active = true;
   }
+
   stop() {
     this.active = false;
   }
+
   update():void {
     if (!this.active) return;
     const cursors = this.scene.input.keyboard.createCursorKeys();

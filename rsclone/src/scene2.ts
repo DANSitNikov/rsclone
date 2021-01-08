@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import initScene from "./initScene";
+import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -9,7 +9,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene2 extends Phaser.Scene {
-
   private boat: any;
 
   private boatSprite: any;
