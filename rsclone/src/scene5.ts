@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import Player from './player';
+import initScene from "./initScene";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -33,29 +34,18 @@ export default class Scene5 extends Phaser.Scene {
   }
 
   public create():void {
-    // creation collide blocks
-    const map = this.make.tilemap({ key: 'map5' });
-    const tileset = map.addTilesetImage('bg5', 'bg5');
-    this.groundLayer = map.createLayer('Background', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true });
+    const x = 200; // player position
+    const y = 812;
+    initScene(this, 5, x, y);
 
     this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6);
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6);
 
     this.ladder = this.add.zone(1540, 630, 77, 513);
-
     this.matter.world.convertTilemapLayer(this.groundLayer);
     this.matter.world.setBounds(0, -100, 1680, 1040);
-
-    this.player = new Player(this, '', 200, 812);
-
     this.switch = this.add.sprite(580, 230, 'switchRed').setScale(-0.3, 0.3) as any;
     this.switch.angle = 5;
-
-    this.input.keyboard.on('keydown-ESC', () => {
-      this.scene.pause();
-      this.scene.launch('PauseMenu', { key: sceneConfig.key });
-    });
   }
 
   public update():void {

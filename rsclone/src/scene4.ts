@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import Player from './player';
+import initScene from "./initScene";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -17,19 +18,10 @@ export default class Scene4 extends Phaser.Scene {
   }
 
   public create(): void {
-    const map = this.make.tilemap({ key: 'map4' });
-    const tileset = map.addTilesetImage('bg4', 'bg4');
-    this.groundLayer = map.createLayer('Background', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true });
-    this.matter.world.convertTilemapLayer(this.groundLayer);
-    this.matter.world.setBounds(0, 0, 1680, 1040);
-    this.player = new Player(this, 'Scene5', 0, 300);
+    const x = 0; // player position
+    const y = 300;
+    initScene(this, 4, x, y);
     this.sound.removeByKey('wind');
     this.sound.add('wind2').play({ loop: true });
-
-    this.input.keyboard.on('keydown-ESC', () => {
-      this.scene.pause();
-      this.scene.launch('PauseMenu', { key: sceneConfig.key });
-    });
   }
 }

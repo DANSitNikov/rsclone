@@ -14,6 +14,7 @@ export default class PauseMenu extends Phaser.Scene {
   };
 
   lastScene: string;
+  private player: any;
 
   constructor() {
     super({ key: 'PauseMenu', active: false });
@@ -21,6 +22,7 @@ export default class PauseMenu extends Phaser.Scene {
 
   init(data :Record<string, string>): void {
     this.lastScene = data.key;
+    this.player = data.player;
   }
 
   create(): void {
@@ -67,6 +69,7 @@ export default class PauseMenu extends Phaser.Scene {
     (): void => {
       this.game.sound.stopAll();
       this.scene.stop(this.lastScene);
+      this.player.stop();
       this.scene.start('Menu');
     },
   ];
