@@ -11,7 +11,7 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 export default class Scene3 extends Phaser.Scene {
   private boat: any;
 
-  private boatSprite: any;
+  private boatSprite: Phaser.GameObjects.Sprite;
 
   private player: any;
 
@@ -23,9 +23,9 @@ export default class Scene3 extends Phaser.Scene {
     const x = 150; // player position
     const y = 890;
     initScene(this, 3, x, y);
-    this.boat = this.matter.add.sprite(140, 990, 'boatCollides') as any;
+    this.boat = this.matter.add.sprite(140, 990, 'boatCollides');
     this.boat.setIgnoreGravity(true).setFixedRotation();
-    this.boatSprite = this.add.sprite(140, 950, 'boat') as any;
+    this.boatSprite = this.add.sprite(140, 950, 'boat');
   }
 
   public update():void {

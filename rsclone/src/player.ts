@@ -125,7 +125,7 @@ export default class Player {
     this.active = true;
   }
 
-  stop() {
+  stop():void {
     this.active = false;
   }
 

@@ -1,6 +1,6 @@
 import Player from './player';
 
-export default function initScene(sc, number, x, y) {
+export default function initScene(sc, number: number, x: number, y: number): void {
   const scene = sc;
   const map = scene.make.tilemap({ key: `map${number}` });
   const tileset = map.addTilesetImage(`bg${number}`, `bg${number}`);
