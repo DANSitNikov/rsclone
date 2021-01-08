@@ -18,7 +18,10 @@ export default class Player {
 
   private switchClicked: boolean;
 
+  private active: boolean;
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+
   constructor(scene, nextScene, x:number, y:number) {
     this.scene = scene;
     this.nextScene = nextScene;
@@ -119,9 +122,15 @@ export default class Player {
 
     this.switchClicked = false;
     this.switchStatus = false;
+    this.active = true;
+  }
+
+  stop() {
+    this.active = false;
   }
 
   update():void {
+    if (!this.active) return;
     const cursors = this.scene.input.keyboard.createCursorKeys();
     const isOnGround = this.playerIsTouching.ground;
     const speed = 8;
@@ -187,7 +196,10 @@ export default class Player {
 
     // end level
     if (this.player.getBottomCenter().x >= 1640) {
-      if (this.nextScene) this.scene.scene.start(this.nextScene);
+      if (this.nextScene) {
+        this.stop();
+        this.scene.scene.start(this.nextScene);
+      }
     }
 
     // switch

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import Player from './player';
+import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -9,37 +9,27 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene2 extends Phaser.Scene {
-  private groundLayer: Phaser.Tilemaps.TilemapLayer;
-
-  private player: Player;
-
   private boat: any;
 
   private boatSprite: any;
 
   private boatActive: boolean;
 
+  private player: any;
+
   constructor() {
     super(sceneConfig);
   }
 
   public create():void {
-    const map = this.make.tilemap({ key: 'map2' });
-    const tileset = map.addTilesetImage('bg2', 'bg2');
-    this.groundLayer = map.createLayer('Background', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true });
-    this.matter.world.convertTilemapLayer(this.groundLayer);
-    this.matter.world.setBounds(0, 0, 1680, 1040);
+    const x = 0; // player position
+    const y = 500;
+    initScene(this, 2, x, y);
+
     this.boat = this.matter.add.sprite(300, 970, 'boatCollides') as any;
     this.boat.setIgnoreGravity(true).setFixedRotation();
     this.boatSprite = this.add.sprite(300, 970, 'boat') as any;
-    this.player = new Player(this, 'Scene3', 0, 500);
     this.boatActive = false;
-
-    this.input.keyboard.on('keydown-ESC', () => {
-      this.scene.pause();
-      this.scene.launch('PauseMenu', { key: sceneConfig.key });
-    });
   }
 
   public update():void {
