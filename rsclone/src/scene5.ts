@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import Player from './player';
 import initScene from "./initScene";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -14,10 +13,6 @@ export default class Scene5 extends Phaser.Scene {
   private cloudOne: Phaser.GameObjects.Image;
 
   private cloudTwo: Phaser.GameObjects.Image;
-
-  private groundLayer: Phaser.Tilemaps.TilemapLayer;
-
-  private player: Player;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private ladder: any;
@@ -42,8 +37,6 @@ export default class Scene5 extends Phaser.Scene {
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6);
 
     this.ladder = this.add.zone(1540, 630, 77, 513);
-    this.matter.world.convertTilemapLayer(this.groundLayer);
-    this.matter.world.setBounds(0, -100, 1680, 1040);
     this.switch = this.add.sprite(580, 230, 'switchRed').setScale(-0.3, 0.3) as any;
     this.switch.angle = 5;
   }

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import Player from './player';
 import initScene from "./initScene";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -10,13 +9,11 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene3 extends Phaser.Scene {
-  private groundLayer: Phaser.Tilemaps.TilemapLayer;
-
-  private player: Player;
-
   private boat: any;
 
   private boatSprite: any;
+
+  private player: any;
 
   constructor() {
     super(sceneConfig);
