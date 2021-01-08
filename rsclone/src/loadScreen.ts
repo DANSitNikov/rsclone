@@ -67,7 +67,6 @@ export default class LoadScreen extends Phaser.Scene {
       assetText.destroy();
     });
 
-
     this.load.image('ladder', 'assets/objects/ladder.png');
     this.load.image('boat', 'assets/objects/boat.png');
     this.load.image('boatCollides', 'assets/objects/boatCollides.png');
@@ -97,6 +96,11 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/character/jump/playerJump.png',
       'assets/character/jump/playerJump.json',
     );
+    this.load.atlas(
+      'playerDie',
+      'assets/character/die/playerDie.png',
+      'assets/character/die/playerDie.json',
+    );
 
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');
@@ -119,7 +123,9 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.audio('walk0', 'assets/sounds/walk/0.mp3');
     this.load.audio('walk1', 'assets/sounds/walk/1.mp3');
     this.load.audio('walk2', 'assets/sounds/walk/2.mp3');
-    this.load.audio('walk3', 'assets/sounds/walk/3.mp3');
+		this.load.audio('walk3', 'assets/sounds/walk/3.mp3');
+		
+		this.load.audio('die', 'assets/sounds/die/playerDie.mp3');
   }
 
   create(): void {
