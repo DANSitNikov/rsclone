@@ -35,6 +35,11 @@ export default class Scene2 extends Phaser.Scene {
     this.boatSprite = this.add.sprite(300, 970, 'boat') as any;
     this.player = new Player(this, 'Scene3', 0, 500);
     this.boatActive = false;
+
+    this.input.keyboard.on('keydown-ESC', () => {
+      this.scene.pause();
+      this.scene.launch('PauseMenu', { key: sceneConfig.key });
+    });
   }
 
   public update():void {

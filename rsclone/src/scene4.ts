@@ -26,5 +26,10 @@ export default class Scene4 extends Phaser.Scene {
     this.player = new Player(this, 'Scene5', 0, 300);
     this.sound.removeByKey('wind');
     this.sound.add('wind2').play({ loop: true });
+
+    this.input.keyboard.on('keydown-ESC', () => {
+      this.scene.pause();
+      this.scene.launch('PauseMenu', { key: sceneConfig.key });
+    });
   }
 }

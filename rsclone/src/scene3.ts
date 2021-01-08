@@ -32,6 +32,11 @@ export default class Scene3 extends Phaser.Scene {
     this.boat.setIgnoreGravity(true).setFixedRotation();
     this.boatSprite = this.add.sprite(140, 950, 'boat') as any;
     this.player = new Player(this, 'Scene4', 150, 890);
+
+    this.input.keyboard.on('keydown-ESC', () => {
+      this.scene.pause();
+      this.scene.launch('PauseMenu', { key: sceneConfig.key });
+    });
   }
 
   public update():void {

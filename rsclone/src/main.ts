@@ -4,6 +4,7 @@ import LoadScreen from './loadScreen';
 import Menu from './menu';
 import Credits from './credits';
 import Settings from './settings';
+import PauseMenu from './pauseMenu';
 import Scene1 from './scene1';
 import Scene2 from './scene2';
 import Scene3 from './scene3';
@@ -39,7 +40,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       },
     ],
   },
-  scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2, Scene3, Scene4, Scene5],
+  scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2, Scene3, Scene4, Scene5, PauseMenu],
 
   backgroundColor: '#000000',
 };

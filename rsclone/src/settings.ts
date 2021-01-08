@@ -8,8 +8,17 @@ export default class Settings extends Phaser.Scene {
 
   rexUI: any;
 
+  pause: boolean;
+
+  lastScene: string;
+
   constructor() {
     super({ key: 'Settings', active: false });
+  }
+
+  init(data :{ key: string; pause: boolean; }): void {
+    this.lastScene = data.key;
+    this.pause = data.pause;
   }
 
   create(): void {
@@ -63,6 +72,10 @@ export default class Settings extends Phaser.Scene {
   }
 
   backToMenu(): void {
-    this.scene.start('Menu');
+    if (!this.pause) {
+      this.scene.start('Menu');
+    } else {
+      this.scene.start('PauseMenu', { key: this.lastScene });
+    }
   }
 }

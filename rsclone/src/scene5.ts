@@ -51,6 +51,11 @@ export default class Scene5 extends Phaser.Scene {
 
     this.switch = this.add.sprite(580, 230, 'switchRed').setScale(-0.3, 0.3) as any;
     this.switch.angle = 5;
+
+    this.input.keyboard.on('keydown-ESC', () => {
+      this.scene.pause();
+      this.scene.launch('PauseMenu', { key: sceneConfig.key });
+    });
   }
 
   public update():void {
