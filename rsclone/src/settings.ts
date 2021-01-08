@@ -44,14 +44,14 @@ export default class Settings extends Phaser.Scene {
         width: 200,
         height: 20,
         orientation: 'x',
-        value: this.sound.volume,
+        value: localStorage.getItem('volume'),
         track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0x222222),
         indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xffffff),
         thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 12, 0xffffff),
 
         input: 'click',
         valuechangeCallback: (value) => {
-          this.sound.volume = value;
+          this.game.sound.volume = value;
           localStorage.setItem('volume', value);
         },
       })
