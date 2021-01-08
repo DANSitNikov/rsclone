@@ -62,7 +62,7 @@ export default class Settings extends Phaser.Scene {
         font: '32px monospace',
       })
       .setOrigin(0.5)
-      .setInteractive();
+      .setInteractive({ cursor: 'pointer' });
 
     this.backButton.on('pointerup', this.backToMenu, this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);

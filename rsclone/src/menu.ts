@@ -38,7 +38,7 @@ export default class Menu extends Phaser.Scene {
         this.btn,
       )
       .setOrigin(0.5)
-      .setInteractive());
+      .setInteractive({ cursor: 'pointer' }));
     this.menu.forEach((button, index) => {
       button.on('pointerup', this.onClick[index], this);
     });

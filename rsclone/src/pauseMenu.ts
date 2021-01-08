@@ -44,7 +44,7 @@ export default class PauseMenu extends Phaser.Scene {
         this.btn,
       )
       .setOrigin(0.5)
-      .setInteractive());
+      .setInteractive({ cursor: 'pointer' }));
     this.menu.forEach((button, index) => {
       button.on('pointerup', this.onClick[index], this);
     });
@@ -66,7 +66,7 @@ export default class PauseMenu extends Phaser.Scene {
     },
     (): void => {
       this.game.sound.stopAll();
-      this.scene.sleep(this.lastScene);
+      this.scene.stop(this.lastScene);
       this.scene.start('Menu');
     },
   ];
