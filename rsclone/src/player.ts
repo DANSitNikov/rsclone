@@ -18,7 +18,7 @@ export default class Player {
 
 	private switchClicked: boolean;
 
-	private isAlive = true;
+	public isAlive = true;
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	constructor(scene, nextScene, x:number, y:number) {
@@ -228,7 +228,9 @@ export default class Player {
 	      }
 	    }
 	  }
-
+    if (cursors.space.isDown) {
+      console.log(this.player.y);
+    }
 	  // debug of player death
 	  if (cursors.up.isDown && cursors.down.isDown) {
 	    this.die();
@@ -250,10 +252,12 @@ export default class Player {
 	}
 
 	public die(): void {
-	  this.player.anims.play('die', true);
+	  if (this.isAlive) {
+      this.player.anims.play('die', true);
 	  this.scene.matter.pause();
 	  this.makeSound('die');
 	  this.isAlive = false;
+    }
 	  setTimeout(this.gameOver, 1800);
 	}
 

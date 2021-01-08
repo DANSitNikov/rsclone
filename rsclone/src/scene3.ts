@@ -52,7 +52,12 @@ export default class Scene3 extends Phaser.Scene {
     }
 
     this.boatSprite.x = this.boat.x;
-    this.boatSprite.y = this.boat.y - 50;
+		this.boatSprite.y = this.boat.y - 50;
+		
+		//Kill the character in water
+		if (this.player.player.y > 969 && this.player.isAlive) {
+			this.player.die();
+		}
 
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
   }
