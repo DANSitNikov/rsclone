@@ -65,6 +65,7 @@ export default class Settings extends Phaser.Scene {
       .setInteractive();
 
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
   }
 
   soundToggle():void {

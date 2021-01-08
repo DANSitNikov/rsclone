@@ -75,6 +75,7 @@ export default class Credits extends Phaser.Scene {
       name.on('pointerup', () => this.openLink(String(this.credits[index][1])));
     });
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
   }
 
   backToMenu(): void {
