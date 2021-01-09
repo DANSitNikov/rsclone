@@ -67,8 +67,6 @@ export default class LoadScreen extends Phaser.Scene {
       assetText.destroy();
     });
 
-
-    this.load.image('ladder', 'assets/objects/ladder.png');
     this.load.image('boat', 'assets/objects/boat.png');
     this.load.image('boatCollides', 'assets/objects/boatCollides.png');
 
@@ -130,7 +128,7 @@ export default class LoadScreen extends Phaser.Scene {
   private loadVolume(): void {
     const volume = 'volume' in localStorage ? Number(localStorage.getItem('volume')) : 0.5;
 
-    this.sound.volume = volume;
+    this.game.sound.volume = volume;
     localStorage.setItem('volume', String(volume));
   }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import Player from './player';
+import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -9,29 +9,23 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene3 extends Phaser.Scene {
-  private groundLayer: Phaser.Tilemaps.TilemapLayer;
-
-  private player: Player;
-
   private boat: any;
 
-  private boatSprite: any;
+  private boatSprite: Phaser.GameObjects.Sprite;
+
+  private player: any;
 
   constructor() {
     super(sceneConfig);
   }
 
   public create():void {
-    const map = this.make.tilemap({ key: 'map3' });
-    const tileset = map.addTilesetImage('bg3', 'bg3');
-    this.groundLayer = map.createLayer('Background', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true });
-    this.matter.world.convertTilemapLayer(this.groundLayer);
-    this.matter.world.setBounds(0, 0, 1680, 1040);
-    this.boat = this.matter.add.sprite(140, 990, 'boatCollides') as any;
+    const x = 150; // player position
+    const y = 890;
+    initScene(this, 3, x, y);
+    this.boat = this.matter.add.sprite(140, 990, 'boatCollides');
     this.boat.setIgnoreGravity(true).setFixedRotation();
-    this.boatSprite = this.add.sprite(140, 950, 'boat') as any;
-    this.player = new Player(this, 'Scene4', 150, 890);
+    this.boatSprite = this.add.sprite(140, 950, 'boat');
   }
 
   public update():void {

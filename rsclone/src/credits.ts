@@ -49,16 +49,18 @@ export default class Credits extends Phaser.Scene {
     ];
 
     this.creditsList = this.credits.map((name, index) => {
-      let style = { font: '32px monospace' };
-      let n = String(name[0]);
-      if (name.length !== 2) {
-        style = { font: '24px monospace' };
-        n = String(name);
+      let style = { font: '24px monospace' };
+      let n = String(name);
+      let cursor = { cursor: 'default' };
+      if (name.length === 2) {
+        cursor = name[1] ? { cursor: 'pointer' } : { cursor: 'default' };
+        style = { font: '32px monospace' };
+        n = String(name[0]);
       }
       return this.add
         .text(this.game.renderer.width / 2, 250 + index * 70, n, style)
         .setOrigin(0.5)
-        .setInteractive();
+        .setInteractive(cursor);
     });
 
     this.backButton = this.add
@@ -66,7 +68,7 @@ export default class Credits extends Phaser.Scene {
         font: '32px monospace',
       })
       .setOrigin(0.5)
-      .setInteractive();
+      .setInteractive({ cursor: 'pointer' });
 
     this.creditsList.forEach((name, index) => {
       if (!this.credits[index][1] || this.credits[index].length !== 2) {
@@ -75,6 +77,7 @@ export default class Credits extends Phaser.Scene {
       name.on('pointerup', () => this.openLink(String(this.credits[index][1])));
     });
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
   }
 
   backToMenu(): void {

@@ -8,8 +8,17 @@ export default class Settings extends Phaser.Scene {
 
   rexUI: any;
 
+  pause: boolean;
+
+  lastScene: string;
+
   constructor() {
     super({ key: 'Settings', active: false });
+  }
+
+  init(data :{ key: string; pause: boolean; }): void {
+    this.lastScene = data.key;
+    this.pause = data.pause;
   }
 
   create(): void {
@@ -35,14 +44,14 @@ export default class Settings extends Phaser.Scene {
         width: 200,
         height: 20,
         orientation: 'x',
-        value: this.sound.volume,
+        value: localStorage.getItem('volume'),
         track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0x222222),
         indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xffffff),
         thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 12, 0xffffff),
 
         input: 'click',
         valuechangeCallback: (value) => {
-          this.sound.volume = value;
+          this.game.sound.volume = value;
           localStorage.setItem('volume', value);
         },
       })
@@ -53,9 +62,10 @@ export default class Settings extends Phaser.Scene {
         font: '32px monospace',
       })
       .setOrigin(0.5)
-      .setInteractive();
+      .setInteractive({ cursor: 'pointer' });
 
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
   }
 
   soundToggle():void {
@@ -63,6 +73,10 @@ export default class Settings extends Phaser.Scene {
   }
 
   backToMenu(): void {
-    this.scene.start('Menu');
+    if (!this.pause) {
+      this.scene.start('Menu');
+    } else {
+      this.scene.start('PauseMenu', { key: this.lastScene });
+    }
   }
 }
