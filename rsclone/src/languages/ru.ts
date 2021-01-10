@@ -6,6 +6,8 @@ export default {
   settings: 'Настройки',
   credits: 'Авторы',
   soundVolume: 'Громкость звуков',
+  language: 'Язык:',
+  languageName: 'Русский',
   backToMenu: 'Назад',
   devs: 'Разработчики',
   artist: 'Художник',

@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import setLang from './utilitites';
+import { setLang } from './utilitites';
 
 export default class LoadScreen extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
@@ -11,7 +11,7 @@ export default class LoadScreen extends Phaser.Scene {
   }
 
   preload(): void {
-    this.lang = setLang(localStorage.getItem('language'));
+    this.lang = setLang(localStorage.getItem('lang'));
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
     const { width } = this.cameras.main;

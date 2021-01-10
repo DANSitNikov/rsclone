@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
+import { switchLang } from './utilitites';
 
 export default class Settings extends Phaser.Scene {
   lang: Record<string, string>;
@@ -13,6 +14,8 @@ export default class Settings extends Phaser.Scene {
   pause: boolean;
 
   lastScene: string;
+
+  langBtn: Phaser.GameObjects.Text;
 
   constructor() {
     super({ key: 'Settings', active: false });
@@ -35,18 +38,18 @@ export default class Settings extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(this.game.renderer.width / 2 - 150,
+      .text(this.game.renderer.width / 2,
         this.game.renderer.height / 2,
         this.lang.soundVolume,
         {
           font: '32px monospace',
         })
-      .setOrigin(0.5);
+      .setOrigin(1);
 
     this.rexUI.add
       .slider({
-        x: this.game.renderer.width / 2 + 100,
-        y: this.game.renderer.height / 2,
+        x: this.game.renderer.width / 2 + 110,
+        y: this.game.renderer.height / 2 - 15,
         width: 200,
         height: 20,
         orientation: 'x',
@@ -63,6 +66,25 @@ export default class Settings extends Phaser.Scene {
       })
       .layout();
 
+    this.add
+      .text(this.game.renderer.width / 2,
+        this.game.renderer.height / 2 + 80,
+        this.lang.language,
+        {
+          font: '32px monospace',
+        })
+      .setOrigin(1, 0.5);
+
+    this.langBtn = this.add
+      .text(this.game.renderer.width / 2 + 10,
+        this.game.renderer.height / 2 + 80,
+        this.lang.languageName,
+        {
+          font: '32px monospace',
+        })
+      .setOrigin(0, 0.5)
+      .setInteractive({ cursor: 'pointer' });
+
     this.backButton = this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
         font: '32px monospace',
@@ -72,6 +94,7 @@ export default class Settings extends Phaser.Scene {
 
     this.backButton.on('pointerup', this.backToMenu, this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
+    this.langBtn.on('pointerup', this.switchLangHandler, this);
   }
 
   soundToggle():void {
@@ -84,5 +107,11 @@ export default class Settings extends Phaser.Scene {
     } else {
       this.scene.start('PauseMenu', { key: this.lastScene });
     }
+  }
+
+  switchLangHandler():void {
+    this.lang = switchLang();
+    this.registry.set('lang', this.lang);
+    this.scene.restart();
   }
 }
