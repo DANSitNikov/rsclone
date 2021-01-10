@@ -96,6 +96,11 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/character/jump/playerJump.png',
       'assets/character/jump/playerJump.json',
     );
+    this.load.atlas(
+        'waterHands',
+        'assets/enemies/waterHands.png',
+        'assets/enemies/waterHands.json',
+    );
 
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');

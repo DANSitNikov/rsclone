@@ -15,6 +15,8 @@ export default class Scene3 extends Phaser.Scene {
 
   private player: any;
 
+  private waterHands: Phaser.GameObjects.Sprite;
+
   constructor() {
     super(sceneConfig);
   }
@@ -27,6 +29,26 @@ export default class Scene3 extends Phaser.Scene {
     this.boat.setIgnoreGravity(true).setFixedRotation();
     this.boat.visible = false;
     this.boatSprite = this.add.sprite(100, 0, 'boat');
+
+    this.anims.create({
+      key: 'waterHands',
+      frames: this.anims.generateFrameNames('waterHands', {
+        start: 1,
+        end: 6,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 7,
+      repeat: -1,
+    });
+    this.waterHands = this.add.sprite(0, 900, 'waterHands', 2)
+    this.waterHands.anims.play('waterHands', true);
+    this.waterHands = this.add.sprite(300, 910, 'waterHands').setScale(-0.9, 1)
+    this.waterHands.anims.play('waterHands', true);
+    this.waterHands = this.add.sprite(600, 899, 'waterHands', 3).setScale(0.99)
+    this.waterHands.anims.play('waterHands', true);
+    this.waterHands = this.add.sprite(900, 899, 'waterHands', 1).setScale(-0.9, 1)
+    this.waterHands.anims.play('waterHands', true);
   }
 
   public update():void {
