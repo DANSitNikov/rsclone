@@ -39,6 +39,9 @@ export default class Scene1 extends Phaser.Scene {
 
 		private killOnSpikes(spikeid): void {
 			if (Phaser.Geom.Intersects.RectangleToRectangle(spikeid.getBounds(), this.player.player.getBounds(),)) {
+				if (this.player.isAlive) {
+					this.player.player.y += 25;
+				}
 					this.player.die();
 			}
 		}

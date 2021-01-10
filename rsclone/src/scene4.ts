@@ -10,7 +10,8 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 export default class Scene4 extends Phaser.Scene {
   private groundLayer: Phaser.Tilemaps.TilemapLayer;
 
-  private player: Player;
+	private player: Player;
+	private demonHand: any;
 
   constructor() {
     super(sceneConfig);
@@ -25,6 +26,25 @@ export default class Scene4 extends Phaser.Scene {
     this.matter.world.setBounds(0, 0, 1680, 1040);
     this.player = new Player(this, 'Scene5', 0, 300);
     this.sound.removeByKey('wind');
-    this.sound.add('wind2').play({ loop: true });
-  }
+		this.sound.add('wind2').play({ loop: true });
+		this.demonHand = this.add.sprite(450, 850, 'demonHand').setScale(2);
+		
+		this.anims.create({
+			key: 'demonHand',
+			frames: this.anims.generateFrameNumbers('demonHand', { start: 0, end: 15 }),
+			frameRate: 6,
+			repeat: -1,
+		})
+	}
+
+	public update(): void {
+		//this.animateHand();
+		this.demonHand.anims.play('demonHand', true);
+	}
+	
+	private animateHand(): void {
+		if (this.player.player.x === this.demonHand.x) {
+			this.demonHand.anims.play('demonHand', true);
+		}
+	}
 }
