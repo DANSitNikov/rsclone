@@ -18,9 +18,9 @@ const setLang = (lang: string):Record<string, string> => {
   return language;
 };
 
-const switchLang = ():Record<string, string> => {
+const switchLang = (lang: string):Record<string, string> => {
   const listOfLangs = ['en', 'ru', 'ch_tr'];
-  const currentLangIndex = listOfLangs.indexOf(localStorage.getItem('lang'));
+  const currentLangIndex = listOfLangs.indexOf(lang);
   const nextLang = listOfLangs[(currentLangIndex + 1) % listOfLangs.length];
 
   localStorage.setItem('lang', nextLang);

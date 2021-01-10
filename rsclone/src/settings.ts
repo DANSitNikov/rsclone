@@ -110,7 +110,7 @@ export default class Settings extends Phaser.Scene {
   }
 
   switchLangHandler():void {
-    this.lang = switchLang();
+    this.lang = switchLang(localStorage.getItem('lang'));
     this.registry.set('lang', this.lang);
     this.scene.restart();
   }
