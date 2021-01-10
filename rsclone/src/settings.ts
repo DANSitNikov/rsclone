@@ -2,6 +2,8 @@
 import * as Phaser from 'phaser';
 
 export default class Settings extends Phaser.Scene {
+  lang: Record<string, string>;
+
   soundButton: Phaser.GameObjects.Text;
 
   backButton: Phaser.GameObjects.Text;
@@ -22,19 +24,23 @@ export default class Settings extends Phaser.Scene {
   }
 
   create(): void {
+    this.lang = this.registry.get('lang');
     const soundBox = this.add.graphics();
     soundBox.fillStyle(0x222222, 0.8);
 
     this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, 'Settings', {
+      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, this.lang.settings, {
         font: '42px monospace',
       })
       .setOrigin(0.5);
 
     this.add
-      .text(this.game.renderer.width / 2 - 100, this.game.renderer.height / 2, 'Volume', {
-        font: '32px monospace',
-      })
+      .text(this.game.renderer.width / 2 - 150,
+        this.game.renderer.height / 2,
+        this.lang.soundVolume,
+        {
+          font: '32px monospace',
+        })
       .setOrigin(0.5);
 
     this.rexUI.add
@@ -58,7 +64,7 @@ export default class Settings extends Phaser.Scene {
       .layout();
 
     this.backButton = this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, 'back to menu', {
+      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
         font: '32px monospace',
       })
       .setOrigin(0.5)

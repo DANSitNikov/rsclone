@@ -1,10 +1,16 @@
 import * as Phaser from 'phaser';
+import en from './languages/0';
+import ru from './languages/1';
 
 export default class LoadScreen extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
 
+  lang: Record<string, string>;
+
   constructor() {
     super({ key: 'LoadScreen', active: false });
+
+    this.lang = !localStorage.getItem('language') ? en : ru;
   }
 
   preload(): void {
@@ -30,7 +36,7 @@ export default class LoadScreen extends Phaser.Scene {
     const loadingText = this.make.text({
       x: width / 2,
       y: height / 2 - 50,
-      text: 'Loading...',
+      text: this.lang.loading,
       style: {
         font: '20px monospace',
       },
@@ -43,6 +49,8 @@ export default class LoadScreen extends Phaser.Scene {
         font: '18px monospace',
       },
     });
+
+    this.registry.set('lang', this.lang);
 
     assetText.setOrigin(0.5, -0.5);
     loadingText.setOrigin(0.5, 0);
@@ -59,7 +67,7 @@ export default class LoadScreen extends Phaser.Scene {
       percentText.setText(`${parseInt((value * 100).toString(), 10)}%`);
     });
     this.load.on('fileprogress', (file) => {
-      assetText.setText(`Loading asset: ${file.key}`);
+      assetText.setText(`${this.lang.loadingAsset} ${file.key}`);
     });
     this.load.on('complete', () => {
       loadingText.destroy();

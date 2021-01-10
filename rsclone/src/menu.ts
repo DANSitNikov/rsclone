@@ -13,17 +13,20 @@ export default class Menu extends Phaser.Scene {
     font: '32px monospace',
   };
 
+  lang: Record<string, string>;
+
   constructor() {
     super({ key: 'Menu', active: false });
   }
 
   create(): void {
-    this.menu = ['Play', 'Settings', 'Credits'];
+    this.lang = this.registry.get('lang');
+    this.menu = [this.lang.play, this.lang.settings, this.lang.credits];
     this.add
       .text(
         this.game.renderer.width / 2,
         this.game.renderer.height / 2 - 400,
-        'Long Legs journey',
+        this.lang.title,
         {
           font: '42px monospace',
         },
