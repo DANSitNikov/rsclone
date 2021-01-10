@@ -96,6 +96,9 @@ export default class Scene2 extends Phaser.Scene {
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
     if (boatVelocity.y > 3) this.boat.setVelocityY(2);
 
-    if (this.boat.x >= 1460) this.scene.start('Scene3');
+    if (this.boat.x >= 1460) {
+      this.player.stop();
+      this.scene.start('Scene3');
+    }
   }
 }
