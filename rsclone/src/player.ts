@@ -14,9 +14,6 @@ export default class Player {
 
   private nextScene: any;
 
-  private switchStatus: boolean;
-
-  private switchClicked: boolean;
 
   private active: boolean;
 
@@ -120,8 +117,7 @@ export default class Player {
     };
     this.scene.events.on('update', this.update, this);
 
-    this.switchClicked = false;
-    this.switchStatus = false;
+
     this.active = true;
   }
 
@@ -202,29 +198,7 @@ export default class Player {
       }
     }
 
-    // switch
-    if (this.scene.switch) {
-      if (
-        Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.scene.switch.getBounds())
-      ) {
-        if (cursors.space.isDown && !this.scene.switchClicked) {
-          if (!this.scene.switchStatus) {
-            this.scene.switch.setTexture('switchGreen');
-            this.scene.switchStatus = true;
-            this.scene.sound.add('switch').play({ loop: false });
-          } else {
-            this.scene.switch.setTexture('switchRed');
-            this.scene.switchStatus = false;
-            this.scene.sound.add('switch').play({ loop: false });
-          }
-          this.scene.switchClicked = true;
-        }
 
-        if (cursors.space.isUp) {
-          this.scene.switchClicked = false;
-        }
-      }
-    }
   }
 
   public makeSound(key: string):void {

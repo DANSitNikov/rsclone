@@ -20,19 +20,20 @@ export default class Scene3 extends Phaser.Scene {
   }
 
   public create():void {
-    const x = 150; // player position
-    const y = 890;
+    const x = 130; // player position
+    const y = 560;
     initScene(this, 3, x, y);
-    this.boat = this.matter.add.sprite(140, 990, 'boatCollides');
+    this.boat = this.matter.add.sprite(100, 690, 'boatCollides');
     this.boat.setIgnoreGravity(true).setFixedRotation();
-    this.boatSprite = this.add.sprite(140, 950, 'boat');
+    this.boat.visible = false;
+    this.boatSprite = this.add.sprite(100, 0, 'boat');
   }
 
   public update():void {
-    const boatSpeed = 2;
+    const boatSpeed = 1.8;
     const boatVelocity = this.boat.body.velocity;
 
-    if (this.boat.x < 1060) {
+    if (this.boat.x < 1000) {
       this.boat.setVelocityX(boatSpeed);
     }
 
@@ -46,7 +47,8 @@ export default class Scene3 extends Phaser.Scene {
     }
 
     this.boatSprite.x = this.boat.x;
-    this.boatSprite.y = this.boat.y - 50;
+    this.boatSprite.y = this.boat.y - 70;
+    if (this.boat.y > 690) this.boat.y = 690;
 
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
   }
