@@ -69,6 +69,7 @@ export default class LoadScreen extends Phaser.Scene {
 
     this.load.image('boat', 'assets/objects/boat.png');
     this.load.image('boatCollides', 'assets/objects/boatCollides.png');
+    this.load.image('bgLight', 'assets/objects/bgLight.png');
 
     this.load.image('bg5', 'assets/world/bg5.png');
     this.load.image('bg4', 'assets/world/bg4.png');
