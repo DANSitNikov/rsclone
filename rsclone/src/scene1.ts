@@ -37,8 +37,5 @@ export default class Scene1 extends Phaser.Scene {
     });
     this.lantern = this.add.sprite(300, 525, 'lantern', 1).setScale(0.8);
     this.lantern.anims.play('lantern', true);
-
-
-
   }
 }

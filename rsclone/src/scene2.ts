@@ -60,22 +60,18 @@ export default class Scene2 extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.waterHands = this.add.sprite(800, 900, 'waterHands', 2)
+    this.waterHands = this.add.sprite(800, 900, 'waterHands', 2);
     this.waterHands.anims.play('waterHands', true);
-    this.waterHands = this.add.sprite(1100, 910, 'waterHands').setScale(-0.9, 1)
+    this.waterHands = this.add.sprite(1100, 910, 'waterHands').setScale(-0.9, 1);
     this.waterHands.anims.play('waterHands', true);
-    this.waterHands = this.add.sprite(1400, 899, 'waterHands', 3).setScale(0.99)
+    this.waterHands = this.add.sprite(1400, 899, 'waterHands', 3).setScale(0.99);
     this.waterHands.anims.play('waterHands', true);
 
-    this.water = this.add.sprite(1060, 835, 'water', 1)
+    this.water = this.add.sprite(1060, 835, 'water', 1);
     this.water.anims.play('water', true);
-
-
-
   }
 
   public update():void {
-
     const boatSpeed = 1.8;
     const boatVelocity = this.boat.body.velocity;
 

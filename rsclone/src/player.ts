@@ -14,7 +14,6 @@ export default class Player {
 
   private nextScene: any;
 
-
   private active: boolean;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -117,7 +116,6 @@ export default class Player {
     };
     this.scene.events.on('update', this.update, this);
 
-
     this.active = true;
   }
 
@@ -197,8 +195,6 @@ export default class Player {
         this.scene.scene.start(this.nextScene);
       }
     }
-
-
   }
 
   public makeSound(key: string):void {
