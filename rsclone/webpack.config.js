@@ -49,6 +49,10 @@ module.exports = {
           to: './assets',
         },
         {
+          from: './src/languages',
+          to: './languages',
+        },
+        {
           from: './src/main.css',
         },
       ],
