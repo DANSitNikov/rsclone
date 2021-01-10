@@ -63,7 +63,7 @@ export default class Scene3 extends Phaser.Scene {
     this.waterHands = this.add.sprite(900, 899, 'waterHands', 1).setScale(-0.9, 1);
     this.waterHands.anims.play('waterHands', true);
 
-    this.water = this.add.sprite(617, 822, 'water2', 1);
+    this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
   }
 
