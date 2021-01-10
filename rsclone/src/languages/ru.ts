@@ -1,6 +1,6 @@
 export default {
   loading: 'Загрузка...',
-  loadingAsset: 'Загрузка объекта: ',
+  loadingAsset: 'Загрузка объекта:',
   title: 'Путешествие длинноножки',
   play: 'Играть',
   settings: 'Настройки',
@@ -9,7 +9,7 @@ export default {
   backToMenu: 'Назад',
   devs: 'Разработчики',
   artist: 'Художник',
-  pauseHeading: 'Paused',
+  pauseHeading: 'Пауза',
   resume: 'Продолжить',
   mainMenu: 'Главное меню',
 };

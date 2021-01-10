@@ -1,6 +1,5 @@
 import * as Phaser from 'phaser';
-import en from './languages/0';
-import ru from './languages/1';
+import setLang from './utilitites';
 
 export default class LoadScreen extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
@@ -9,11 +8,10 @@ export default class LoadScreen extends Phaser.Scene {
 
   constructor() {
     super({ key: 'LoadScreen', active: false });
-
-    this.lang = !localStorage.getItem('language') ? en : ru;
   }
 
   preload(): void {
+    this.lang = setLang(localStorage.getItem('language'));
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
     const { width } = this.cameras.main;
