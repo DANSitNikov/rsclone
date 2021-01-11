@@ -9,6 +9,8 @@ export default class PauseMenu extends Phaser.Scene {
 
   menu: string[] | Phaser.GameObjects.Text[];
 
+  lang: Record<string, string>;
+
   btn = {
     font: '32px monospace',
   };
@@ -27,17 +29,18 @@ export default class PauseMenu extends Phaser.Scene {
   }
 
   create(): void {
-    this.menu = ['Resume', 'Settings', 'Main menu'];
+    this.lang = this.registry.get('lang');
+    this.menu = [this.lang.resume, this.lang.settings, this.lang.mainMenu];
     this.add
       .text(
         this.game.renderer.width / 2,
         this.game.renderer.height / 2 - 400,
-        'Paused',
+        this.lang.pauseHeading,
         {
           font: '42px monospace',
         },
       )
-      .setOrigin(0.5);
+      .setOrigin(0.5).setDepth(1000);
 
     this.menu = this.menu.map((button, index) => this.add
       .text(

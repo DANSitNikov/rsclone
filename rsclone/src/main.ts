@@ -41,6 +41,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2, Scene3, Scene4, Scene5, PauseMenu],
 
   backgroundColor: '#000000',
+
 };
 
 const main = new Phaser.Game(gameConfig);

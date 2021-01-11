@@ -1,0 +1,17 @@
+export default {
+  loading: 'Loading...',
+  loadingAsset: 'Loading asset:',
+  title: 'Long Legs journey',
+  play: 'Play',
+  settings: 'Settings',
+  credits: 'Credits',
+  soundVolume: 'Sound volume:',
+  language: 'Language:',
+  languageName: 'English',
+  backToMenu: 'back to menu',
+  devs: 'Developers',
+  artist: 'Artist',
+  pauseHeading: 'Paused',
+  resume: 'Resume',
+  mainMenu: 'Main menu',
+};

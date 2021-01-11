@@ -1,0 +1,17 @@
+export default {
+  loading: '載入中...',
+  loadingAsset: '正在加載資產：',
+  title: '長腿之旅',
+  play: '玩',
+  settings: '設定值',
+  credits: '學分',
+  soundVolume: '音量:',
+  language: '語言:',
+  languageName: '漢語',
+  backToMenu: '返回菜單',
+  devs: '開發者',
+  artist: '藝術家',
+  pauseHeading: '已暫停',
+  resume: '恢復',
+  mainMenu: '主菜單',
+};
