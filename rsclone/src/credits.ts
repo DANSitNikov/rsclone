@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { setBtnActive, disableBtnActive } from './utilitites';
 
 export default class Credits extends Phaser.Scene {
   lang: Record<string, string>;
@@ -78,8 +79,12 @@ export default class Credits extends Phaser.Scene {
         return;
       }
       name.on('pointerup', () => this.openLink(String(this.credits[index][1])));
+      name.on('pointerover', () => setBtnActive(name), this);
+      name.on('pointerout', () => disableBtnActive(name), this);
     });
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
+    this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
   }
 

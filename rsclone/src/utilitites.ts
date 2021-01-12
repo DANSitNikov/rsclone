@@ -29,4 +29,30 @@ const switchLang = (lang: string):Record<string, string> => {
   return setLang(nextLang);
 };
 
-export { setLang, switchLang };
+function setBtnActive(btn: Phaser.GameObjects.Text):void {
+  btn.setTint(0xFFA300);
+}
+
+function disableBtnActive(btn: Phaser.GameObjects.Text): void {
+  btn.clearTint();
+}
+
+function setSliderActive(slider:any):void {
+  slider.children.forEach((el, i) => {
+    if (i === 0) return;
+    const element = el;
+    element.fillColor = 0xFFA300;
+  });
+}
+
+function disableSliderActive(slider:any):void {
+  slider.children.forEach((el, i) => {
+    if (i === 0) return;
+    const element = el;
+    element.fillColor = 0xffffff;
+  });
+}
+
+export {
+  setLang, switchLang, setBtnActive, disableBtnActive, setSliderActive, disableSliderActive,
+};
