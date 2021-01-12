@@ -16,6 +16,8 @@ export default class Player {
 
   private active: boolean;
 
+  public isAlive = true;
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 
   constructor(scene, nextScene, x:number, y:number) {
@@ -109,6 +111,18 @@ export default class Player {
       repeat: -1,
     });
 
+    scene.anims.create({
+      key: 'die',
+      frames: scene.anims.generateFrameNames('playerDie', {
+        start: 1,
+        end: 9,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 6,
+      repeat: 0,
+    });
+
     this.soundWalk = true;
     this.soundQueue = {
       ladder: 0,
@@ -195,6 +209,14 @@ export default class Player {
         this.scene.scene.start(this.nextScene);
       }
     }
+    //debug of death
+    if (cursors.space.isDown) {
+      console.log(this.player.y);
+    }
+    // debug of player death
+    if (cursors.up.isDown && cursors.down.isDown) {
+      this.die();
+    }
   }
 
   public makeSound(key: string):void {
@@ -209,5 +231,21 @@ export default class Player {
     this.playerIsTouching.left = false;
     this.playerIsTouching.right = false;
     this.playerIsTouching.ground = false;
+  }
+
+  public die(): void {
+    if (this.isAlive) {
+      this.player.anims.play('die', true);
+      this.scene.matter.pause();
+      this.makeSound('die');
+      this.isAlive = false;
+    }
+    setTimeout(this.gameOver, 1800);
+  }
+
+  public gameOver(): void {
+    if (!this.isAlive) {
+      console.log('character died');
+    }
   }
 }
