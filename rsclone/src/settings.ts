@@ -1,61 +1,100 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
+import { switchLang } from './utilitites';
 
 export default class Settings extends Phaser.Scene {
+  lang: Record<string, string>;
+
   soundButton: Phaser.GameObjects.Text;
 
   backButton: Phaser.GameObjects.Text;
 
   rexUI: any;
 
+  pause: boolean;
+
+  lastScene: string;
+
+  langBtn: Phaser.GameObjects.Text;
+
   constructor() {
     super({ key: 'Settings', active: false });
   }
 
+  init(data :{ key: string; pause: boolean; }): void {
+    this.lastScene = data.key;
+    this.pause = data.pause;
+  }
+
   create(): void {
+    this.lang = this.registry.get('lang');
     const soundBox = this.add.graphics();
     soundBox.fillStyle(0x222222, 0.8);
 
     this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, 'Settings', {
+      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, this.lang.settings, {
         font: '42px monospace',
       })
       .setOrigin(0.5);
 
     this.add
-      .text(this.game.renderer.width / 2 - 100, this.game.renderer.height / 2, 'Volume', {
-        font: '32px monospace',
-      })
-      .setOrigin(0.5);
+      .text(this.game.renderer.width / 2,
+        this.game.renderer.height / 2,
+        this.lang.soundVolume,
+        {
+          font: '32px monospace',
+        })
+      .setOrigin(1);
 
     this.rexUI.add
       .slider({
-        x: this.game.renderer.width / 2 + 100,
-        y: this.game.renderer.height / 2,
+        x: this.game.renderer.width / 2 + 110,
+        y: this.game.renderer.height / 2 - 15,
         width: 200,
         height: 20,
         orientation: 'x',
-        value: this.sound.volume,
+        value: localStorage.getItem('volume'),
         track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0x222222),
         indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xffffff),
         thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 12, 0xffffff),
 
         input: 'click',
         valuechangeCallback: (value) => {
-          this.sound.volume = value;
+          this.game.sound.volume = value;
           localStorage.setItem('volume', value);
         },
       })
       .layout();
 
+    this.add
+      .text(this.game.renderer.width / 2,
+        this.game.renderer.height / 2 + 80,
+        this.lang.language,
+        {
+          font: '32px monospace',
+        })
+      .setOrigin(1, 0.5);
+
+    this.langBtn = this.add
+      .text(this.game.renderer.width / 2 + 10,
+        this.game.renderer.height / 2 + 80,
+        this.lang.languageName,
+        {
+          font: '32px monospace',
+        })
+      .setOrigin(0, 0.5)
+      .setInteractive({ cursor: 'pointer' });
+
     this.backButton = this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, 'back to menu', {
+      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
         font: '32px monospace',
       })
       .setOrigin(0.5)
-      .setInteractive();
+      .setInteractive({ cursor: 'pointer' });
 
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
+    this.langBtn.on('pointerup', this.switchLangHandler, this);
   }
 
   soundToggle():void {
@@ -63,6 +102,16 @@ export default class Settings extends Phaser.Scene {
   }
 
   backToMenu(): void {
-    this.scene.start('Menu');
+    if (!this.pause) {
+      this.scene.start('Menu');
+    } else {
+      this.scene.start('PauseMenu', { key: this.lastScene });
+    }
+  }
+
+  switchLangHandler():void {
+    this.lang = switchLang(localStorage.getItem('lang'));
+    this.registry.set('lang', this.lang);
+    this.scene.restart();
   }
 }

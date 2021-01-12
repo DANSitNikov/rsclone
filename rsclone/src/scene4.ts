@@ -38,13 +38,6 @@ export default class Scene4 extends Phaser.Scene {
 	}
 
 	public update(): void {
-		//this.animateHand();
 		this.demonHand.anims.play('demonHand', true);
-	}
-	
-	private animateHand(): void {
-		if (this.player.player.x === this.demonHand.x) {
-			this.demonHand.anims.play('demonHand', true);
-		}
 	}
 }

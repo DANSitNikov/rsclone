@@ -4,6 +4,7 @@ import LoadScreen from './loadScreen';
 import Menu from './menu';
 import Credits from './credits';
 import Settings from './settings';
+import PauseMenu from './pauseMenu';
 import Scene1 from './scene1';
 import Scene2 from './scene2';
 import Scene3 from './scene3';
@@ -17,9 +18,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    // width: window.innerWidth,
     width: 1680,
-    // height: window.innerHeight,
     height: 1040,
   },
 
@@ -27,7 +26,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     default: 'matter',
     matter: {
       gravity: { y: 3 },
-     //  debug: true
+      //  debug: true
     },
   },
   plugins: {
@@ -39,9 +38,10 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       },
     ],
   },
-  scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2, Scene3, Scene4, Scene5],
+  scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2, Scene3, Scene4, Scene5, PauseMenu],
 
   backgroundColor: '#000000',
+
 };
 
 const main = new Phaser.Game(gameConfig);

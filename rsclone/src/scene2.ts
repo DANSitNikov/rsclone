@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import Player from './player';
+import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -9,36 +9,70 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene2 extends Phaser.Scene {
-  private groundLayer: Phaser.Tilemaps.TilemapLayer;
-
-  private player: Player;
-
   private boat: any;
 
   private boatSprite: any;
 
   private boatActive: boolean;
 
+  private player: any;
+
+  private waterHands: Phaser.GameObjects.Sprite;
+
+  private water: Phaser.GameObjects.Sprite;
+
   constructor() {
     super(sceneConfig);
   }
 
   public create():void {
-    const map = this.make.tilemap({ key: 'map2' });
-    const tileset = map.addTilesetImage('bg2', 'bg2');
-    this.groundLayer = map.createLayer('Background', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true });
-    this.matter.world.convertTilemapLayer(this.groundLayer);
-    this.matter.world.setBounds(0, 0, 1680, 1040);
-    this.boat = this.matter.add.sprite(300, 970, 'boatCollides') as any;
+    const x = 0; // player position
+    const y = 350;
+    initScene(this, 2, x, y);
+
+    this.boat = this.matter.add.sprite(740, 700, 'boatCollides') as any;
+    this.boat.visible = false;
     this.boat.setIgnoreGravity(true).setFixedRotation();
-    this.boatSprite = this.add.sprite(300, 970, 'boat') as any;
-    this.player = new Player(this, 'Scene3', 0, 500);
+    this.boatSprite = this.add.sprite(0, 0, 'boat') as any;
     this.boatActive = false;
+
+    this.anims.create({
+      key: 'waterHands',
+      frames: this.anims.generateFrameNames('waterHands', {
+        start: 1,
+        end: 6,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 7,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'water',
+      frames: this.anims.generateFrameNames('water', {
+        start: 1,
+        end: 2,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.waterHands = this.add.sprite(800, 900, 'waterHands', 2);
+    this.waterHands.anims.play('waterHands', true);
+    this.waterHands = this.add.sprite(1100, 910, 'waterHands').setScale(-0.9, 1);
+    this.waterHands.anims.play('waterHands', true);
+    this.waterHands = this.add.sprite(1400, 899, 'waterHands', 3).setScale(0.99);
+    this.waterHands.anims.play('waterHands', true);
+
+    this.water = this.add.sprite(1060, 835, 'water', 1);
+    this.water.anims.play('water', true);
   }
 
   public update():void {
-    const boatSpeed = 2;
+    const boatSpeed = 1.8;
     const boatVelocity = this.boat.body.velocity;
 
     if (this.boatActive && this.boat.x < 1460) {
@@ -56,14 +90,20 @@ export default class Scene2 extends Phaser.Scene {
     }
 
     this.boatSprite.x = this.boat.x;
-    this.boatSprite.y = this.boat.y - 50;
+    this.boatSprite.y = this.boat.y - 70;
+    if (this.boat.y > 700) this.boat.y = 700;
 
 		if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
+    if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
+		if (boatVelocity.y > 3) this.boat.setVelocityY(2);
 		//Kill the character in water
 		if (this.player.player.y > 969 && this.player.isAlive) {
 			this.player.die();
 		}
 
-    if (this.boat.x >= 1460) this.scene.start('Scene3');
+    if (this.boat.x >= 1460) {
+      this.player.stop();
+      this.scene.start('Scene3');
+    }
   }
 }

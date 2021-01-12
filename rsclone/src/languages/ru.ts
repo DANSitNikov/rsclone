@@ -1,0 +1,17 @@
+export default {
+  loading: 'Загрузка...',
+  loadingAsset: 'Загрузка объекта:',
+  title: 'Путешествие длинноножки',
+  play: 'Играть',
+  settings: 'Настройки',
+  credits: 'Авторы',
+  soundVolume: 'Громкость звуков',
+  language: 'Язык:',
+  languageName: 'Русский',
+  backToMenu: 'Назад',
+  devs: 'Разработчики',
+  artist: 'Художник',
+  pauseHeading: 'Пауза',
+  resume: 'Продолжить',
+  mainMenu: 'Главное меню',
+};

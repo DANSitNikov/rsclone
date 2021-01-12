@@ -1,0 +1,62 @@
+{
+	"textures": [
+		{
+			"image": "water.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1246,
+				"h": 807
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1246,
+						"h": 417
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 14,
+						"w": 1244,
+						"h": 403
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 1244,
+						"h": 403
+					}
+				},
+				{
+					"filename": "2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1246,
+						"h": 417
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 17,
+						"w": 1244,
+						"h": 400
+					},
+					"frame": {
+						"x": 1,
+						"y": 406,
+						"w": 1244,
+						"h": 400
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:26a40ce6792b11996783363139b6ab5a:92f3fa7f642a1f934d3dcecdbc30bf66:915b9e2c60291fd5f1d6c786f7274850$"
+	}
+}
