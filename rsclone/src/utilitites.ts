@@ -37,15 +37,16 @@ function disableBtnActive(btn: Phaser.GameObjects.Text): void {
   btn.clearTint();
 }
 
-function setSliderActive(slider:any):void {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function setSliderActive(slider: { children: any[]; }):void {
   slider.children.forEach((el, i) => {
     if (i === 0) return;
     const element = el;
     element.fillColor = 0xFFA300;
   });
 }
-
-function disableSliderActive(slider:any):void {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function disableSliderActive(slider: { children: any[]; }):void {
   slider.children.forEach((el, i) => {
     if (i === 0) return;
     const element = el;

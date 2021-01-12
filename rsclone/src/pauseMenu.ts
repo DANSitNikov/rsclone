@@ -18,7 +18,7 @@ export default class PauseMenu extends Phaser.Scene {
 
   private lastScene: string;
 
-  private player :any;
+  private player;
 
   constructor() {
     super({ key: 'PauseMenu', active: false });

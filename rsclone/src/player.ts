@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 
 export default class Player {
@@ -10,17 +9,15 @@ export default class Player {
 
   public playerIsTouching: { left: boolean; ground: boolean; right: boolean };
 
-  private scene: any;
+  private scene;
 
-  private nextScene: any;
+  private nextScene;
 
   private active: boolean;
 
   public isAlive = true;
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-
-  constructor(scene, nextScene, x:number, y:number) {
+  constructor(scene: Phaser.Scene, nextScene: string, x:number, y:number) {
     this.scene = scene;
     this.nextScene = nextScene;
     this.player = scene.matter.add.sprite(x, y, 'playerIdle', 0);
@@ -209,7 +206,7 @@ export default class Player {
         this.scene.scene.start(this.nextScene);
       }
     }
-    //debug of death
+    // debug of death
     if (cursors.space.isDown) {
       console.log(this.player.y);
     }

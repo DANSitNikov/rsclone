@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 
@@ -9,11 +8,11 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene3 extends Phaser.Scene {
-  private boat: any;
+  private boat;
 
   private boatSprite: Phaser.GameObjects.Sprite;
 
-  private player: any;
+  private player;
 
   private waterHands: Phaser.GameObjects.Sprite;
 
@@ -85,12 +84,12 @@ export default class Scene3 extends Phaser.Scene {
     }
 
     this.boatSprite.x = this.boat.x;
-		this.boatSprite.y = this.boat.y - 50;
-		
-		//Kill the character in water
-		if (this.player.player.y > 869 && this.player.isAlive) {
-			this.player.die();
-		}
+    this.boatSprite.y = this.boat.y - 50;
+
+    // Kill the character in water
+    if (this.player.player.y > 869 && this.player.isAlive) {
+      this.player.die();
+    }
 
     this.boatSprite.y = this.boat.y - 70;
     if (this.boat.y > 670) this.boat.y = 670;

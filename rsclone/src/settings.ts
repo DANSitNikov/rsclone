@@ -1,25 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import {
   switchLang, setBtnActive, disableBtnActive, setSliderActive, disableSliderActive,
 } from './utilitites';
 
 export default class Settings extends Phaser.Scene {
-  lang: Record<string, string>;
+  private lang: Record<string, string>;
 
-  soundButton: Phaser.GameObjects.Text;
+  private soundButton: Phaser.GameObjects.Text;
 
-  backButton: Phaser.GameObjects.Text;
+  private backButton: Phaser.GameObjects.Text;
 
-  rexUI: any;
+  private rexUI;
 
-  pause: boolean;
+  private pause: boolean;
 
-  lastScene: string;
+  private lastScene: string;
 
-  langBtn: Phaser.GameObjects.Text;
+  private langBtn: Phaser.GameObjects.Text;
 
-  volume: any;
+  private volume;
 
   constructor() {
     super({ key: 'Settings', active: false });

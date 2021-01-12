@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 
@@ -9,13 +8,13 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene2 extends Phaser.Scene {
-  private boat: any;
+  private boat;
 
-  private boatSprite: any;
+  private boatSprite;
 
   private boatActive: boolean;
 
-  private player: any;
+  private player;
 
   private waterHands: Phaser.GameObjects.Sprite;
 
@@ -30,10 +29,10 @@ export default class Scene2 extends Phaser.Scene {
     const y = 350;
     initScene(this, 2, x, y);
 
-    this.boat = this.matter.add.sprite(740, 700, 'boatCollides') as any;
+    this.boat = this.matter.add.sprite(740, 700, 'boatCollides');
     this.boat.visible = false;
     this.boat.setIgnoreGravity(true).setFixedRotation();
-    this.boatSprite = this.add.sprite(0, 0, 'boat') as any;
+    this.boatSprite = this.add.sprite(0, 0, 'boat');
     this.boatActive = false;
 
     this.anims.create({
@@ -93,13 +92,13 @@ export default class Scene2 extends Phaser.Scene {
     this.boatSprite.y = this.boat.y - 70;
     if (this.boat.y > 700) this.boat.y = 700;
 
-		if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
-		if (boatVelocity.y > 3) this.boat.setVelocityY(2);
-		//Kill the character in water
-		if (this.player.player.y > 969 && this.player.isAlive) {
-			this.player.die();
-		}
+    if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
+    if (boatVelocity.y > 3) this.boat.setVelocityY(2);
+    // Kill the character in water
+    if (this.player.player.y > 969 && this.player.isAlive) {
+      this.player.die();
+    }
 
     if (this.boat.x >= 1460) {
       this.player.stop();
