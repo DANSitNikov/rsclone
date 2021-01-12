@@ -52,7 +52,6 @@ export default class Scene5 extends Phaser.Scene {
 
   public update():void {
     const cursors = this.input.keyboard.createCursorKeys();
-    console.log(this.cloudOne.x);
     this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
     this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.3);
 
