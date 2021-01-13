@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import {disableBtnActive, setBtnActive} from "./utilitites";
 
 export default class GameOverMenu extends Phaser.Scene {
     playButton: Phaser.GameObjects.Text;
@@ -45,7 +46,9 @@ export default class GameOverMenu extends Phaser.Scene {
         .setOrigin(0.5)
         .setInteractive({ cursor: 'pointer' }));
       this.menu.forEach((button, index) => {
-        button.on('pointerup', this.onClick[index], this);
+          button.on('pointerup', this.onClick[index], this);
+          button.on('pointerover', () => setBtnActive(button), this);
+          button.on('pointerout', () => disableBtnActive(button), this);
       });
     }
 
