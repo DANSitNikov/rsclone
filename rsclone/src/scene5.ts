@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import initScene from './initScene';
+import Player from './player';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -16,19 +15,17 @@ export default class Scene5 extends Phaser.Scene {
 
   private light: Phaser.GameObjects.Image;
 
+  private ladder: Phaser.GameObjects.Zone;
+
   private switchStatus: boolean;
 
   private switchClicked: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private ladder: any;
+  private switch: Phaser.GameObjects.Sprite;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private switch: any;
+  private player: Player;
 
-  private player: any;
-
-  resetCloudPosition: () => void;
+  resetCloudPosition: () => number;
 
   constructor() {
     super(sceneConfig);
@@ -41,7 +38,7 @@ export default class Scene5 extends Phaser.Scene {
     const y = 812;
     initScene(this, 5, x, y);
     this.ladder = this.add.zone(1540, 630, 77, 513);
-    this.switch = this.add.sprite(610, 250, 'switchRed').setScale(-0.3, 0.3) as any;
+    this.switch = this.add.sprite(610, 250, 'switchRed').setScale(-0.3, 0.3);
     this.switch.angle = 5;
 
     this.light = this.add.image(842, 522, 'bgLight');
@@ -90,7 +87,7 @@ export default class Scene5 extends Phaser.Scene {
     }
   }
 
-  public moveCloud(cloudX:any, speed:number):number {
+  public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? this.resetCloudPosition() : cloudX + speed;
   }
 }

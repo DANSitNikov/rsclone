@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 
 export default class Player {
@@ -10,15 +9,15 @@ export default class Player {
 
   public playerIsTouching: { left: boolean; ground: boolean; right: boolean };
 
-  private scene: any;
+  private scene;
 
-  private nextScene: any;
+  private nextScene;
 
   private active: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public isAlive = true;
 
-  constructor(scene, nextScene, x:number, y:number) {
+  constructor(scene: Phaser.Scene, nextScene: string, x:number, y:number) {
     this.scene = scene;
     this.nextScene = nextScene;
     this.player = scene.matter.add.sprite(x, y, 'playerIdle', 0);
@@ -107,6 +106,18 @@ export default class Player {
       }),
       frameRate: 6,
       repeat: -1,
+    });
+
+    scene.anims.create({
+      key: 'die',
+      frames: scene.anims.generateFrameNames('playerDie', {
+        start: 1,
+        end: 9,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 9,
+      repeat: 0,
     });
 
     this.soundWalk = true;
@@ -209,5 +220,20 @@ export default class Player {
     this.playerIsTouching.left = false;
     this.playerIsTouching.right = false;
     this.playerIsTouching.ground = false;
+  }
+
+  public die(): void {
+    if (this.isAlive) {
+      this.player.anims.play('die', true);
+      this.makeSound('die');
+      this.isAlive = false;
+      this.stop();
+      setTimeout(() => this.gameOver(), 1500);
+    }
+  }
+
+  public gameOver(): void {
+    this.scene.scene.stop();
+    this.scene.scene.launch('GameOverMenu', { key: this.scene.scene.key });
   }
 }

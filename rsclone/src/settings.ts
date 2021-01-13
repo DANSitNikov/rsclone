@@ -1,16 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
+import {
+  switchLang, setBtnActive, disableBtnActive, setSliderActive, disableSliderActive,
+} from './utilitites';
 
 export default class Settings extends Phaser.Scene {
-  soundButton: Phaser.GameObjects.Text;
+  private lang: Record<string, string>;
 
-  backButton: Phaser.GameObjects.Text;
+  private soundButton: Phaser.GameObjects.Text;
 
-  rexUI: any;
+  private backButton: Phaser.GameObjects.Text;
 
-  pause: boolean;
+  private rexUI;
 
-  lastScene: string;
+  private pause: boolean;
+
+  private lastScene: string;
+
+  private langBtn: Phaser.GameObjects.Text;
+
+  private volume;
 
   constructor() {
     super({ key: 'Settings', active: false });
@@ -22,25 +30,29 @@ export default class Settings extends Phaser.Scene {
   }
 
   create(): void {
+    this.lang = this.registry.get('lang');
     const soundBox = this.add.graphics();
     soundBox.fillStyle(0x222222, 0.8);
 
     this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, 'Settings', {
+      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, this.lang.settings, {
         font: '42px monospace',
       })
       .setOrigin(0.5);
 
     this.add
-      .text(this.game.renderer.width / 2 - 100, this.game.renderer.height / 2, 'Volume', {
-        font: '32px monospace',
-      })
-      .setOrigin(0.5);
+      .text(this.game.renderer.width / 2,
+        this.game.renderer.height / 2,
+        this.lang.soundVolume,
+        {
+          font: '32px monospace',
+        })
+      .setOrigin(1);
 
-    this.rexUI.add
+    this.volume = this.rexUI.add
       .slider({
-        x: this.game.renderer.width / 2 + 100,
-        y: this.game.renderer.height / 2,
+        x: this.game.renderer.width / 2 + 110,
+        y: this.game.renderer.height / 2 - 15,
         width: 200,
         height: 20,
         orientation: 'x',
@@ -57,15 +69,41 @@ export default class Settings extends Phaser.Scene {
       })
       .layout();
 
+    this.add
+      .text(this.game.renderer.width / 2,
+        this.game.renderer.height / 2 + 80,
+        this.lang.language,
+        {
+          font: '32px monospace',
+        })
+      .setOrigin(1, 0.5);
+
+    this.langBtn = this.add
+      .text(this.game.renderer.width / 2 + 10,
+        this.game.renderer.height / 2 + 80,
+        this.lang.languageName,
+        {
+          font: '32px monospace',
+        })
+      .setOrigin(0, 0.5)
+      .setInteractive({ cursor: 'pointer' });
+
     this.backButton = this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, 'back to menu', {
+      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
         font: '32px monospace',
       })
       .setOrigin(0.5)
       .setInteractive({ cursor: 'pointer' });
 
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
+    this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
+    this.langBtn.on('pointerup', this.switchLangHandler, this);
+    this.langBtn.on('pointerover', () => setBtnActive(this.langBtn), this);
+    this.langBtn.on('pointerout', () => disableBtnActive(this.langBtn), this);
+    this.volume.on('pointerover', () => setSliderActive(this.volume), this);
+    this.volume.on('pointerout', () => disableSliderActive(this.volume), this);
   }
 
   soundToggle():void {
@@ -78,5 +116,11 @@ export default class Settings extends Phaser.Scene {
     } else {
       this.scene.start('PauseMenu', { key: this.lastScene });
     }
+  }
+
+  switchLangHandler():void {
+    this.lang = switchLang(localStorage.getItem('lang'));
+    this.registry.set('lang', this.lang);
+    this.scene.restart();
   }
 }

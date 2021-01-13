@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 
@@ -15,19 +14,20 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene3 extends Phaser.Scene {
-  private boat: any;
+  private boat;
 
   private boatSprite: Phaser.GameObjects.Sprite;
 
-  private player: any;
+  private player;
 
   private waterHands: Phaser.GameObjects.Sprite;
 
   private water: Phaser.GameObjects.Sprite;
 
   private follower;
+
   private path;
-  private graphics;
+
   private fisher: any;
 
   constructor() {
@@ -83,12 +83,11 @@ export default class Scene3 extends Phaser.Scene {
   public update():void {
     const boatSpeed = 1.8;
     const boatVelocity = this.boat.body.velocity;
-
     const PlayerVerticalCenter = new Phaser.Geom.Line(
-        this.player.player.getBottomCenter().x,
-        this.player.player.getCenter().y,
-        this.player.player.getTopCenter().x,
-        this.player.player.getTopCenter().y,
+      this.player.player.getBottomCenter().x,
+      this.player.player.getCenter().y,
+      this.player.player.getTopCenter().x,
+      this.player.player.getTopCenter().y,
     );
 
     if (this.boat.x < 1000) {
@@ -105,10 +104,17 @@ export default class Scene3 extends Phaser.Scene {
     }
 
     if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.fisher.getBounds())) {
-      console.log('kick');
+      this.player.die();
     }
 
     this.boatSprite.x = this.boat.x;
+    this.boatSprite.y = this.boat.y - 50;
+
+    // Kill the character in water
+    if (this.player.player.y > 869 && this.player.isAlive) {
+      this.player.die();
+    }
+
     this.boatSprite.y = this.boat.y - 70;
     if (this.boat.y > 670) this.boat.y = 670;
     if (boatVelocity.y > 3) this.boat.setVelocityY(2);
@@ -123,7 +129,7 @@ export default class Scene3 extends Phaser.Scene {
       550, 720, 600, 690, 630, 670, 640, 650,
       640, 610, 620, 570, 590, 560, 560, 560,
       530, 560, 480, 560, 440, 565, 410, 580,
-      400, 600, 405, 620, 420, 640, 440, 680,
+      400, 600, 405, 620, 420, 640, 430, 680,
       420, 700, 400, 730, 350, 740, 300, 750,
       250, 760, 200, 780, 150, 800, 100, 820,
       0, 830, -150, 900,
@@ -137,15 +143,7 @@ export default class Scene3 extends Phaser.Scene {
 
     this.path.add(curve);
 
-    this.graphics = this.add.graphics();
-    this.graphics.lineStyle(2, 0xffffff, 1);
-    curve.draw(this.graphics);
-
     this.fisher = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
-
-    for (let i = 0; i < curve.points.length; i += 1) {
-      this.graphics.fillCircle(curve.points[i].x, curve.points[i].y, 4);
-    }
 
     this.fisher.startFollow({
       ease: 'Linear',

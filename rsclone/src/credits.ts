@@ -1,6 +1,9 @@
 import * as Phaser from 'phaser';
+import { setBtnActive, disableBtnActive } from './utilitites';
 
 export default class Credits extends Phaser.Scene {
+  lang: Record<string, string>;
+
   backButton: Phaser.GameObjects.Text;
 
   alisa: Phaser.GameObjects.Text;
@@ -32,19 +35,20 @@ export default class Credits extends Phaser.Scene {
   }
 
   create(): void {
+    this.lang = this.registry.get('lang');
     this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, 'Credits', {
+      .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, this.lang.credits, {
         font: '42px monospace',
       })
       .setOrigin(0.5);
 
     this.credits = [
-      'Developers',
+      this.lang.devs,
       ['Alisa Pavlova', 'https://github.com/Alisa-Pavlova'],
       ['Saidazizkhon Akbarov', 'https://github.com/dazik'],
       ['Daniil Sitnikov', 'https://github.com/DANSitNikov'],
       ['Gregory Moskalev', 'https://github.com/GregoryMoskalev'],
-      'artist',
+      this.lang.artist,
       ['Sofya Ostrovskaya', false],
     ];
 
@@ -64,7 +68,7 @@ export default class Credits extends Phaser.Scene {
     });
 
     this.backButton = this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, 'back to menu', {
+      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
         font: '32px monospace',
       })
       .setOrigin(0.5)
@@ -75,8 +79,12 @@ export default class Credits extends Phaser.Scene {
         return;
       }
       name.on('pointerup', () => this.openLink(String(this.credits[index][1])));
+      name.on('pointerover', () => setBtnActive(name), this);
+      name.on('pointerout', () => disableBtnActive(name), this);
     });
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
+    this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
   }
 

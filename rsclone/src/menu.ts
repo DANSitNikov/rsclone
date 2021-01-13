@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { setBtnActive, disableBtnActive } from './utilitites';
 
 export default class Menu extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
@@ -13,17 +14,20 @@ export default class Menu extends Phaser.Scene {
     font: '32px monospace',
   };
 
+  lang: Record<string, string>;
+
   constructor() {
     super({ key: 'Menu', active: false });
   }
 
   create(): void {
-    this.menu = ['Play', 'Settings', 'Credits'];
+    this.lang = this.registry.get('lang');
+    this.menu = [this.lang.play, this.lang.settings, this.lang.credits];
     this.add
       .text(
         this.game.renderer.width / 2,
         this.game.renderer.height / 2 - 400,
-        'Long Legs journey',
+        this.lang.title,
         {
           font: '42px monospace',
         },
@@ -41,6 +45,8 @@ export default class Menu extends Phaser.Scene {
       .setInteractive({ cursor: 'pointer' }));
     this.menu.forEach((button, index) => {
       button.on('pointerup', this.onClick[index], this);
+      button.on('pointerover', () => setBtnActive(button), this);
+      button.on('pointerout', () => disableBtnActive(button), this);
     });
   }
 
