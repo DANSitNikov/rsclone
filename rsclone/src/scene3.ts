@@ -28,7 +28,7 @@ export default class Scene3 extends Phaser.Scene {
 
   private path;
 
-  private fisher: any;
+  private fish;
 
   constructor() {
     super(sceneConfig);
@@ -103,7 +103,7 @@ export default class Scene3 extends Phaser.Scene {
       this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
     }
 
-    if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.fisher.getBounds())) {
+    if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.fish.getBounds())) {
       this.player.die();
     }
 
@@ -122,7 +122,7 @@ export default class Scene3 extends Phaser.Scene {
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
   }
 
-  public activeFish():void {
+  public activeFish(): void {
     const points = [
       0, 760, 100, 765, 150, 750, 200, 745,
       250, 740, 300, 750, 400, 760, 500, 750,
@@ -143,9 +143,9 @@ export default class Scene3 extends Phaser.Scene {
 
     this.path.add(curve);
 
-    this.fisher = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
+    this.fish = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
 
-    this.fisher.startFollow({
+    this.fish.startFollow({
       ease: 'Linear',
       repeat: 0,
       duration: 7300,
