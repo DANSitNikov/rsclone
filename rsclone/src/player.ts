@@ -237,7 +237,6 @@ export default class Player {
 
   public gameOver(): void {
     this.scene.scene.stop();
-    this.scene.sound.stopAll();
     this.scene.scene.launch('GameOverMenu', { key: this.scene.scene.key });
   }
 }
