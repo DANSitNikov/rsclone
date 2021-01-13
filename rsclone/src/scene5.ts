@@ -21,8 +21,6 @@ export default class Scene5 extends Phaser.Scene {
 
   private switchClicked: boolean;
 
-  private ladder: Phaser.GameObjects.Zone;
-
   private switch: Phaser.GameObjects.Sprite;
 
   private player: Player;
