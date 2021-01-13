@@ -8,7 +8,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene4 extends Phaser.Scene {
-
   private demonHand: Phaser.GameObjects.Sprite;
 
   constructor() {

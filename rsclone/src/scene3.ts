@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 
@@ -9,11 +8,11 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene3 extends Phaser.Scene {
-  private boat: any;
+  private boat;
 
   private boatSprite: Phaser.GameObjects.Sprite;
 
-  private player: any;
+  private player;
 
   private waterHands: Phaser.GameObjects.Sprite;
 

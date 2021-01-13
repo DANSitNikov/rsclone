@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { setBtnActive, disableBtnActive } from './utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
@@ -17,7 +18,7 @@ export default class PauseMenu extends Phaser.Scene {
 
   private lastScene: string;
 
-  private player :any;
+  private player;
 
   constructor() {
     super({ key: 'PauseMenu', active: false });
@@ -53,6 +54,8 @@ export default class PauseMenu extends Phaser.Scene {
       .setInteractive({ cursor: 'pointer' }));
     this.menu.forEach((button, index) => {
       button.on('pointerup', this.onClick[index], this);
+      button.on('pointerover', () => setBtnActive(button), this);
+      button.on('pointerout', () => disableBtnActive(button), this);
     });
 
     this.input.keyboard.on('keydown-ESC', () => {
