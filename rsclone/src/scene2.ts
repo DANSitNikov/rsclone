@@ -20,7 +20,7 @@ export default class Scene2 extends Phaser.Scene {
 
   private water: Phaser.GameObjects.Sprite;
 
-  private fish: boolean;
+  private activeFish: boolean;
 
   private pauseFisher: boolean;
 
@@ -28,7 +28,7 @@ export default class Scene2 extends Phaser.Scene {
 
   private path;
 
-  private fisher: any;
+  private fish;
 
   constructor() {
     super(sceneConfig);
@@ -79,7 +79,7 @@ export default class Scene2 extends Phaser.Scene {
     this.water = this.add.sprite(1060, 835, 'water', 1);
     this.water.anims.play('water', true);
 
-    this.fish = true;
+    this.activeFish = true;
     const points = [
       590, 800, 720, 780, 800, 750, 850, 745,
       900, 740, 1060, 740, 1200, 740, 1300, 750,
@@ -98,9 +98,9 @@ export default class Scene2 extends Phaser.Scene {
 
     this.path.add(curve);
 
-    this.fisher = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
+    this.fish = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
 
-    this.fisher.startFollow({
+    this.fish.startFollow({
       ease: 'Linear',
       repeat: 0,
       duration: 9000,
@@ -127,8 +127,8 @@ export default class Scene2 extends Phaser.Scene {
     ) {
       this.boatActive = true;
       this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
-      if (this.fish) {
-        this.activeFish();
+      if (this.activeFishFunc) {
+        this.activeFishFunc();
       }
       if (this.boat.x >= 1460) {
         this.player.stop();
@@ -137,7 +137,7 @@ export default class Scene2 extends Phaser.Scene {
     }
 
     if (this.pauseFisher) {
-      this.fisher.pauseFollow();
+      this.fish.pauseFollow();
     }
 
     this.boatSprite.x = this.boat.x;
@@ -153,9 +153,9 @@ export default class Scene2 extends Phaser.Scene {
     }
   }
 
-  public activeFish() {
-    this.fish = false;
-    this.fisher.resumeFollow();
+  public activeFishFunc(): void {
+    this.activeFish = false;
+    this.fish.resumeFollow();
     this.pauseFisher = false;
   }
 }
