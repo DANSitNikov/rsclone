@@ -14,4 +14,7 @@ export default {
   pauseHeading: '已暫停',
   resume: '恢復',
   mainMenu: '主菜單',
+  restart: '再试一次',
+  newGame: '新游戏',
+  gameOverHeading: '你死了',
 };

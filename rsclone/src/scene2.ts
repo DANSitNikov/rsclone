@@ -86,6 +86,10 @@ export default class Scene2 extends Phaser.Scene {
     ) {
       this.boatActive = true;
       this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
+      if (this.boat.x >= 1460) {
+        this.player.stop();
+        this.scene.start('Scene3');
+      }
     }
 
     this.boatSprite.x = this.boat.x;
@@ -98,11 +102,6 @@ export default class Scene2 extends Phaser.Scene {
     // Kill the character in water
     if (this.player.player.y > 969 && this.player.isAlive) {
       this.player.die();
-    }
-
-    if (this.boat.x >= 1460) {
-      this.player.stop();
-      this.scene.start('Scene3');
     }
   }
 }

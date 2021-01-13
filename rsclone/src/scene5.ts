@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
+import Player from './player';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -20,9 +21,11 @@ export default class Scene5 extends Phaser.Scene {
 
   private switchClicked: boolean;
 
-  private switch;
+  private ladder: Phaser.GameObjects.Zone;
 
-  private player;
+  private switch: Phaser.GameObjects.Sprite;
+
+  private player: Player;
 
   resetCloudPosition: () => number;
 

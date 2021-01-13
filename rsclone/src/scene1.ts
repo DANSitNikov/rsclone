@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
+import Player from './player';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -12,11 +13,11 @@ export default class Scene1 extends Phaser.Scene {
 
   private lantern: Phaser.GameObjects.Sprite;
 
-  private spikes1;
+  private spikes1: Phaser.GameObjects.Zone;
 
-  private spikes2;
+  private spikes2: Phaser.GameObjects.Zone;
 
-  private player;
+  private player: Player;
 
   constructor() {
     super(sceneConfig);
@@ -43,8 +44,9 @@ export default class Scene1 extends Phaser.Scene {
     });
     this.lantern = this.add.sprite(300, 525, 'lantern', 1).setScale(0.8);
     this.lantern.anims.play('lantern', true);
-    this.spikes1 = this.add.image(1048, 810, 'spikes1');
-    this.spikes2 = this.add.image(1420, 620, 'spikes2');
+    this.spikes1 = this.add.zone(1048, 940, 200, 150);
+    this.spikes2 = this.add.zone(1420, 670, 160, 20);
+
   }
 
   public update(): void {
@@ -56,9 +58,6 @@ export default class Scene1 extends Phaser.Scene {
     if (Phaser.Geom.Intersects.RectangleToRectangle(
       spikeid.getBounds(), this.player.player.getBounds(),
     )) {
-      if (this.player.isAlive) {
-        this.player.player.y += 25;
-      }
       this.player.die();
     }
   }

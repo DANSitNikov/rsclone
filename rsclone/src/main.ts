@@ -10,6 +10,7 @@ import Scene2 from './scene2';
 import Scene3 from './scene3';
 import Scene4 from './scene4';
 import Scene5 from './scene5';
+import GameOverMenu from './gameOverMenu';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Long Legs journey',
@@ -38,7 +39,8 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       },
     ],
   },
-  scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2, Scene3, Scene4, Scene5, PauseMenu],
+  scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2,
+    Scene3, Scene4, Scene5, PauseMenu, GameOverMenu],
 
   backgroundColor: '#000000',
 
