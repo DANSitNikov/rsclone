@@ -119,7 +119,7 @@ export default class Player {
         prefix: '',
         suffix: '.png',
       }),
-      frameRate: 6,
+      frameRate: 9,
       repeat: 0,
     });
 
@@ -209,14 +209,6 @@ export default class Player {
         this.scene.scene.start(this.nextScene);
       }
     }
-    //debug of death
-    if (cursors.space.isDown) {
-      console.log(this.player.y);
-    }
-    // debug of player death
-    if (cursors.up.isDown && cursors.down.isDown) {
-      this.die();
-    }
   }
 
   public makeSound(key: string):void {
@@ -236,16 +228,16 @@ export default class Player {
   public die(): void {
     if (this.isAlive) {
       this.player.anims.play('die', true);
-      this.scene.matter.pause();
       this.makeSound('die');
       this.isAlive = false;
+      this.stop();
+      setTimeout(() => this.gameOver(), 1500);
     }
-    setTimeout(this.gameOver, 1800);
   }
 
   public gameOver(): void {
-    if (!this.isAlive) {
-      console.log('character died');
-    }
+    this.scene.scene.stop();
+    this.scene.sound.stopAll();
+    this.scene.scene.launch('GameOverMenu', { key: this.scene.scene.key });
   }
 }

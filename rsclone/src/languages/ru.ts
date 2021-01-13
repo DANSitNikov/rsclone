@@ -14,4 +14,7 @@ export default {
   pauseHeading: 'Пауза',
   resume: 'Продолжить',
   mainMenu: 'Главное меню',
+  restart: 'Попробовать снова',
+  newGame: 'Начать сначала',
+  gameOverHeading: 'Вы умерли',
 };

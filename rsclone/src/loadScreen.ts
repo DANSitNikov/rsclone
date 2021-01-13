@@ -73,9 +73,6 @@ export default class LoadScreen extends Phaser.Scene {
       assetText.destroy();
     });
 
-    this.load.image('ladder', 'assets/objects/ladder.png');
-    this.load.image('spikes1', 'assets/world/spikes1.png');
-    this.load.image('spikes2', 'assets/world/spikes2.png');
     this.load.spritesheet('demonHand',
       'assets/enemies/demonhand.png',
       { frameWidth: 100, frameHeight: 88 });

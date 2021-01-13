@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
 import initScene from './initScene';
+import Player from './player';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -20,13 +21,11 @@ export default class Scene5 extends Phaser.Scene {
 
   private switchClicked: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private ladder: any;
+  private ladder: Phaser.GameObjects.Zone;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private switch: any;
+  private switch: Phaser.GameObjects.Sprite;
 
-  private player: any;
+  private player: Player;
 
   resetCloudPosition: () => void;
 
