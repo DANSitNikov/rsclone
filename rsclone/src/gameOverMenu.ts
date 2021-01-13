@@ -51,16 +51,16 @@ export default class GameOverMenu extends Phaser.Scene {
 
     onClick = [
       (): void => {
-          this.sound.stopAll();
-          this.scene.start(this.lastScene);
+        this.sound.stopAll();
+        this.scene.start(this.lastScene);
       },
       (): void => {
-          this.sound.stopAll();
-          this.scene.start('Scene1');
+        this.sound.stopAll();
+        this.scene.start('Scene1');
       },
       (): void => {
-          this.sound.stopAll();
-          this.scene.start('Menu');
+        this.sound.stopAll();
+        this.scene.start('Menu');
       },
     ];
 }

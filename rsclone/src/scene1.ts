@@ -46,7 +46,6 @@ export default class Scene1 extends Phaser.Scene {
     this.lantern.anims.play('lantern', true);
     this.spikes1 = this.add.zone(1048, 940, 200, 150);
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
-
   }
 
   public update(): void {
