@@ -1,21 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import { switchLang } from './utilitites';
+import {
+  switchLang, setBtnActive, disableBtnActive, setSliderActive, disableSliderActive,
+} from './utilitites';
 
 export default class Settings extends Phaser.Scene {
-  lang: Record<string, string>;
+  private lang: Record<string, string>;
 
-  soundButton: Phaser.GameObjects.Text;
+  private soundButton: Phaser.GameObjects.Text;
 
-  backButton: Phaser.GameObjects.Text;
+  private backButton: Phaser.GameObjects.Text;
 
-  rexUI: any;
+  private rexUI;
 
-  pause: boolean;
+  private pause: boolean;
 
-  lastScene: string;
+  private lastScene: string;
 
-  langBtn: Phaser.GameObjects.Text;
+  private langBtn: Phaser.GameObjects.Text;
+
+  private volume;
 
   constructor() {
     super({ key: 'Settings', active: false });
@@ -46,7 +49,7 @@ export default class Settings extends Phaser.Scene {
         })
       .setOrigin(1);
 
-    this.rexUI.add
+    this.volume = this.rexUI.add
       .slider({
         x: this.game.renderer.width / 2 + 110,
         y: this.game.renderer.height / 2 - 15,
@@ -93,8 +96,14 @@ export default class Settings extends Phaser.Scene {
       .setInteractive({ cursor: 'pointer' });
 
     this.backButton.on('pointerup', this.backToMenu, this);
+    this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
+    this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
     this.langBtn.on('pointerup', this.switchLangHandler, this);
+    this.langBtn.on('pointerover', () => setBtnActive(this.langBtn), this);
+    this.langBtn.on('pointerout', () => disableBtnActive(this.langBtn), this);
+    this.volume.on('pointerover', () => setSliderActive(this.volume), this);
+    this.volume.on('pointerout', () => disableSliderActive(this.volume), this);
   }
 
   soundToggle():void {

@@ -1,5 +1,4 @@
 import * as Phaser from 'phaser';
-import { textSpanIntersectsWithTextSpan } from 'typescript';
 import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -9,9 +8,15 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene1 extends Phaser.Scene {
-  isPaused: boolean;
+  private isPaused: boolean;
 
   private lantern: Phaser.GameObjects.Sprite;
+
+  private spikes1;
+
+  private spikes2;
+
+  private player;
 
   constructor() {
     super(sceneConfig);
@@ -38,8 +43,8 @@ export default class Scene1 extends Phaser.Scene {
     });
     this.lantern = this.add.sprite(300, 525, 'lantern', 1).setScale(0.8);
     this.lantern.anims.play('lantern', true);
-    this.spikes1 = this.add.image(1048, 810, 'spikes1') as any;
-    this.spikes2 = this.add.image(1420, 620, 'spikes2') as any;
+    this.spikes1 = this.add.image(1048, 810, 'spikes1');
+    this.spikes2 = this.add.image(1420, 620, 'spikes2');
   }
 
   public update(): void {
