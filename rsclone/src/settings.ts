@@ -86,14 +86,14 @@ export default class Settings extends Phaser.Scene {
           font: '32px monospace',
         })
       .setOrigin(0, 0.5)
-      .setInteractive({ cursor: 'pointer' });
+      .setInteractive();
 
     this.backButton = this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
         font: '32px monospace',
       })
       .setOrigin(0.5)
-      .setInteractive({ cursor: 'pointer' });
+      .setInteractive();
 
     this.backButton.on('pointerup', this.backToMenu, this);
     this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
@@ -104,10 +104,6 @@ export default class Settings extends Phaser.Scene {
     this.langBtn.on('pointerout', () => disableBtnActive(this.langBtn), this);
     this.volume.on('pointerover', () => setSliderActive(this.volume), this);
     this.volume.on('pointerout', () => disableSliderActive(this.volume), this);
-  }
-
-  soundToggle():void {
-    this.sound.mute = !this.sound.mute;
   }
 
   backToMenu(): void {

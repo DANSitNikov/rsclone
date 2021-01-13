@@ -1,24 +1,28 @@
 import * as Phaser from 'phaser';
-import { setBtnActive, disableBtnActive } from './utilitites';
+import { setBtnActive, disableBtnActive, keyboardControl } from './utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
-  playButton: Phaser.GameObjects.Text;
+  private playButton: Phaser.GameObjects.Text;
 
-  settingsButton: Phaser.GameObjects.Text;
+  private settingsButton: Phaser.GameObjects.Text;
 
-  creditsButton: Phaser.GameObjects.Text;
+  private creditsButton: Phaser.GameObjects.Text;
 
-  menu: string[] | Phaser.GameObjects.Text[];
+  private menuNames: string[];
 
-  lang: Record<string, string>;
+  private menu: Phaser.GameObjects.Text[];
 
-  btn = {
+  private lang: Record<string, string>;
+
+  private btn = {
     font: '32px monospace',
   };
 
   private lastScene: string;
 
   private player;
+
+  private tabIndex: number;
 
   constructor() {
     super({ key: 'PauseMenu', active: false });
@@ -30,8 +34,9 @@ export default class PauseMenu extends Phaser.Scene {
   }
 
   create(): void {
+    this.tabIndex = 0;
     this.lang = this.registry.get('lang');
-    this.menu = [this.lang.resume, this.lang.settings, this.lang.mainMenu];
+    this.menuNames = [this.lang.resume, this.lang.settings, this.lang.mainMenu];
     this.add
       .text(
         this.game.renderer.width / 2,
@@ -43,7 +48,7 @@ export default class PauseMenu extends Phaser.Scene {
       )
       .setOrigin(0.5).setDepth(1000);
 
-    this.menu = this.menu.map((button, index) => this.add
+    this.menu = this.menuNames.map((button, index) => this.add
       .text(
         this.game.renderer.width / 2,
         this.game.renderer.height / 2 - 80 + index * 80,
@@ -51,7 +56,7 @@ export default class PauseMenu extends Phaser.Scene {
         this.btn,
       )
       .setOrigin(0.5)
-      .setInteractive({ cursor: 'pointer' }));
+      .setInteractive());
     this.menu.forEach((button, index) => {
       button.on('pointerup', this.onClick[index], this);
       button.on('pointerover', () => setBtnActive(button), this);
@@ -62,6 +67,15 @@ export default class PauseMenu extends Phaser.Scene {
       this.scene.stop();
       this.scene.resume(this.lastScene);
     }, this);
+
+    this.input.keyboard.on('keydown-ENTER', () => {
+      this.onClick[this.tabIndex]();
+    }, this);
+
+    this.input.keyboard.on('keydown', (e: KeyboardEvent) => {
+      this.tabIndex = keyboardControl(e, this.tabIndex, this.menu);
+    }, this);
+    setBtnActive(this.menu[this.tabIndex]);
   }
 
   onClick = [
@@ -76,7 +90,6 @@ export default class PauseMenu extends Phaser.Scene {
     (): void => {
       this.game.sound.stopAll();
       this.scene.stop(this.lastScene);
-      this.player.stop();
       this.scene.start('Menu');
     },
   ];

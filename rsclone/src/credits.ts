@@ -2,23 +2,23 @@ import * as Phaser from 'phaser';
 import { setBtnActive, disableBtnActive } from './utilitites';
 
 export default class Credits extends Phaser.Scene {
-  lang: Record<string, string>;
+  private lang: Record<string, string>;
 
-  backButton: Phaser.GameObjects.Text;
+  private backButton: Phaser.GameObjects.Text;
 
-  alisa: Phaser.GameObjects.Text;
+  private alisa: Phaser.GameObjects.Text;
 
-  saidazizkhon: Phaser.GameObjects.Text;
+  private saidazizkhon: Phaser.GameObjects.Text;
 
-  daniil: Phaser.GameObjects.Text;
+  private daniil: Phaser.GameObjects.Text;
 
-  gregory: Phaser.GameObjects.Text;
+  private gregory: Phaser.GameObjects.Text;
 
-  openLink: (link: string) => void;
+  private openLink: (link: string) => void;
 
-  creditsList: Phaser.GameObjects.Text[];
+  private creditsList: Phaser.GameObjects.Text[];
 
-  credits: (string | (string | boolean)[])[];
+  private credits: (string | (string | boolean)[])[];
 
   constructor() {
     super({ key: 'Credits', active: false });
@@ -55,16 +55,14 @@ export default class Credits extends Phaser.Scene {
     this.creditsList = this.credits.map((name, index) => {
       let style = { font: '24px monospace' };
       let n = String(name);
-      let cursor = { cursor: 'default' };
       if (name.length === 2) {
-        cursor = name[1] ? { cursor: 'pointer' } : { cursor: 'default' };
         style = { font: '32px monospace' };
         n = String(name[0]);
       }
       return this.add
         .text(this.game.renderer.width / 2, 250 + index * 70, n, style)
         .setOrigin(0.5)
-        .setInteractive(cursor);
+        .setInteractive();
     });
 
     this.backButton = this.add
@@ -72,7 +70,7 @@ export default class Credits extends Phaser.Scene {
         font: '32px monospace',
       })
       .setOrigin(0.5)
-      .setInteractive({ cursor: 'pointer' });
+      .setInteractive();
 
     this.creditsList.forEach((name, index) => {
       if (!this.credits[index][1] || this.credits[index].length !== 2) {
