@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+
 import {
   setBtnActive, disableBtnActive, keyboardControl,
 } from './utilitites';
