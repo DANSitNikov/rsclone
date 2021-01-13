@@ -14,11 +14,10 @@ export default class Player {
 
   private nextScene: any;
 
-  private switchStatus: boolean;
-
-  private switchClicked: boolean;
+  private active: boolean;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+
   constructor(scene, nextScene, x:number, y:number) {
     this.scene = scene;
     this.nextScene = nextScene;
@@ -117,11 +116,15 @@ export default class Player {
     };
     this.scene.events.on('update', this.update, this);
 
-    this.switchClicked = false;
-    this.switchStatus = false;
+    this.active = true;
+  }
+
+  stop():void {
+    this.active = false;
   }
 
   update():void {
+    if (!this.active) return;
     const cursors = this.scene.input.keyboard.createCursorKeys();
     const isOnGround = this.playerIsTouching.ground;
     const speed = 8;
@@ -187,30 +190,9 @@ export default class Player {
 
     // end level
     if (this.player.getBottomCenter().x >= 1640) {
-      if (this.nextScene) this.scene.scene.start(this.nextScene);
-    }
-
-    // switch
-    if (this.scene.switch) {
-      if (
-        Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.scene.switch.getBounds())
-      ) {
-        if (cursors.space.isDown && !this.scene.switchClicked) {
-          if (!this.scene.switchStatus) {
-            this.scene.switch.setTexture('switchGreen');
-            this.scene.switchStatus = true;
-            this.scene.sound.add('switch').play({ loop: false });
-          } else {
-            this.scene.switch.setTexture('switchRed');
-            this.scene.switchStatus = false;
-            this.scene.sound.add('switch').play({ loop: false });
-          }
-          this.scene.switchClicked = true;
-        }
-
-        if (cursors.space.isUp) {
-          this.scene.switchClicked = false;
-        }
+      if (this.nextScene) {
+        this.stop();
+        this.scene.scene.start(this.nextScene);
       }
     }
   }

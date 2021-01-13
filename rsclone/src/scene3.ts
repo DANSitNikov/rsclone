@@ -1,44 +1,97 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import Player from './player';
+import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
   key: 'Scene3',
+  physics: {
+    default: 'arcade',
+    arcade: {
+      debug: true,
+    },
+  },
 };
 
 export default class Scene3 extends Phaser.Scene {
-  private groundLayer: Phaser.Tilemaps.TilemapLayer;
-
-  private player: Player;
-
   private boat: any;
 
-  private boatSprite: any;
+  private boatSprite: Phaser.GameObjects.Sprite;
+
+  private player: any;
+
+  private waterHands: Phaser.GameObjects.Sprite;
+
+  private water: Phaser.GameObjects.Sprite;
+
+  private follower;
+  private path;
+  private graphics;
+  private fisher: any;
 
   constructor() {
     super(sceneConfig);
   }
 
   public create():void {
-    const map = this.make.tilemap({ key: 'map3' });
-    const tileset = map.addTilesetImage('bg3', 'bg3');
-    this.groundLayer = map.createLayer('Background', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true });
-    this.matter.world.convertTilemapLayer(this.groundLayer);
-    this.matter.world.setBounds(0, 0, 1680, 1040);
-    this.boat = this.matter.add.sprite(140, 990, 'boatCollides') as any;
+    const x = 130; // player position
+    const y = 560;
+    initScene(this, 3, x, y);
+    this.boat = this.matter.add.sprite(100, 670, 'boatCollides');
     this.boat.setIgnoreGravity(true).setFixedRotation();
-    this.boatSprite = this.add.sprite(140, 950, 'boat') as any;
-    this.player = new Player(this, '', 150, 890);
+    this.boat.visible = false;
+    this.boatSprite = this.add.sprite(100, 0, 'boat');
+
+    this.anims.create({
+      key: 'waterHands',
+      frames: this.anims.generateFrameNames('waterHands', {
+        start: 1,
+        end: 6,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 7,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'water2',
+      frames: this.anims.generateFrameNames('water2', {
+        start: 1,
+        end: 2,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 3,
+      repeat: -1,
+    });
+    this.waterHands = this.add.sprite(0, 900, 'waterHands', 2);
+    this.waterHands.anims.play('waterHands', true);
+    this.waterHands = this.add.sprite(300, 910, 'waterHands').setScale(-0.9, 1);
+    this.waterHands.anims.play('waterHands', true);
+    this.waterHands = this.add.sprite(600, 899, 'waterHands', 3).setScale(0.99);
+    this.waterHands.anims.play('waterHands', true);
+    this.waterHands = this.add.sprite(900, 899, 'waterHands', 1).setScale(-0.9, 1);
+    this.waterHands.anims.play('waterHands', true);
+
+    this.water = this.add.sprite(617, 824, 'water2', 1);
+    this.water.anims.play('water2', true);
+
+    this.activeFish();
   }
 
   public update():void {
-    const boatSpeed = 2;
+    const boatSpeed = 1.8;
     const boatVelocity = this.boat.body.velocity;
 
-    if (this.boat.x < 1060) {
+    const PlayerVerticalCenter = new Phaser.Geom.Line(
+        this.player.player.getBottomCenter().x,
+        this.player.player.getCenter().y,
+        this.player.player.getTopCenter().x,
+        this.player.player.getTopCenter().y,
+    );
+
+    if (this.boat.x < 1000) {
       this.boat.setVelocityX(boatSpeed);
     }
 
@@ -51,9 +104,55 @@ export default class Scene3 extends Phaser.Scene {
       this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
     }
 
+    if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.fisher.getBounds())) {
+      console.log('kick');
+    }
+
     this.boatSprite.x = this.boat.x;
-    this.boatSprite.y = this.boat.y - 50;
+    this.boatSprite.y = this.boat.y - 70;
+    if (this.boat.y > 670) this.boat.y = 670;
+    if (boatVelocity.y > 3) this.boat.setVelocityY(2);
 
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
+  }
+
+  public activeFish():void {
+    const points = [
+      0, 760, 100, 765, 150, 750, 200, 745,
+      250, 740, 300, 750, 400, 760, 500, 750,
+      550, 720, 600, 690, 630, 670, 640, 650,
+      640, 610, 620, 570, 590, 560, 560, 560,
+      530, 560, 480, 560, 440, 565, 410, 580,
+      400, 600, 405, 620, 420, 640, 440, 680,
+      420, 700, 400, 730, 350, 740, 300, 750,
+      250, 760, 200, 780, 150, 800, 100, 820,
+      0, 830, -150, 900,
+    ];
+
+    const curve = new Phaser.Curves.Spline(points);
+
+    this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+
+    this.path = new Phaser.Curves.Path();
+
+    this.path.add(curve);
+
+    this.graphics = this.add.graphics();
+    this.graphics.lineStyle(2, 0xffffff, 1);
+    curve.draw(this.graphics);
+
+    this.fisher = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
+
+    for (let i = 0; i < curve.points.length; i += 1) {
+      this.graphics.fillCircle(curve.points[i].x, curve.points[i].y, 4);
+    }
+
+    this.fisher.startFollow({
+      ease: 'Linear',
+      repeat: 0,
+      duration: 7300,
+      rotateToPath: true,
+      rotationOffset: 30,
+    });
   }
 }

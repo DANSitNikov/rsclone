@@ -1,121 +1,161 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Phaser from 'phaser';
-import Player from './player';
+import initScene from './initScene';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
-  active: false,
-  visible: false,
-  key: 'Scene2',
+    active: false,
+    visible: false,
+    key: 'Scene2',
 };
 
 export default class Scene2 extends Phaser.Scene {
-  private groundLayer: Phaser.Tilemaps.TilemapLayer;
+    private boat: any;
 
-  private player: Player;
+    private boatSprite: any;
 
-  private boat: any;
+    private boatActive: boolean;
 
-  private boatSprite: any;
+    private player: any;
 
-  private boatActive: boolean;
+    private waterHands: Phaser.GameObjects.Sprite;
 
-  private fish: any;
+    private water: Phaser.GameObjects.Sprite;
 
-  private fishUp: number = 0;
+    private fish: boolean;
+    private pauseFisher: boolean;
 
-  private fishBack: number = 0;
+    private follower;
+    private path;
+    private graphics;
+    private fisher: any;
 
-  private fishDown: number = 0;
-
-  constructor() {
-    super(sceneConfig);
-  }
-
-  public create():void {
-    const map = this.make.tilemap({ key: 'map2' });
-    const tileset = map.addTilesetImage('bg2', 'bg2');
-    this.groundLayer = map.createLayer('Background', tileset);
-    this.groundLayer.setCollisionByProperty({ collides: true });
-    this.matter.world.convertTilemapLayer(this.groundLayer);
-    this.matter.world.setBounds(0, 0, 1680, 1040);
-    this.boat = this.matter.add.sprite(300, 100, 'boatCollides') as any;
-    this.boat.setIgnoreGravity(true).setFixedRotation();
-    this.boatSprite = this.add.sprite(300, 10, 'boat') as any;
-    this.player = new Player(this, '', 0, 500);
-    this.boatActive = false;
-
-    this.fish = this.matter.add.sprite(140, 990, 'angry-fish') as any;
-    this.fish.setIgnoreGravity(true).setFixedRotation();
-
-    setInterval(() => {
-      this.fishUp = 1;
-    }, 6000);
-  }
-
-  public update():void {
-    const boatSpeed = 2;
-    const boatVelocity = this.boat.body.velocity;
-
-    if (this.boatActive && this.boat.x < 1460) {
-      this.boat.setVelocityX(boatSpeed);
+    constructor() {
+        super(sceneConfig);
     }
 
-    if (
-      Phaser.Geom.Intersects.RectangleToRectangle(
-        this.boatSprite.getBounds(),
-        this.player.player.getBounds(),
-      )
-    ) {
-      this.boatActive = true;
-      this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
+    public create(): void {
+        const x = 0; // player position
+        const y = 350;
+        initScene(this, 2, x, y);
+
+        this.boat = this.matter.add.sprite(740, 700, 'boatCollides') as any;
+        this.boat.visible = false;
+        this.boat.setIgnoreGravity(true).setFixedRotation();
+        this.boatSprite = this.add.sprite(0, 0, 'boat') as any;
+        this.boatActive = false;
+
+        this.anims.create({
+            key: 'waterHands',
+            frames: this.anims.generateFrameNames('waterHands', {
+                start: 1,
+                end: 6,
+                prefix: '',
+                suffix: '.png',
+            }),
+            frameRate: 7,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'water',
+            frames: this.anims.generateFrameNames('water', {
+                start: 1,
+                end: 2,
+                prefix: '',
+                suffix: '.png',
+            }),
+            frameRate: 3,
+            repeat: -1,
+        });
+
+        this.waterHands = this.add.sprite(800, 900, 'waterHands', 2);
+        this.waterHands.anims.play('waterHands', true);
+        this.waterHands = this.add.sprite(1100, 910, 'waterHands').setScale(-0.9, 1);
+        this.waterHands.anims.play('waterHands', true);
+        this.waterHands = this.add.sprite(1400, 899, 'waterHands', 3).setScale(0.99);
+        this.waterHands.anims.play('waterHands', true);
+
+        this.water = this.add.sprite(1060, 835, 'water', 1);
+        this.water.anims.play('water', true);
+
+        this.fish = true;
+        const points = [
+            590, 800, 720, 780, 800, 750, 850, 745,
+            900, 740, 1060, 740, 1200, 740,
+            1300, 750, 1400, 740, 1500, 750,
+            1600, 750, 1700, 760, 1800, 760,
+        ];
+
+        const curve = new Phaser.Curves.Spline(points);
+
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+
+        this.path = new Phaser.Curves.Path();
+
+        this.path.add(curve);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(2, 0xffffff, 1);
+        curve.draw(this.graphics);
+
+        this.fisher = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
+
+        for (let i = 0; i < curve.points.length; i += 1) {
+            this.graphics.fillCircle(curve.points[i].x, curve.points[i].y, 4);
+        }
+
+        this.fisher.startFollow({
+            ease: 'Linear',
+            repeat: 0,
+            duration: 9000,
+            rotateToPath: true,
+            rotationOffset: 30,
+        });
+
+        this.pauseFisher = true;
     }
 
-    this.boatSprite.x = this.boat.x;
-    this.boatSprite.y = this.boat.y - 50;
+    public update(): void {
+        const boatSpeed = 1.8;
+        const boatVelocity = this.boat.body.velocity;
 
-    if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
+        if (this.boatActive && this.boat.x < 1460) {
+            this.boat.setVelocityX(boatSpeed);
+        }
 
-    if (this.boat.x >= 1460) this.scene.start('Scene3');
+        if (
+            Phaser.Geom.Intersects.RectangleToRectangle(
+                this.boatSprite.getBounds(),
+                this.player.player.getBounds(),
+            )
+        ) {
+            this.boatActive = true;
+            this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
+            if (this.fish) {
+                this.activeFish();
+            }
+        }
 
-    if (this.fishUp === 1) {
-      this.fishUpFunc();
-    } else if (this.fishBack === 2) {
-      this.fishBackFunc();
-    } else if (this.fishDown === 3) {
-      this.fishDownFunc();
-    } else {
-      this.fishSwim();
+        if (this.pauseFisher) {
+            this.fisher.pauseFollow();
+        }
+
+        this.boatSprite.x = this.boat.x;
+        this.boatSprite.y = this.boat.y - 70;
+        if (this.boat.y > 700) this.boat.y = 700;
+
+        if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
+        if (boatVelocity.y > 3) this.boat.setVelocityY(2);
+
+        if (this.boat.x >= 1460) {
+            this.player.stop();
+            this.scene.start('Scene3');
+        }
     }
-  }
 
-  public fishUpFunc():void {
-    setTimeout(() => {
-      this.fishUp = 0;
-      this.fishBack = 2;
-    }, 1000);
-    this.fish.angle = 90;
-    this.fish.y -= 4;
-  }
-
-  public fishBackFunc():void {
-    setTimeout(() => {
-      this.fishBack = 0;
-      this.fishDown = 3;
-    }, 1000);
-    this.fish.x -= 5
-    this.fish.angle = 180;
-  }
-
-  public fishDownFunc():void {
-    setTimeout(() => {
-      this.fishDown = 0;
-    }, 1000);
-    this.fish.y += 4;
-    this.fish.angle = 270;
-  }
-
-  public fishSwim():void {
-    this.fish.x += 3;
-    this.fish.angle = 0;
-  }
+    public activeFish() {
+        this.fish = false;
+        this.fisher.resumeFollow();
+        this.pauseFisher = false;
+    }
 }

@@ -67,19 +67,20 @@ export default class LoadScreen extends Phaser.Scene {
       assetText.destroy();
     });
 
-    this.load.image('ground', 'assets/world/ground.png');
-    this.load.image('ladder', 'assets/objects/ladder.png');
     this.load.image('boat', 'assets/objects/boat.png');
     this.load.image('boatCollides', 'assets/objects/boatCollides.png');
+    this.load.image('bgLight', 'assets/objects/bgLight.png');
 
-    this.load.image('bg', 'assets/world/bg.png');
-    this.load.image('bg1', 'assets/world/bg1.png');
-    this.load.image('bg2', 'assets/world/bg2.png');
+    this.load.image('bg5', 'assets/world/bg5.png');
+    this.load.image('bg4', 'assets/world/bg4.png');
     this.load.image('bg3', 'assets/world/bg3.png');
-    this.load.tilemapTiledJSON('map', 'assets/world/bg.json', null);
-    this.load.tilemapTiledJSON('map1', 'assets/world/bg1.json', null);
-    this.load.tilemapTiledJSON('map2', 'assets/world/bg2.json', null);
+    this.load.image('bg2', 'assets/world/bg2.png');
+    this.load.image('bg1', 'assets/world/bg1.png');
+    this.load.tilemapTiledJSON('map5', 'assets/world/bg5.json', null);
+    this.load.tilemapTiledJSON('map4', 'assets/world/bg4.json', null);
     this.load.tilemapTiledJSON('map3', 'assets/world/bg3.json', null);
+    this.load.tilemapTiledJSON('map2', 'assets/world/bg2.json', null);
+    this.load.tilemapTiledJSON('map1', 'assets/world/bg1.json', null);
     this.load.atlas(
       'playerWalk',
       'assets/character/walk/playerWalk.png',
@@ -95,6 +96,26 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/character/jump/playerJump.png',
       'assets/character/jump/playerJump.json',
     );
+    this.load.atlas(
+      'waterHands',
+      'assets/enemies/waterHands.png',
+      'assets/enemies/waterHands.json',
+    );
+    this.load.atlas(
+      'lantern',
+      'assets/objects/lantern.png',
+      'assets/objects/lantern.json',
+    );
+    this.load.atlas(
+      'water',
+      'assets/objects/water.png',
+      'assets/objects/water.json',
+    );
+    this.load.atlas(
+      'water2',
+      'assets/objects/water2.png',
+      'assets/objects/water2.json',
+    );
 
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');
@@ -106,7 +127,7 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
 
-    this.load.image('angry-fish', 'assets/fish.png');
+    this.load.image('angry-fish', 'assets/fish.svg');
 
     this.load.audio('wind', 'assets/sounds/wind.mp3');
     this.load.audio('wind2', 'assets/sounds/wind2.mp3');
@@ -130,7 +151,7 @@ export default class LoadScreen extends Phaser.Scene {
   private loadVolume(): void {
     const volume = 'volume' in localStorage ? Number(localStorage.getItem('volume')) : 0.5;
 
-    this.sound.volume = volume;
+    this.game.sound.volume = volume;
     localStorage.setItem('volume', String(volume));
   }
 }
