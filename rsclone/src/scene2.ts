@@ -76,9 +76,6 @@ export default class Scene2 extends Phaser.Scene {
     this.waterHands = this.add.sprite(1400, 899, 'waterHands', 3).setScale(0.99);
     this.waterHands.anims.play('waterHands', true);
 
-    this.water = this.add.sprite(1060, 835, 'water', 1);
-    this.water.anims.play('water', true);
-
     this.activeFish = true;
     const points = [
       590, 800, 720, 780, 800, 750, 850, 745,
@@ -109,6 +106,9 @@ export default class Scene2 extends Phaser.Scene {
     });
 
     this.pauseFish = true;
+
+    this.water = this.add.sprite(1060, 835, 'water', 1);
+    this.water.anims.play('water', true);
   }
 
   public update(): void {
@@ -153,7 +153,7 @@ export default class Scene2 extends Phaser.Scene {
     }
   }
 
-  public activeFishFunc(): void {
+  public activeFishFunc():void {
     this.activeFish = false;
     this.fish.resumeFollow();
     this.pauseFish = false;

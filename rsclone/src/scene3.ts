@@ -74,10 +74,10 @@ export default class Scene3 extends Phaser.Scene {
     this.waterHands = this.add.sprite(900, 899, 'waterHands', 1).setScale(-0.9, 1);
     this.waterHands.anims.play('waterHands', true);
 
+    this.activeFish();
+
     this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
-
-    this.activeFish();
   }
 
   public update():void {
@@ -100,7 +100,9 @@ export default class Scene3 extends Phaser.Scene {
         this.player.player.getBounds(),
       )
     ) {
-      this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
+      if (this.player.isAlive) {
+        this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
+      }
     }
 
     if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.fish.getBounds())) {
@@ -122,7 +124,7 @@ export default class Scene3 extends Phaser.Scene {
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
   }
 
-  public activeFish(): void {
+  public activeFish():void {
     const points = [
       0, 760, 100, 765, 150, 750, 200, 745,
       250, 740, 300, 750, 400, 760, 500, 750,
@@ -152,5 +154,8 @@ export default class Scene3 extends Phaser.Scene {
       rotateToPath: true,
       rotationOffset: 30,
     });
+
+    this.water = this.add.sprite(617, 824, 'water2', 1);
+    this.water.anims.play('water2', true);
   }
 }
