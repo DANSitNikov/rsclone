@@ -108,69 +108,65 @@ export default class Settings extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive();
 
-    const btnLabelsArr = [
-      this.soundLabel,
-      this.langLabel,
-      this.backButton,
-    ];
+    const btnList = {
+      labels: [
+        this.soundLabel,
+        this.langLabel,
+        this.backButton,
+      ],
+      btns: [
+        this.volume,
+        this.langBtn,
+        this.backButton,
+      ],
+      handlers: [
+        null,
+        () => this.switchLangHandler(),
+        () => this.backToMenu(),
+      ],
+    };
 
-    const btnArr = [
-      null,
-      () => this.switchLangHandler(),
-      () => this.backToMenu(),
-    ];
+    btnList.btns.forEach((button, index) => {
+      if (btnList.handlers[index]) {
+        button.on('pointerup', btnList.handlers[index], this);
+      }
+      button.on('pointerover', () => {
+        disableBtnActive(btnList.labels[this.tabIndex]);
+        this.tabIndex = index;
+        setBtnActive(btnList.labels[this.tabIndex]);
+      }, this);
+      button.on('pointerout', () => disableBtnActive(btnList.labels[this.tabIndex]), this);
+    });
 
-    this.backButton.on('pointerup', this.backToMenu, this);
-    this.backButton.on('pointerover', () => {
-      disableBtnActive(btnLabelsArr[this.tabIndex]);
-      this.tabIndex = btnLabelsArr.indexOf(this.backButton);
-      setBtnActive(this.backButton);
-    }, this);
-    this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
+    btnList.labels.forEach((button, index) => {
+      if (btnList.handlers[index]) {
+        button.on('pointerup', btnList.handlers[index], this);
+      }
+      button.on('pointerover', () => {
+        disableBtnActive(btnList.labels[this.tabIndex]);
+        this.tabIndex = index;
+        setBtnActive(btnList.labels[this.tabIndex]);
+      }, this);
+      button.on('pointerout', () => disableBtnActive(btnList.labels[this.tabIndex]), this);
+    });
+
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
-    this.langLabel.on('pointerup', this.switchLangHandler, this);
-    this.langLabel.on('pointerover', () => {
-      disableBtnActive(btnLabelsArr[this.tabIndex]);
-      this.tabIndex = btnLabelsArr.indexOf(this.langLabel);
-      setBtnActive(this.langLabel);
-    }, this);
-    this.langLabel.on('pointerout', () => disableBtnActive(this.langLabel), this);
-    this.soundLabel.on('pointerover', () => {
-      disableBtnActive(btnLabelsArr[this.tabIndex]);
-      this.tabIndex = btnLabelsArr.indexOf(this.soundLabel);
-      setBtnActive(this.soundLabel);
-    }, this);
-    this.soundLabel.on('pointerout', () => disableBtnActive(this.soundLabel), this);
-    this.langBtn.on('pointerup', this.switchLangHandler, this);
-    this.langBtn.on('pointerover', () => {
-      disableBtnActive(btnLabelsArr[this.tabIndex]);
-      this.tabIndex = btnLabelsArr.indexOf(this.langLabel);
-      setBtnActive(this.langLabel);
-    }, this);
-    this.langBtn.on('pointerout', () => disableBtnActive(this.langLabel), this);
-    this.volume.on('pointerover', () => {
-      disableBtnActive(btnLabelsArr[this.tabIndex]);
-      this.tabIndex = btnLabelsArr.indexOf(this.soundLabel);
-      setBtnActive(this.soundLabel);
-    }, this);
-    this.volume.on('pointerout', () => disableBtnActive(this.soundLabel), this);
-
     this.input.keyboard.on('keydown-ENTER', () => {
-      if (typeof btnArr[this.tabIndex] === 'function') {
-        btnArr[this.tabIndex]();
+      if (typeof btnList.handlers[this.tabIndex] === 'function') {
+        btnList.handlers[this.tabIndex]();
       }
     }, this);
 
     this.input.keyboard.on('keydown', (e) => {
-      this.tabIndex = keyboardControl(e, this.tabIndex, btnLabelsArr);
+      this.tabIndex = keyboardControl(e, this.tabIndex, btnList.labels);
 
       const currentValue = this.volume.getValue();
       if (!(e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;
-      if (this.tabIndex !== btnLabelsArr.indexOf(this.soundLabel)) return;
+      if (this.tabIndex !== btnList.labels.indexOf(this.soundLabel)) return;
       const n = e.key === 'ArrowLeft' ? -0.1 : 0.1;
       this.volume.setValue(Math.round((currentValue + n) * 10) / 10);
     }, this);
-    setBtnActive(btnLabelsArr[this.tabIndex]);
+    setBtnActive(btnList.labels[this.tabIndex]);
   }
 
   backToMenu(): void {
