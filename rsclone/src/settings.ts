@@ -58,7 +58,8 @@ export default class Settings extends Phaser.Scene {
         {
           font: '32px monospace',
         })
-      .setOrigin(1);
+      .setOrigin(1)
+      .setInteractive();
 
     this.volume = this.rexUI.add
       .slider({
@@ -87,7 +88,8 @@ export default class Settings extends Phaser.Scene {
         {
           font: '32px monospace',
         })
-      .setOrigin(1, 0.5);
+      .setOrigin(1, 0.5)
+      .setInteractive();
 
     this.langBtn = this.add
       .text(this.game.renderer.width / 2 + 10,
@@ -122,6 +124,11 @@ export default class Settings extends Phaser.Scene {
     this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
     this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
+    this.langLabel.on('pointerup', this.switchLangHandler, this);
+    this.langLabel.on('pointerover', () => setBtnActive(this.langLabel), this);
+    this.langLabel.on('pointerout', () => disableBtnActive(this.langLabel), this);
+    this.soundLabel.on('pointerover', () => setBtnActive(this.soundLabel), this);
+    this.soundLabel.on('pointerout', () => disableBtnActive(this.soundLabel), this);
     this.langBtn.on('pointerup', this.switchLangHandler, this);
     this.langBtn.on('pointerover', () => setBtnActive(this.langLabel), this);
     this.langBtn.on('pointerout', () => disableBtnActive(this.langLabel), this);
