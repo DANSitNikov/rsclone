@@ -107,7 +107,7 @@ export default class Scene2 extends Phaser.Scene {
 
     this.pauseFish = true;
 
-    this.water = this.add.sprite(1060, 835, 'water', 1);
+    this.water = this.add.sprite(1060, 835, 'water', 1).setAlpha(0.6);
     this.water.anims.play('water', true);
   }
 
