@@ -27,13 +27,16 @@ export default class Settings extends Phaser.Scene {
 
   private langLabel: Phaser.GameObjects.Text;
 
+  private player;
+
   constructor() {
     super({ key: 'Settings', active: false });
   }
 
-  init(data :{ key: string; pause: boolean; }): void {
+  init(data :{ key: string; pause: boolean; player }): void {
     this.lastScene = data.key;
     this.pause = data.pause;
+    this.player = data.player;
   }
 
   create(): void {
@@ -147,7 +150,7 @@ export default class Settings extends Phaser.Scene {
     if (!this.pause) {
       this.scene.start('Menu');
     } else {
-      this.scene.start('PauseMenu', { key: this.lastScene });
+      this.scene.start('PauseMenu', { key: this.lastScene, player: this.player });
     }
   }
 

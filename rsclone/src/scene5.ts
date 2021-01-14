@@ -53,6 +53,13 @@ export default class Scene5 extends Phaser.Scene {
 
   public update():void {
     const cursors = this.input.keyboard.createCursorKeys();
+    const keyboardKeys = this.input.keyboard.addKeys({
+      action: 'e',
+    });
+    // @ts-ignore
+    const action = cursors.space.isDown || keyboardKeys.action.isDown;
+
+
     this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
     this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.3);
 
@@ -66,7 +73,7 @@ export default class Scene5 extends Phaser.Scene {
     if (
       Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.switch.getBounds())
     ) {
-      if (cursors.space.isDown && !this.switchClicked) {
+      if (action && !this.switchClicked) {
         if (!this.switchStatus) {
           this.switch.setTexture('switchGreen');
           this.switchStatus = true;
@@ -79,11 +86,10 @@ export default class Scene5 extends Phaser.Scene {
           this.light.visible = false;
         }
         this.switchClicked = true;
+        setTimeout(() => this.switchClicked = false, 500)
       }
 
-      if (cursors.space.isUp) {
-        this.switchClicked = false;
-      }
+
     }
   }
 
