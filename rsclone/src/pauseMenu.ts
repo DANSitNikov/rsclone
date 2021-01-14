@@ -8,6 +8,8 @@ export default class PauseMenu extends Phaser.Scene {
 
   creditsButton: Phaser.GameObjects.Text;
 
+  statisticButton: Phaser.GameObjects.Text;
+
   menu: string[] | Phaser.GameObjects.Text[];
 
   lang: Record<string, string>;
@@ -31,7 +33,7 @@ export default class PauseMenu extends Phaser.Scene {
 
   create(): void {
     this.lang = this.registry.get('lang');
-    this.menu = [this.lang.resume, this.lang.settings, this.lang.mainMenu];
+    this.menu = [this.lang.resume, this.lang.settings, this.lang.statistic, this.lang.mainMenu];
     this.add
       .text(
         this.game.renderer.width / 2,
@@ -78,6 +80,10 @@ export default class PauseMenu extends Phaser.Scene {
       this.scene.stop(this.lastScene);
       this.player.stop();
       this.scene.start('Menu');
+    },
+    (): void => {
+      this.scene.start('Statistic', { key: this.lastScene, pause: true });
+      this.scene.bringToTop('Statistic');
     },
   ];
 }

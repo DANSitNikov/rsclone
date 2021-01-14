@@ -5,6 +5,7 @@ export default {
   play: 'Play',
   settings: 'Settings',
   credits: 'Credits',
+  statistic: 'Statistic',
   soundVolume: 'Sound volume:',
   language: 'Language:',
   languageName: 'English',

@@ -8,6 +8,8 @@ export default class Menu extends Phaser.Scene {
 
   creditsButton: Phaser.GameObjects.Text;
 
+  statisticButton: Phaser.GameObjects.Text;
+
   menu: string[] | Phaser.GameObjects.Text[];
 
   btn = {
@@ -22,7 +24,7 @@ export default class Menu extends Phaser.Scene {
 
   create(): void {
     this.lang = this.registry.get('lang');
-    this.menu = [this.lang.play, this.lang.settings, this.lang.credits];
+    this.menu = [this.lang.play, this.lang.settings, this.lang.credits, this.lang.statistic];
     this.add
       .text(
         this.game.renderer.width / 2,
@@ -61,6 +63,10 @@ export default class Menu extends Phaser.Scene {
 
     (): void => {
       this.scene.start('Credits');
+    },
+
+    (): void => {
+      this.scene.start('Statistic');
     },
   ];
 }

@@ -5,6 +5,7 @@ export default {
   play: '玩',
   settings: '設定值',
   credits: '學分',
+  statistic: '統計',
   soundVolume: '音量:',
   language: '語言:',
   languageName: '漢語',

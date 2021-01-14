@@ -5,6 +5,7 @@ export default {
   play: 'Играть',
   settings: 'Настройки',
   credits: 'Авторы',
+  statistic: 'Статистика',
   soundVolume: 'Громкость звуков',
   language: 'Язык:',
   languageName: 'Русский',
