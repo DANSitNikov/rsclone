@@ -121,18 +121,38 @@ export default class Settings extends Phaser.Scene {
     ];
 
     this.backButton.on('pointerup', this.backToMenu, this);
-    this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
+    this.backButton.on('pointerover', () => {
+      disableBtnActive(btnLabelsArr[this.tabIndex]);
+      this.tabIndex = btnLabelsArr.indexOf(this.backButton);
+      setBtnActive(this.backButton);
+    }, this);
     this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
     this.langLabel.on('pointerup', this.switchLangHandler, this);
-    this.langLabel.on('pointerover', () => setBtnActive(this.langLabel), this);
+    this.langLabel.on('pointerover', () => {
+      disableBtnActive(btnLabelsArr[this.tabIndex]);
+      this.tabIndex = btnLabelsArr.indexOf(this.langLabel);
+      setBtnActive(this.langLabel);
+    }, this);
     this.langLabel.on('pointerout', () => disableBtnActive(this.langLabel), this);
-    this.soundLabel.on('pointerover', () => setBtnActive(this.soundLabel), this);
+    this.soundLabel.on('pointerover', () => {
+      disableBtnActive(btnLabelsArr[this.tabIndex]);
+      this.tabIndex = btnLabelsArr.indexOf(this.soundLabel);
+      setBtnActive(this.soundLabel);
+    }, this);
     this.soundLabel.on('pointerout', () => disableBtnActive(this.soundLabel), this);
     this.langBtn.on('pointerup', this.switchLangHandler, this);
-    this.langBtn.on('pointerover', () => setBtnActive(this.langLabel), this);
+    this.langBtn.on('pointerover', () => {
+      disableBtnActive(btnLabelsArr[this.tabIndex]);
+      this.tabIndex = btnLabelsArr.indexOf(this.langBtn);
+      setBtnActive(this.langBtn);
+    }, this);
     this.langBtn.on('pointerout', () => disableBtnActive(this.langLabel), this);
-    this.volume.on('pointerover', () => setBtnActive(this.soundLabel), this);
+    this.volume.on('pointerover', () => {
+      disableBtnActive(btnLabelsArr[this.tabIndex]);
+      this.tabIndex = btnLabelsArr.indexOf(this.soundLabel);
+      setBtnActive(this.soundLabel);
+    }, this);
     this.volume.on('pointerout', () => disableBtnActive(this.soundLabel), this);
 
     this.input.keyboard.on('keydown-ENTER', () => {
