@@ -104,6 +104,13 @@ export default class Settings extends Phaser.Scene {
     this.langBtn.on('pointerout', () => disableBtnActive(this.langBtn), this);
     this.volume.on('pointerover', () => setSliderActive(this.volume), this);
     this.volume.on('pointerout', () => disableSliderActive(this.volume), this);
+
+    this.input.keyboard.on('keydown', (e) => {
+      const currentValue = this.volume.getValue();
+      if (!(e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;
+      const n = e.key === 'ArrowLeft' ? -0.1 : 0.1;
+      this.volume.setValue(Math.round((currentValue + n) * 10) / 10);
+    }, this);
   }
 
   backToMenu(): void {
