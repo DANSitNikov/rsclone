@@ -75,7 +75,7 @@ export default class Menu extends Phaser.Scene {
     },
 
     (): void => {
-      this.scene.start('Settings');
+      this.scene.start('Settings', {pause: false});
     },
 
     (): void => {
