@@ -1,8 +1,20 @@
-import { setLang, switchLang } from './src/utilitites';
+import { setLang, switchLang, changeCurretIndex } from './src/utilitites';
 import en from './src/languages/en';
 import ru from './src/languages/ru';
 import chTr from './src/languages/chTr';
 
+describe('changeCurretIndex check', () => {
+  test('basic tests', () => {
+    expect(changeCurretIndex(10, 5, 1)).toBe(6);
+    expect(changeCurretIndex(10, 5, -1)).toBe(4);
+  })
+  test('more then list length -1 return 0', () => {
+    expect(changeCurretIndex(10, 9, 1)).toBe(0);
+  })
+  test('less then list length return maxlength - 1', () => {
+    expect(changeCurretIndex(10, 0, -1)).toBe(9);
+  })
+});
 
 describe('setLang check', () => {
   test('en to en', () => {

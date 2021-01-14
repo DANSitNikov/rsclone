@@ -55,8 +55,8 @@ function disableSliderActive(slider: { children: any[]; }):void {
 }
 
 const changeCurretIndex = (
-  listLength, index, direction,
-) => (index + direction > -1 ? (index + direction) % listLength : listLength - 1);
+  listLength:number, index:number, direction:number,
+):number => (index + direction > -1 ? (index + direction) % listLength : listLength - 1);
 
 function keyboardControl(e:KeyboardEvent, tab:number, btnList:Phaser.GameObjects.Text[]):number {
   let tabIndex = tab;
@@ -79,4 +79,5 @@ export {
   setSliderActive,
   disableSliderActive,
   keyboardControl,
+  changeCurretIndex,
 };

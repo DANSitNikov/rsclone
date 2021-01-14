@@ -10,6 +10,10 @@ describe('language files check', () => {
       Object.keys(ru).length === Object.keys(chTr).length;
     expect(bool).toBeTruthy();
   })
+  test('Same keys in lang files', () => {
+    const bool = compareArrays(Object.keys(en), Object.keys(ru), Object.keys(chTr));
+    expect(bool).toBeTruthy();
+  })
   test('no ru in en', () => {
     expect(findLetters(en, ruRegexp)).toBeFalsy();
   })
@@ -26,4 +30,8 @@ describe('language files check', () => {
 
 function findLetters(langObj, regexp){
   return Object.values(langObj).some(element => regexp.test(element));
+}
+
+function compareArrays(a, b, c){
+ return a.every((e, i) => e === b[i] && e === c[i]);
 }
