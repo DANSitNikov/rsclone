@@ -70,13 +70,13 @@ export default class PauseMenu extends Phaser.Scene {
       this.scene.resume(this.lastScene);
     },
     (): void => {
-      this.scene.start('Settings', { key: this.lastScene, pause: true });
+      this.scene.start('Settings', { key: this.lastScene, pause: true, player: this.player });
       this.scene.bringToTop('Settings');
     },
     (): void => {
       this.game.sound.stopAll();
-      this.scene.stop(this.lastScene);
       this.player.stop();
+      this.scene.stop(this.lastScene);
       this.scene.start('Menu');
     },
   ];
