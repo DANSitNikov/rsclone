@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import {
-  switchLang, setBtnActive, disableBtnActive, setSliderActive, disableSliderActive,
+  switchLang, setBtnActive, disableBtnActive,
+  keyboardControl,
 } from './utilitites';
 
 export default class Settings extends Phaser.Scene {
@@ -20,6 +21,12 @@ export default class Settings extends Phaser.Scene {
 
   private volume;
 
+  private tabIndex: number;
+
+  private soundLabel: Phaser.GameObjects.Text;
+
+  private langLabel: Phaser.GameObjects.Text;
+
   constructor() {
     super({ key: 'Settings', active: false });
   }
@@ -30,6 +37,7 @@ export default class Settings extends Phaser.Scene {
   }
 
   create(): void {
+    this.tabIndex = this.tabIndex || 0;
     this.lang = this.registry.get('lang');
     const soundBox = this.add.graphics();
     soundBox.fillStyle(0x222222, 0.8);
@@ -40,7 +48,7 @@ export default class Settings extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    this.add
+    this.soundLabel = this.add
       .text(this.game.renderer.width / 2,
         this.game.renderer.height / 2,
         this.lang.soundVolume,
@@ -69,7 +77,7 @@ export default class Settings extends Phaser.Scene {
       })
       .layout();
 
-    this.add
+    this.langLabel = this.add
       .text(this.game.renderer.width / 2,
         this.game.renderer.height / 2 + 80,
         this.lang.language,
@@ -95,22 +103,44 @@ export default class Settings extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive();
 
+    const btnLabelsArr = [
+      this.soundLabel,
+      this.langLabel,
+      this.backButton,
+    ];
+
+    const btnArr = [
+      null,
+      () => this.switchLangHandler(),
+      () => this.backToMenu(),
+    ];
+
     this.backButton.on('pointerup', this.backToMenu, this);
     this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
     this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
     this.langBtn.on('pointerup', this.switchLangHandler, this);
-    this.langBtn.on('pointerover', () => setBtnActive(this.langBtn), this);
-    this.langBtn.on('pointerout', () => disableBtnActive(this.langBtn), this);
-    this.volume.on('pointerover', () => setSliderActive(this.volume), this);
-    this.volume.on('pointerout', () => disableSliderActive(this.volume), this);
+    this.langBtn.on('pointerover', () => setBtnActive(this.langLabel), this);
+    this.langBtn.on('pointerout', () => disableBtnActive(this.langLabel), this);
+    this.volume.on('pointerover', () => setBtnActive(this.soundLabel), this);
+    this.volume.on('pointerout', () => disableBtnActive(this.soundLabel), this);
+
+    this.input.keyboard.on('keydown-ENTER', () => {
+      if (typeof btnArr[this.tabIndex] === 'function') {
+        btnArr[this.tabIndex]();
+      }
+    }, this);
 
     this.input.keyboard.on('keydown', (e) => {
+      this.tabIndex = keyboardControl(e, this.tabIndex, btnLabelsArr);
+
       const currentValue = this.volume.getValue();
       if (!(e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;
+      if (this.tabIndex !== btnLabelsArr.indexOf(this.soundLabel)) return;
       const n = e.key === 'ArrowLeft' ? -0.1 : 0.1;
       this.volume.setValue(Math.round((currentValue + n) * 10) / 10);
     }, this);
+    setBtnActive(btnLabelsArr[this.tabIndex]);
   }
 
   backToMenu(): void {
