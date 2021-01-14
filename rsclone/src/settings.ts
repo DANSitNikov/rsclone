@@ -144,8 +144,8 @@ export default class Settings extends Phaser.Scene {
     this.langBtn.on('pointerup', this.switchLangHandler, this);
     this.langBtn.on('pointerover', () => {
       disableBtnActive(btnLabelsArr[this.tabIndex]);
-      this.tabIndex = btnLabelsArr.indexOf(this.langBtn);
-      setBtnActive(this.langBtn);
+      this.tabIndex = btnLabelsArr.indexOf(this.langLabel);
+      setBtnActive(this.langLabel);
     }, this);
     this.langBtn.on('pointerout', () => disableBtnActive(this.langLabel), this);
     this.volume.on('pointerover', () => {
