@@ -5,6 +5,12 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
   key: 'Scene3',
+  physics: {
+    default: 'arcade',
+    arcade: {
+      debug: true,
+    },
+  },
 };
 
 export default class Scene3 extends Phaser.Scene {
@@ -17,6 +23,12 @@ export default class Scene3 extends Phaser.Scene {
   private waterHands: Phaser.GameObjects.Sprite;
 
   private water: Phaser.GameObjects.Sprite;
+
+  private follower;
+
+  private path;
+
+  private fish;
 
   constructor() {
     super(sceneConfig);
@@ -62,6 +74,8 @@ export default class Scene3 extends Phaser.Scene {
     this.waterHands = this.add.sprite(900, 899, 'waterHands', 1).setScale(-0.9, 1);
     this.waterHands.anims.play('waterHands', true);
 
+    this.activeFish();
+
     this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
   }
@@ -69,6 +83,12 @@ export default class Scene3 extends Phaser.Scene {
   public update():void {
     const boatSpeed = 1.8;
     const boatVelocity = this.boat.body.velocity;
+    const PlayerVerticalCenter = new Phaser.Geom.Line(
+      this.player.player.getBottomCenter().x,
+      this.player.player.getCenter().y,
+      this.player.player.getTopCenter().x,
+      this.player.player.getTopCenter().y,
+    );
 
     if (this.boat.x < 1000) {
       this.boat.setVelocityX(boatSpeed);
@@ -80,7 +100,13 @@ export default class Scene3 extends Phaser.Scene {
         this.player.player.getBounds(),
       )
     ) {
-      this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
+      if (this.player.isAlive) {
+        this.player.player.setVelocityX(this.player.player.body.velocity.x + boatVelocity.x);
+      }
+    }
+
+    if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.fish.getBounds())) {
+      this.player.die();
     }
 
     this.boatSprite.x = this.boat.x;
@@ -96,5 +122,40 @@ export default class Scene3 extends Phaser.Scene {
     if (boatVelocity.y > 3) this.boat.setVelocityY(2);
 
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
+  }
+
+  public activeFish():void {
+    const points = [
+      0, 760, 100, 765, 150, 750, 200, 745,
+      250, 740, 300, 750, 400, 760, 500, 750,
+      550, 720, 600, 690, 630, 670, 640, 650,
+      640, 610, 620, 570, 590, 560, 560, 560,
+      530, 560, 480, 560, 440, 565, 410, 580,
+      400, 600, 405, 620, 420, 640, 430, 680,
+      420, 700, 400, 730, 350, 740, 300, 750,
+      250, 760, 200, 780, 150, 800, 100, 820,
+      0, 830, -150, 900,
+    ];
+
+    const curve = new Phaser.Curves.Spline(points);
+
+    this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+
+    this.path = new Phaser.Curves.Path();
+
+    this.path.add(curve);
+
+    this.fish = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
+
+    this.fish.startFollow({
+      ease: 'Linear',
+      repeat: 0,
+      duration: 7300,
+      rotateToPath: true,
+      rotationOffset: 30,
+    });
+
+    this.water = this.add.sprite(617, 824, 'water2', 1);
+    this.water.anims.play('water2', true);
   }
 }
