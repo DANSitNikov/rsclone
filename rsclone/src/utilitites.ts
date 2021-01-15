@@ -54,6 +54,30 @@ function disableSliderActive(slider: { children: any[]; }):void {
   });
 }
 
+const changeCurretIndex = (
+  listLength:number, index:number, direction:number,
+):number => (index + direction > -1 ? (index + direction) % listLength : listLength - 1);
+
+function keyboardControl(e:KeyboardEvent, tab:number, btnList:Phaser.GameObjects.Text[]):number {
+  let tabIndex = tab;
+  const btnListLength = btnList.length;
+  disableBtnActive(btnList[tabIndex]);
+  if (e.key === 'ArrowDown') {
+    tabIndex = changeCurretIndex(btnListLength, tabIndex, 1);
+  } else if (e.key === 'ArrowUp') {
+    tabIndex = changeCurretIndex(btnListLength, tabIndex, -1);
+  }
+  setBtnActive(btnList[tabIndex]);
+  return tabIndex;
+}
+
 export {
-  setLang, switchLang, setBtnActive, disableBtnActive, setSliderActive, disableSliderActive,
+  setLang,
+  switchLang,
+  setBtnActive,
+  disableBtnActive,
+  setSliderActive,
+  disableSliderActive,
+  keyboardControl,
+  changeCurretIndex,
 };
