@@ -1,24 +1,29 @@
 import * as Phaser from 'phaser';
-import { setBtnActive, disableBtnActive } from './utilitites';
+import { setBtnActive, disableBtnActive, keyboardControl } from './utilitites';
 
 export default class Credits extends Phaser.Scene {
   private lang: Record<string, string>;
 
-  private backButton: Phaser.GameObjects.Text;
-
-  private alisa: Phaser.GameObjects.Text;
-
-  private saidazizkhon: Phaser.GameObjects.Text;
-
-  private daniil: Phaser.GameObjects.Text;
-
-  private gregory: Phaser.GameObjects.Text;
-
   private openLink: (link: string) => void;
 
-  private creditsList: Phaser.GameObjects.Text[];
+  private tabIndex: number;
 
-  private credits: (string | (string | boolean)[])[];
+  private list: ({
+    name: string;
+      style: { font: string; };
+      btn: Phaser.GameObjects.Text;
+      handler?: undefined;
+    } | {
+      name: string;
+      handler: () => void;
+      style: { font: string; };
+      btn?: undefined;
+    } | {
+      name: string;
+      style: { font: string;};
+      btn?: undefined;
+      handler?: undefined;
+    })[];
 
   constructor() {
     super({ key: 'Credits', active: false });
@@ -35,6 +40,7 @@ export default class Credits extends Phaser.Scene {
   }
 
   create(): void {
+    this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, this.lang.credits, {
@@ -42,48 +48,84 @@ export default class Credits extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    this.credits = [
-      this.lang.devs,
-      ['Alisa Pavlova', 'https://github.com/Alisa-Pavlova'],
-      ['Saidazizkhon Akbarov', 'https://github.com/dazik'],
-      ['Daniil Sitnikov', 'https://github.com/DANSitNikov'],
-      ['Gregory Moskalev', 'https://github.com/GregoryMoskalev'],
-      this.lang.artist,
-      ['Sofya Ostrovskaya', false],
+    this.list = [
+      {
+        name: this.lang.devs,
+        style: { font: '24px monospace' },
+      },
+      {
+        name: 'Alisa Pavlova',
+        handler: () => this.openLink('https://github.com/Alisa-Pavlova'),
+        style: { font: '32px monospace' },
+      },
+      {
+        name: 'Saidazizkhon Akbarov',
+        handler: () => this.openLink('https://github.com/dazik'),
+        style: { font: '32px monospace' },
+      },
+      {
+        name: 'Daniil Sitnikov',
+        handler: () => this.openLink('https://github.com/DANSitNikov'),
+        style: { font: '32px monospace' },
+      },
+      {
+        name: 'Gregory Moskalev',
+        handler: () => this.openLink('https://github.com/GregoryMoskalev'),
+        style: { font: '32px monospace' },
+      },
+      {
+        name: this.lang.artist,
+        style: { font: '24px monospace' },
+      },
+      {
+        name: 'Sofya Ostrovskaya',
+        style: { font: '32px monospace' },
+      },
+      {
+        name: this.lang.backToMenu,
+        handler: () => this.backToMenu(),
+        style: { font: '32px monospace' },
+      },
     ];
 
-    this.creditsList = this.credits.map((name, index) => {
-      let style = { font: '24px monospace' };
-      let n = String(name);
-      if (name.length === 2) {
-        style = { font: '32px monospace' };
-        n = String(name[0]);
+    this.list.forEach((item, index) => {
+      if (item.handler) {
+        this.list[index].btn = this.add
+          .text(this.game.renderer.width / 2, 250 + index * 70, item.name, item.style)
+          .setOrigin(0.5)
+          .setInteractive();
+      } else {
+        this.add
+          .text(this.game.renderer.width / 2, 250 + index * 70, item.name, item.style)
+          .setOrigin(0.5);
       }
-      return this.add
-        .text(this.game.renderer.width / 2, 250 + index * 70, n, style)
-        .setOrigin(0.5)
-        .setInteractive();
     });
 
-    this.backButton = this.add
-      .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
-        font: '32px monospace',
-      })
-      .setOrigin(0.5)
-      .setInteractive();
+    this.list = this.list.filter((e) => e.btn);
+    this.list.forEach((e, i) => {
+      if (!e.handler) return;
+      e.btn.on('pointerup', e.handler, this);
 
-    this.creditsList.forEach((name, index) => {
-      if (!this.credits[index][1] || this.credits[index].length !== 2) {
-        return;
-      }
-      name.on('pointerup', () => this.openLink(String(this.credits[index][1])));
-      name.on('pointerover', () => setBtnActive(name), this);
-      name.on('pointerout', () => disableBtnActive(name), this);
+      e.btn.on('pointerover', () => {
+        disableBtnActive(this.list[this.tabIndex].btn);
+        this.tabIndex = i;
+        setBtnActive(e.btn);
+      }, this);
+      e.btn.on('pointerout', () => disableBtnActive(e.btn), this);
     });
-    this.backButton.on('pointerup', this.backToMenu, this);
-    this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
-    this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
+
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
+    setBtnActive(this.list[this.tabIndex].btn);
+
+    this.input.keyboard.on('keydown-ENTER', () => {
+      if (typeof this.list[this.tabIndex].handler === 'function') {
+        this.list[this.tabIndex].handler();
+      }
+    }, this);
+
+    this.input.keyboard.on('keydown', (e) => {
+      this.tabIndex = keyboardControl(e, this.tabIndex, this.list.map((item) => item.btn));
+    }, this);
   }
 
   backToMenu(): void {
