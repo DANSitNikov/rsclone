@@ -19,6 +19,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'linebreak-style': 0
   },
   settings: {
     'import/resolver': {

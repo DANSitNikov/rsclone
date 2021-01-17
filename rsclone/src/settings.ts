@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import {
-  switchLang, setBtnActive, disableBtnActive, setSliderActive, disableSliderActive,
+  switchLang, setBtnActive, disableBtnActive,
+  keyboardControl,
 } from './utilitites';
 
 export default class Settings extends Phaser.Scene {
@@ -20,16 +21,26 @@ export default class Settings extends Phaser.Scene {
 
   private volume;
 
+  private tabIndex: number;
+
+  private soundLabel: Phaser.GameObjects.Text;
+
+  private langLabel: Phaser.GameObjects.Text;
+
+  private player;
+
   constructor() {
     super({ key: 'Settings', active: false });
   }
 
-  init(data :{ key: string; pause: boolean; }): void {
+  init(data :{ key: string; pause: boolean; player }): void {
     this.lastScene = data.key;
     this.pause = data.pause;
+    this.player = data.player;
   }
 
   create(): void {
+    this.tabIndex = this.tabIndex || 0;
     this.lang = this.registry.get('lang');
     const soundBox = this.add.graphics();
     soundBox.fillStyle(0x222222, 0.8);
@@ -40,14 +51,15 @@ export default class Settings extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    this.add
+    this.soundLabel = this.add
       .text(this.game.renderer.width / 2,
         this.game.renderer.height / 2,
         this.lang.soundVolume,
         {
           font: '32px monospace',
         })
-      .setOrigin(1);
+      .setOrigin(1)
+      .setInteractive();
 
     this.volume = this.rexUI.add
       .slider({
@@ -69,14 +81,15 @@ export default class Settings extends Phaser.Scene {
       })
       .layout();
 
-    this.add
+    this.langLabel = this.add
       .text(this.game.renderer.width / 2,
         this.game.renderer.height / 2 + 80,
         this.lang.language,
         {
           font: '32px monospace',
         })
-      .setOrigin(1, 0.5);
+      .setOrigin(1, 0.5)
+      .setInteractive();
 
     this.langBtn = this.add
       .text(this.game.renderer.width / 2 + 10,
@@ -86,35 +99,81 @@ export default class Settings extends Phaser.Scene {
           font: '32px monospace',
         })
       .setOrigin(0, 0.5)
-      .setInteractive({ cursor: 'pointer' });
+      .setInteractive();
 
     this.backButton = this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
         font: '32px monospace',
       })
       .setOrigin(0.5)
-      .setInteractive({ cursor: 'pointer' });
+      .setInteractive();
 
-    this.backButton.on('pointerup', this.backToMenu, this);
-    this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
-    this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
+    const btnList = {
+      labels: [
+        this.soundLabel,
+        this.langLabel,
+        this.backButton,
+      ],
+      btns: [
+        this.volume,
+        this.langBtn,
+        this.backButton,
+      ],
+      handlers: [
+        null,
+        () => this.switchLangHandler(),
+        () => this.backToMenu(),
+      ],
+    };
+
+    btnList.btns.forEach((button, index) => {
+      if (btnList.handlers[index]) {
+        button.on('pointerup', btnList.handlers[index], this);
+      }
+      button.on('pointerover', () => {
+        disableBtnActive(btnList.labels[this.tabIndex]);
+        this.tabIndex = index;
+        setBtnActive(btnList.labels[this.tabIndex]);
+      }, this);
+      button.on('pointerout', () => disableBtnActive(btnList.labels[this.tabIndex]), this);
+    });
+
+    btnList.labels.forEach((button, index) => {
+      if (btnList.handlers[index]) {
+        button.on('pointerup', btnList.handlers[index], this);
+      }
+      button.on('pointerover', () => {
+        disableBtnActive(btnList.labels[this.tabIndex]);
+        this.tabIndex = index;
+        setBtnActive(btnList.labels[this.tabIndex]);
+      }, this);
+      button.on('pointerout', () => disableBtnActive(btnList.labels[this.tabIndex]), this);
+    });
+
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
-    this.langBtn.on('pointerup', this.switchLangHandler, this);
-    this.langBtn.on('pointerover', () => setBtnActive(this.langBtn), this);
-    this.langBtn.on('pointerout', () => disableBtnActive(this.langBtn), this);
-    this.volume.on('pointerover', () => setSliderActive(this.volume), this);
-    this.volume.on('pointerout', () => disableSliderActive(this.volume), this);
-  }
+    this.input.keyboard.on('keydown-ENTER', () => {
+      if (typeof btnList.handlers[this.tabIndex] === 'function') {
+        btnList.handlers[this.tabIndex]();
+      }
+    }, this);
 
-  soundToggle():void {
-    this.sound.mute = !this.sound.mute;
+    this.input.keyboard.on('keydown', (e) => {
+      this.tabIndex = keyboardControl(e, this.tabIndex, btnList.labels);
+
+      const currentValue = this.volume.getValue();
+      if (!(e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;
+      if (this.tabIndex !== btnList.labels.indexOf(this.soundLabel)) return;
+      const n = e.key === 'ArrowLeft' ? -0.1 : 0.1;
+      this.volume.setValue(Math.round((currentValue + n) * 10) / 10);
+    }, this);
+    setBtnActive(btnList.labels[this.tabIndex]);
   }
 
   backToMenu(): void {
     if (!this.pause) {
       this.scene.start('Menu');
     } else {
-      this.scene.start('PauseMenu', { key: this.lastScene });
+      this.scene.start('PauseMenu', { key: this.lastScene, player: this.player });
     }
   }
 

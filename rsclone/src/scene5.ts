@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
+import { changeTime, makeDecor, makeStatisticInfo } from './utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -24,6 +25,20 @@ export default class Scene5 extends Phaser.Scene {
   private switch: Phaser.GameObjects.Sprite;
 
   private player: Player;
+
+  private deaths;
+
+  private deathsCount;
+
+  private timeGame;
+
+  private flag;
+
+  private count: number;
+
+  private interval;
+
+  private deathStatus: boolean;
 
   resetCloudPosition: () => number;
 
@@ -49,10 +64,22 @@ export default class Scene5 extends Phaser.Scene {
 
     this.switchClicked = false;
     this.switchStatus = false;
+
+    makeDecor(this);
+
+    this.interval = setInterval(() => {
+      changeTime(this);
+    }, 1000);
   }
 
   public update():void {
     const cursors = this.input.keyboard.createCursorKeys();
+    const keyboardKeys = this.input.keyboard.addKeys({
+      action: 'e',
+    });
+    // @ts-ignore
+    const action = cursors.space.isDown || keyboardKeys.action.isDown;
+
     this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
     this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.3);
 
@@ -66,7 +93,7 @@ export default class Scene5 extends Phaser.Scene {
     if (
       Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.switch.getBounds())
     ) {
-      if (cursors.space.isDown && !this.switchClicked) {
+      if (action && !this.switchClicked) {
         if (!this.switchStatus) {
           this.switch.setTexture('switchGreen');
           this.switchStatus = true;
@@ -79,11 +106,13 @@ export default class Scene5 extends Phaser.Scene {
           this.light.visible = false;
         }
         this.switchClicked = true;
+        setTimeout(() => this.switchClicked = false, 500);
       }
+    }
 
-      if (cursors.space.isUp) {
-        this.switchClicked = false;
-      }
+    if (this.player.player.getBottomCenter().x >= 1640) {
+      clearInterval(this.interval);
+      makeStatisticInfo();
     }
   }
 

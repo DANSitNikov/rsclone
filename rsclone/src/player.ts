@@ -137,6 +137,17 @@ export default class Player {
   update():void {
     if (!this.active) return;
     const cursors = this.scene.input.keyboard.createCursorKeys();
+    const keyboardKeys = this.scene.input.keyboard.addKeys({
+      w: 'w',
+      left: 'a',
+      right: 'd'
+    });
+    const keys = {
+      up: cursors.up.isDown || keyboardKeys.w.isDown,
+      left: cursors.left.isDown || keyboardKeys.left.isDown,
+      right: cursors.right.isDown || keyboardKeys.right.isDown,
+      jump: cursors.up.isDown || keyboardKeys.w.isDown || cursors.space.isDown,
+    }
     const isOnGround = this.playerIsTouching.ground;
     const speed = 8;
     const PlayerVerticalCenter = new Phaser.Geom.Line(
@@ -150,7 +161,7 @@ export default class Player {
       if (
         Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.scene.ladder.getBounds())
       ) {
-        if (cursors.up.isDown) {
+        if (keys.up) {
           this.player.setVelocityY(-speed / 1.5);
           this.player.anims.play('idle', true); // there will be ladder animation
           if (this.soundWalk) {
@@ -166,9 +177,9 @@ export default class Player {
     else this.player.setIgnoreGravity(false);
 
     // walk
-    if (cursors.left.isDown || cursors.right.isDown) {
+    if (keys.right || keys.left) {
       // walking right
-      if (cursors.right.isDown) {
+      if (keys.right) {
         if (!this.playerIsTouching.right) this.player.setVelocityX(speed);
         this.player.flipX = false;
       } else {
@@ -189,7 +200,7 @@ export default class Player {
     }
 
     // jump
-    if (cursors.up.isDown && isOnGround) {
+    if (keys.up && isOnGround) {
       this.player.setVelocityY(-18);
       this.player.anims.play('jump', true);
     }

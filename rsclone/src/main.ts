@@ -17,6 +17,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Long Legs journey',
 
   type: Phaser.AUTO,
+
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -37,6 +38,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
         key: 'rexUI',
         plugin: UIPlugin,
         mapping: 'rexUI',
+
       },
     ],
   },
@@ -44,6 +46,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     Scene3, Scene4, Scene5, PauseMenu, GameOverMenu],
 
   backgroundColor: '#000000',
+
 
 };
 

@@ -1,24 +1,20 @@
 import * as Phaser from 'phaser';
-import { setBtnActive, disableBtnActive } from './utilitites';
+import { setBtnActive, disableBtnActive, setStatistic } from './utilitites';
 
 export default class Statistic extends Phaser.Scene {
     lang: Record<string, string>;
 
     backButton: Phaser.GameObjects.Text;
 
-    alisa: Phaser.GameObjects.Text;
-
-    saidazizkhon: Phaser.GameObjects.Text;
-
-    daniil: Phaser.GameObjects.Text;
-
-    gregory: Phaser.GameObjects.Text;
+    emptyStatistic: string;
 
     openLink: (link: string) => void;
 
     creditsList: Phaser.GameObjects.Text[];
 
     credits: (string | (string | boolean)[])[];
+
+    statistic: (Record<string, string>)[];
 
     constructor() {
         super({ key: 'Statistic', active: false });
@@ -36,18 +32,30 @@ export default class Statistic extends Phaser.Scene {
 
     create(): void {
         this.lang = this.registry.get('lang');
+        const style = { font: '40px monospace' };
         this.add
-            .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, this.lang.statistic, {
-                font: '42px monospace',
-            })
+            .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400, this.lang.statistic, style)
             .setOrigin(0.5);
 
         this.backButton = this.add
-            .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, {
-                font: '32px monospace',
-            })
+            .text(this.game.renderer.width / 2, this.game.renderer.height - 100, this.lang.backToMenu, style)
             .setOrigin(0.5)
             .setInteractive({ cursor: 'pointer' });
+
+        this.emptyStatistic = 'There is no statistic yet...';
+        if (JSON.parse(localStorage.getItem('statistic')).length === 0) {
+            this.add.text(this.game.renderer.width / 2, 400, this.emptyStatistic, style)
+                .setOrigin(0.5)
+                .setInteractive();
+        } else {
+           const title = ['Top', 'Time', 'Deaths'];
+           title.forEach((el, i) => this.add.text(this.game.renderer.width / 2 + i * 160 - 200, 200, el, style));
+            JSON.parse(localStorage.getItem('statistic')).forEach((el, i) => {
+                el.forEach((param, j) => {
+                    this.add.text(this.game.renderer.width / 2 + j * 160 - 200, 300 + i * 100, param, style);
+                });
+            });
+        }
 
         this.backButton.on('pointerup', this.backToMenu, this);
         this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
