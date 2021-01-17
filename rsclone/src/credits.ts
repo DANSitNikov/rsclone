@@ -89,9 +89,13 @@ export default class Credits extends Phaser.Scene {
     ];
 
     this.list.forEach((item, index) => {
+      let height = 250 + index * 70;
+      if (index === this.list.length - 1) {
+        height = this.game.renderer.height - 100;
+      }
       if (item.handler) {
         this.list[index].btn = this.add
-          .text(this.game.renderer.width / 2, 250 + index * 70, item.name, item.style)
+          .text(this.game.renderer.width / 2, height, item.name, item.style)
           .setOrigin(0.5)
           .setInteractive();
       } else {
