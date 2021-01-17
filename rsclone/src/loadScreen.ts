@@ -51,6 +51,8 @@ export default class LoadScreen extends Phaser.Scene {
     if (!localStorage.getItem('statistic')) {
       localStorage.setItem('statistic', JSON.stringify([]));
     }
+    localStorage.setItem('deaths_count', JSON.stringify(0));
+    localStorage.setItem('gaming_time', JSON.stringify(0));
 
     this.registry.set('lang', this.lang);
 

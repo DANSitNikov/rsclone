@@ -74,6 +74,8 @@ export default class Menu extends Phaser.Scene {
 
   onClick = [
     (): void => {
+      localStorage.setItem('deaths_count', JSON.stringify(0));
+      localStorage.setItem('gaming_time', JSON.stringify(0));
       this.scene.start('Scene1');
     },
 

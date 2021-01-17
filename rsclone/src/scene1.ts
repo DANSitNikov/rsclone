@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { changeTime, countDeath, makeDecor } from './utilitites';
+import {worker} from "cluster";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,

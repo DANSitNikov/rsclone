@@ -80,10 +80,14 @@ export default class GameOverMenu extends Phaser.Scene {
       },
       (): void => {
         this.sound.stopAll();
+        localStorage.setItem('deaths_count', JSON.stringify(0));
+        localStorage.setItem('gaming_time', JSON.stringify(0));
         this.scene.start('Scene1');
       },
       (): void => {
         this.sound.stopAll();
+        // localStorage.setItem('deaths_count', JSON.stringify(0));
+        // localStorage.setItem('gaming_time', JSON.stringify(0));
         this.scene.start('Menu');
       },
     ];
