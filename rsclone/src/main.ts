@@ -5,6 +5,7 @@ import Menu from './menu';
 import Credits from './credits';
 import Settings from './settings';
 import Statistic from './statistic';
+import SavedGames from './savedGames';
 import PauseMenu from './pauseMenu';
 import Scene1 from './scene1';
 import Scene2 from './scene2';
@@ -42,12 +43,10 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       },
     ],
   },
-  scene: [LoadScreen, Menu, Settings, Credits, Statistic, Scene1, Scene2,
+  scene: [LoadScreen, Menu, Settings, Credits, Statistic, SavedGames, Scene1, Scene2,
     Scene3, Scene4, Scene5, PauseMenu, GameOverMenu],
 
   backgroundColor: '#000000',
-
-
 };
 
 const main = new Phaser.Game(gameConfig);

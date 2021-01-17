@@ -6,6 +6,7 @@ export default {
   settings: 'Settings',
   credits: 'Credits',
   statistic: 'Statistic',
+  savedGames: 'Saved games',
   soundVolume: 'Sound volume:',
   language: 'Language:',
   languageName: 'English',

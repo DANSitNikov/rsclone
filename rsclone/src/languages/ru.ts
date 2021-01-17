@@ -6,6 +6,7 @@ export default {
   settings: 'Настройки',
   credits: 'Авторы',
   statistic: 'Статистика',
+  savedGames: 'Сохраненные игры',
   soundVolume: 'Громкость звуков',
   language: 'Язык:',
   languageName: 'Русский',
