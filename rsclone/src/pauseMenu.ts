@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { setBtnActive, disableBtnActive, keyboardControl } from './utilitites';
+import {setBtnActive, disableBtnActive, keyboardControl, makeStatisticInfo, makeSavedGamesInfo} from './utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
   private playButton: Phaser.GameObjects.Text;
@@ -39,7 +39,8 @@ export default class PauseMenu extends Phaser.Scene {
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.menuNames = [
-      this.lang.resume, this.lang.settings, this.lang.statistic, this.lang.mainMenu
+      this.lang.resume, this.lang.settings, this.lang.statistic,
+      this.lang.saveGame, this.lang.mainMenu,
     ];
     this.add
       .text(
@@ -99,6 +100,13 @@ export default class PauseMenu extends Phaser.Scene {
     (): void => {
       this.scene.start('Statistic', { key: this.lastScene, pause: true });
       this.scene.bringToTop('Statistic');
+    },
+    (): void => {
+      alert('your game has been saved!!');
+      const time = JSON.parse(localStorage.getItem('gaming_time'));
+      const deaths = JSON.parse(localStorage.getItem('deaths_count'));
+      const scene = this.lastScene;
+      makeSavedGamesInfo(time, deaths, scene);
     },
     (): void => {
       this.game.sound.stopAll();

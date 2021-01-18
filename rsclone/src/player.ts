@@ -214,6 +214,7 @@ export default class Player {
     if (this.player.getBottomCenter().x >= 1640) {
       if (this.nextScene) {
         this.stop();
+        console.log(this.nextScene);
         this.scene.scene.start(this.nextScene);
       }
     }

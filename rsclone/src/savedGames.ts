@@ -29,6 +29,7 @@ export default class SavedGames extends Phaser.Scene {
   create(): void {
     this.lang = this.registry.get('lang');
     const styleTitle = { font: '40px monospace' };
+    const styleSaved = { font: '35px monospace' };
     this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400,
         this.lang.savedGames, styleTitle)
@@ -40,10 +41,28 @@ export default class SavedGames extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ cursor: 'pointer' });
 
-    this.emptySavedGames = 'There is no saved games yet...';
-    this.add.text(this.game.renderer.width / 2, 400, this.emptySavedGames, styleTitle)
-      .setOrigin(0.5)
-      .setInteractive();
+    if (JSON.parse(localStorage.getItem('saved_games')).length === 0) {
+      this.emptySavedGames = 'There is no saved games yet...';
+      this.add.text(this.game.renderer.width / 2, 400, this.emptySavedGames, styleTitle)
+        .setOrigin(0.5)
+        .setInteractive();
+    } else {
+      JSON.parse(localStorage.getItem('saved_games')).forEach((el, i) => {
+        el.forEach((word, j) => {
+          if (j !== 4) {
+            const text = this.add.text(this.game.renderer.width / 2 - 200 + j * 200, 300 + i * 75,
+              word, styleSaved)
+              .setOrigin(0.5)
+              .setInteractive();
+            text.on('pointerup', () => {
+              localStorage.setItem('gaming_time', JSON.stringify(el[4]));
+              localStorage.setItem('deaths_count', JSON.stringify(el[1]));
+              this.scene.start(el[2]);
+            });
+          }
+        });
+      });
+    }
 
     this.backButton.on('pointerup', this.backToMenu, this);
     this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);

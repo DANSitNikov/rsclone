@@ -7,6 +7,7 @@ export default {
   credits: '學分',
   statistic: '統計',
   savedGames: '保存的游戏',
+  saveGame: '保存游戏',
   soundVolume: '音量:',
   language: '語言:',
   languageName: '漢語',

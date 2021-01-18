@@ -7,6 +7,7 @@ export default {
   credits: 'Авторы',
   statistic: 'Статистика',
   savedGames: 'Сохраненные игры',
+  saveGame: 'Сохранить игру',
   soundVolume: 'Громкость звуков',
   language: 'Язык:',
   languageName: 'Русский',

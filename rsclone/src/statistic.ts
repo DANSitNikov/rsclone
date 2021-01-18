@@ -41,8 +41,8 @@ export default class Statistic extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ cursor: 'pointer' });
 
-    this.emptyStatistic = 'There is no statistic yet...';
     if (JSON.parse(localStorage.getItem('statistic')).length === 0) {
+      this.emptyStatistic = 'There is no statistic yet...';
       this.add.text(this.game.renderer.width / 2, 400, this.emptyStatistic, styleTitle)
         .setOrigin(0.5)
         .setInteractive();
