@@ -2,16 +2,6 @@ import * as Phaser from 'phaser';
 import { setBtnActive, disableBtnActive, keyboardControl } from './utilitites';
 
 export default class Menu extends Phaser.Scene {
-  private playButton: Phaser.GameObjects.Text;
-
-  private settingsButton: Phaser.GameObjects.Text;
-
-  private creditsButton: Phaser.GameObjects.Text;
-
-  private menuNames: string[];
-
-  private menu: Phaser.GameObjects.Text[];
-
   private btn = {
     font: '32px monospace',
   };
@@ -20,6 +10,16 @@ export default class Menu extends Phaser.Scene {
 
   private tabIndex: number;
 
+  private list: ({
+    name: string;
+    handler: () => void;
+    btn: Phaser.GameObjects.Text;
+    } | {
+    name: string;
+    handler: () => void;
+    btn?: undefined;
+    })[];
+
   constructor() {
     super({ key: 'Menu', active: false });
   }
@@ -27,7 +27,26 @@ export default class Menu extends Phaser.Scene {
   create(): void {
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
-    this.menuNames = [this.lang.play, this.lang.settings, this.lang.credits];
+    this.list = [
+      {
+        name: this.lang.play,
+        handler: (): void => {
+          this.scene.start('Scene1');
+        },
+      },
+      {
+        name: this.lang.settings,
+        handler: (): void => {
+          this.scene.start('Settings', { pause: false });
+        },
+      },
+      {
+        name: this.lang.credits,
+        handler: (): void => {
+          this.scene.start('Credits');
+        },
+      },
+    ];
     this.add
       .text(
         this.game.renderer.width / 2,
@@ -39,47 +58,35 @@ export default class Menu extends Phaser.Scene {
       )
       .setOrigin(0.5);
 
-    this.menu = this.menuNames.map((button, index) => this.add
-      .text(
-        this.game.renderer.width / 2,
-        this.game.renderer.height / 2 - 80 + index * 80,
-        button,
-        this.btn,
-      )
-      .setOrigin(0.5)
-      .setInteractive());
+    this.list.forEach((item, index) => {
+      this.list[index].btn = this.add
+        .text(
+          this.game.renderer.width / 2,
+          this.game.renderer.height / 2 - 80 + index * 80,
+          item.name,
+          this.btn,
+        )
+        .setOrigin(0.5)
+        .setInteractive();
+    });
 
-    this.menu.forEach((button, index) => {
-      button.on('pointerup', this.onClick[index], this);
-      button.on('pointerover', () => {
-        disableBtnActive(this.menu[this.tabIndex]);
+    this.list.forEach((item, index) => {
+      item.btn.on('pointerup', item.handler, this);
+      item.btn.on('pointerover', () => {
+        disableBtnActive(this.list[this.tabIndex].btn);
         this.tabIndex = index;
-        setBtnActive(button);
+        setBtnActive(item.btn);
       }, this);
-      button.on('pointerout', () => disableBtnActive(button), this);
+      item.btn.on('pointerout', () => disableBtnActive(item.btn), this);
     });
 
     this.input.keyboard.on('keydown-ENTER', () => {
-      this.onClick[this.tabIndex]();
+      this.list[this.tabIndex].handler();
     }, this);
 
     this.input.keyboard.on('keydown', (e: KeyboardEvent) => {
-      this.tabIndex = keyboardControl(e, this.tabIndex, this.menu);
+      this.tabIndex = keyboardControl(e, this.tabIndex, this.list.map((item) => item.btn));
     }, this);
-    setBtnActive(this.menu[this.tabIndex]);
+    setBtnActive(this.list[this.tabIndex].btn);
   }
-
-  onClick = [
-    (): void => {
-      this.scene.start('Scene1');
-    },
-
-    (): void => {
-      this.scene.start('Settings', {pause: false});
-    },
-
-    (): void => {
-      this.scene.start('Credits');
-    },
-  ];
 }
