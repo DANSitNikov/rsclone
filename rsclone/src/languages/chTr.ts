@@ -20,4 +20,8 @@ export default {
   restart: '再试一次',
   newGame: '新游戏',
   gameOverHeading: '你死了',
+  time: '時間',
+  deaths: '死亡人數',
+  scene: '現場',
+  date: '日期',
 };

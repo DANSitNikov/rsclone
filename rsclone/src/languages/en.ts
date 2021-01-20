@@ -20,4 +20,8 @@ export default {
   restart: 'Try again',
   newGame: 'New game',
   gameOverHeading: 'You dead',
+  time: 'Time',
+  deaths: 'Deaths',
+  scene: 'Scene',
+  date: 'Date'
 };

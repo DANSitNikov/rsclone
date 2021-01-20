@@ -16,6 +16,10 @@ export default class SavedGames extends Phaser.Scene {
 
   private player;
 
+  private rexUI;
+
+  private table;
+
   constructor() {
     super({ key: 'Saved_games', active: false });
   }
@@ -29,7 +33,6 @@ export default class SavedGames extends Phaser.Scene {
   create(): void {
     this.lang = this.registry.get('lang');
     const styleTitle = { font: '40px monospace' };
-    const styleSaved = { font: '35px monospace' };
     this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400,
         this.lang.savedGames, styleTitle)
@@ -41,27 +44,88 @@ export default class SavedGames extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ cursor: 'pointer' });
 
+    const CreateItems = () => {
+      const arr = JSON.parse(localStorage.getItem('saved_games'));
+      arr.push([this.lang.time, this.lang.deaths, this.lang.scene, this.lang.date]);
+      arr.reverse();
+      const data = [];
+
+      for (let i = 0; i < arr.length; i += 1) {
+        for (let j = 0; j < arr[i].length; j += 1) {
+          if (j !== 4) {
+            data.push({
+              id: arr[i][j],
+              color: Phaser.Math.Between(50, 0x260e04),
+            });
+          }
+        }
+      }
+      return data;
+    };
+
     if (JSON.parse(localStorage.getItem('saved_games')).length === 0) {
       this.emptySavedGames = 'There is no saved games yet...';
       this.add.text(this.game.renderer.width / 2, 400, this.emptySavedGames, styleTitle)
         .setOrigin(0.5)
         .setInteractive();
     } else {
-      JSON.parse(localStorage.getItem('saved_games')).forEach((el, i) => {
-        el.forEach((word, j) => {
-          if (j !== 4) {
-            const text = this.add.text(this.game.renderer.width / 2 - 200 + j * 200, 300 + i * 75,
-              word, styleSaved)
-              .setOrigin(0.5)
-              .setInteractive();
-            text.on('pointerup', () => {
-              localStorage.setItem('gaming_time', JSON.stringify(el[4]));
-              localStorage.setItem('deaths_count', JSON.stringify(el[1]));
-              this.scene.start(el[2]);
+      this.table = this.rexUI.add.gridTable({
+        x: this.game.renderer.width / 2,
+        y: this.game.renderer.height / 2,
+        width: 900,
+        height: 700,
+
+        table: {
+          cellWidth: 215,
+          cellHeight: 82,
+
+          columns: 4,
+
+          mask: {
+            padding: 10,
+          },
+
+          reuseCellContainer: false,
+        },
+
+        space: {
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: 20,
+
+          table: 10,
+        },
+
+        createCellContainerCallback(cell, cellContainer) {
+          const {
+            scene, width, height, item,
+          } = cell;
+
+          if (cellContainer === null) {
+            cellContainer = scene.rexUI.add.label({
+              width,
+              height,
+
+              background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0)
+                .setStrokeStyle(20, 0xffffff),
+              text: scene.add.text(0, 0, ''),
+
+              space: {
+                icon: 10,
+                left: 10,
+              },
             });
           }
-        });
-      });
+          // Set properties from item value
+          cellContainer.setMinSize(width, height); // Size might changed in this demo
+          cellContainer.getElement('text').setText(item.id).setStyle({ font: '25px monospace' }); // Set text of text object
+          cellContainer.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
+          return cellContainer;
+        },
+
+        items: CreateItems(),
+      }).layout();
     }
 
     this.backButton.on('pointerup', this.backToMenu, this);

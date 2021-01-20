@@ -20,4 +20,8 @@ export default {
   restart: 'Попробовать снова',
   newGame: 'Начать сначала',
   gameOverHeading: 'Вы умерли',
+  time: 'Время',
+  deaths: 'Смерти',
+  scene: 'Сцена',
+  date: 'Дата',
 };
