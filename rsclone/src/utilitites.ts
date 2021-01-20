@@ -161,6 +161,7 @@ function makeSavedGamesInfo(time: number, deaths: number, scene: string):void {
   const normalMonth = month + 1;
   const gameDate = `${date}:${normalMonth < 10 ? `0${normalMonth}` : normalMonth}:${year}`;
   gameInfo.push(gameDate);
+  gameInfo.push('play');
   gameInfo.push(time);
   const nextInfo = JSON.parse(localStorage.getItem('saved_games'));
   nextInfo.push(gameInfo);

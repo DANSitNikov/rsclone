@@ -8,8 +8,6 @@ export default class SavedGames extends Phaser.Scene {
 
   private emptySavedGames: string;
 
-  private openLink: (link: string) => void;
-
   private pause: boolean;
 
   private lastScene: string;
@@ -46,16 +44,17 @@ export default class SavedGames extends Phaser.Scene {
 
     const CreateItems = () => {
       const arr = JSON.parse(localStorage.getItem('saved_games'));
-      arr.push([this.lang.time, this.lang.deaths, this.lang.scene, this.lang.date]);
+      arr.push([this.lang.time, this.lang.deaths, this.lang.scene, this.lang.date, '']);
       arr.reverse();
       const data = [];
 
       for (let i = 0; i < arr.length; i += 1) {
         for (let j = 0; j < arr[i].length; j += 1) {
-          if (j !== 4) {
+          if (j !== 5) {
             data.push({
               id: arr[i][j],
-              color: Phaser.Math.Between(50, 0x260e04),
+              data: [arr[i][5], arr[i][1], arr[i][2]],
+              color: Phaser.Math.Between(50, 0xffffff),
             });
           }
         }
@@ -72,14 +71,14 @@ export default class SavedGames extends Phaser.Scene {
       this.table = this.rexUI.add.gridTable({
         x: this.game.renderer.width / 2,
         y: this.game.renderer.height / 2,
-        width: 900,
+        width: 1125,
         height: 700,
 
         table: {
           cellWidth: 215,
           cellHeight: 82,
 
-          columns: 4,
+          columns: 5,
 
           mask: {
             padding: 10,
@@ -127,6 +126,27 @@ export default class SavedGames extends Phaser.Scene {
         items: CreateItems(),
       }).layout();
     }
+
+    this.table.on('cell.down', (a, index) => {
+      const item = this.table.items[index];
+      if (item.id === 'play') {
+        this.scene.start(`Scene${item.data[2]}`);
+        localStorage.setItem('deaths_count', JSON.stringify(item.data[1]));
+        localStorage.setItem('gaming_time', JSON.stringify(item.data[0]));
+      }
+    });
+
+    this.table.on('cell.over', (cellContainer) => {
+      cellContainer.getElement('background')
+        .setStrokeStyle(2, 0xff0000)
+        .setDepth(200);
+    });
+
+    this.table.on('cell.out', (cellContainer) => {
+      cellContainer.getElement('background')
+        .setStrokeStyle(2, 0xffffff)
+        .setDepth(0);
+    });
 
     this.backButton.on('pointerup', this.backToMenu, this);
     this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
