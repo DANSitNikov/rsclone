@@ -23,7 +23,11 @@ export default class Scene5 extends Phaser.Scene {
 
   private switch: Phaser.GameObjects.Sprite;
 
-  private player: Player;
+	private player: Player;
+
+	private demonHand1: Phaser.GameObjects.Sprite;
+
+	private demonHand2: Phaser.GameObjects.Sprite;
 
   resetCloudPosition: () => number;
 
@@ -49,6 +53,25 @@ export default class Scene5 extends Phaser.Scene {
 
     this.switchClicked = false;
     this.switchStatus = false;
+
+    this.demonHand1 = this.add.sprite(700, 1440, 'demonHand').setScale(3);
+    this.demonHand2 = this.add.sprite(1000, 1440, 'demonHand').setScale(3);
+
+    this.anims.create({
+      key: 'demonHand1',
+      frames: this.anims.generateFrameNumbers('demonHand', { start: 0, end: 7 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'demonHand2',
+      frames: this.anims.generateFrameNumbers('demonHand', { start: 8, end: 15 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.demonHand1.anims.play('demonHand1', true);
+    this.demonHand2.anims.play('demonHand2', true);
   }
 
   public update():void {
@@ -58,7 +81,6 @@ export default class Scene5 extends Phaser.Scene {
     });
     // @ts-ignore
     const action = cursors.space.isDown || keyboardKeys.action.isDown;
-
 
     this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
     this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.3);
@@ -70,6 +92,13 @@ export default class Scene5 extends Phaser.Scene {
       this.player.player.getTopCenter().x,
       this.player.player.getTopCenter().y,
     );
+    // Show enemies
+    if (cursors.right.isDown && this.player.player.x > 1300) {
+      this.showDemonHands();
+		}
+		//Kill character on Demon Hands
+		this.killWithHands(this.demonHand1);
+		this.killWithHands(this.demonHand2);
     if (
       Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.switch.getBounds())
     ) {
@@ -86,14 +115,25 @@ export default class Scene5 extends Phaser.Scene {
           this.light.visible = false;
         }
         this.switchClicked = true;
-        setTimeout(() => this.switchClicked = false, 500)
+        setTimeout(() => this.switchClicked = false, 500);
       }
-
-
     }
   }
 
   public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? this.resetCloudPosition() : cloudX + speed;
+  }
+
+  public showDemonHands(): void {
+    this.demonHand1.y = 760;
+    this.demonHand2.y = 760;
+  }
+
+  private killWithHands(hand): void {
+    if (Phaser.Geom.Intersects.RectangleToRectangle(
+      hand.getBounds(), this.player.player.getBounds(),
+    )) {
+      this.player.die();
+    }
   }
 }
