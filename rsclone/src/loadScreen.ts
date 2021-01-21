@@ -76,6 +76,10 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.spritesheet('demonHand',
       'assets/enemies/demonhand.png',
       { frameWidth: 100, frameHeight: 88 });
+    this.load.spritesheet('enemyGhost',
+      'assets/enemies/enemyGhost.png',
+      { frameWidth: 500, frameHeight: 500 });
+    this.load.image('plort', 'assets/enemies/plort.png');
     this.load.image('boat', 'assets/objects/boat.png');
     this.load.image('boatCollides', 'assets/objects/boatCollides.png');
     this.load.image('bgLight', 'assets/objects/bgLight.png');

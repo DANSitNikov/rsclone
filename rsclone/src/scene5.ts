@@ -29,6 +29,8 @@ export default class Scene5 extends Phaser.Scene {
 
 	private demonHand2: Phaser.GameObjects.Sprite;
 
+	private enemyGhost: Phaser.GameObjects.Sprite;
+
   resetCloudPosition: () => number;
 
   constructor() {
@@ -56,6 +58,7 @@ export default class Scene5 extends Phaser.Scene {
 
     this.demonHand1 = this.add.sprite(700, 1440, 'demonHand').setScale(3);
     this.demonHand2 = this.add.sprite(1000, 1440, 'demonHand').setScale(3);
+    this.enemyGhost = this.add.sprite(1500, 800, 'plort').setScale(0.7);
 
     this.anims.create({
       key: 'demonHand1',
@@ -69,9 +72,16 @@ export default class Scene5 extends Phaser.Scene {
       frameRate: 6,
       repeat: -1,
     });
+    this.anims.create({
+      key: 'enemyGhost',
+      frames: this.anims.generateFrameNumbers('enemyGhost', { start: 0, end: 1 }),
+      frameRate: 4,
+      repeat: -1,
+    });
 
     this.demonHand1.anims.play('demonHand1', true);
     this.demonHand2.anims.play('demonHand2', true);
+    this.enemyGhost.anims.play('enemyGhost', true);
   }
 
   public update():void {
@@ -95,10 +105,15 @@ export default class Scene5 extends Phaser.Scene {
     // Show enemies
     if (cursors.right.isDown && this.player.player.x > 1300) {
       this.showDemonHands();
-		}
-		//Kill character on Demon Hands
-		this.killWithHands(this.demonHand1);
-		this.killWithHands(this.demonHand2);
+    }
+    // Kill character on Demon Hands
+    this.killWithHands(this.demonHand1);
+    this.killWithHands(this.demonHand2);
+
+    // Kill the Ghost when switch is clicked
+    if (this.switchClicked) {
+      this.killGhost();
+    }
     if (
       Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.switch.getBounds())
     ) {
@@ -135,5 +150,19 @@ export default class Scene5 extends Phaser.Scene {
     )) {
       this.player.die();
     }
+  }
+
+  private killGhost(): void {
+    let i = 5;
+    const ghost = this.enemyGhost;
+    function kill() {
+      ghost.setScale(3.5 / i);
+			i += 1;
+			if (i > 40) {
+				clearInterval(int);
+				ghost.destroy();
+			}
+    }
+    const int = setInterval(kill, 200);
   }
 }
