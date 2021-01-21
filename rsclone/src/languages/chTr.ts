@@ -6,6 +6,8 @@ export default {
   settings: '設定值',
   credits: '學分',
   statistic: '統計',
+  savedGames: '保存的游戏',
+  saveGame: '保存游戏',
   soundVolume: '音量:',
   language: '語言:',
   languageName: '漢語',
@@ -18,4 +20,8 @@ export default {
   restart: '再试一次',
   newGame: '新游戏',
   gameOverHeading: '你死了',
+  time: '時間',
+  deaths: '死亡人數',
+  scene: '現場',
+  date: '日期',
 };

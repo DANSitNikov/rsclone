@@ -6,6 +6,8 @@ export default {
   settings: 'Настройки',
   credits: 'Авторы',
   statistic: 'Статистика',
+  savedGames: 'Сохраненные игры',
+  saveGame: 'Сохранить игру',
   soundVolume: 'Громкость звуков',
   language: 'Язык:',
   languageName: 'Русский',
@@ -18,4 +20,8 @@ export default {
   restart: 'Попробовать снова',
   newGame: 'Начать сначала',
   gameOverHeading: 'Вы умерли',
+  time: 'Время',
+  deaths: 'Смерти',
+  scene: 'Сцена',
+  date: 'Дата',
 };

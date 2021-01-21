@@ -10,6 +10,8 @@ export default class Menu extends Phaser.Scene {
 
   private statisticButton: Phaser.GameObjects.Text;
 
+  private savedGamesButton: Phaser.GameObjects.Text;
+
   private menuNames: string[];
 
   private menu: Phaser.GameObjects.Text[];
@@ -29,7 +31,10 @@ export default class Menu extends Phaser.Scene {
   create(): void {
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
-    this.menuNames = [this.lang.play, this.lang.settings, this.lang.credits, this.lang.statistic];
+    this.menuNames = [
+      this.lang.play, this.lang.settings, this.lang.credits,
+      this.lang.statistic, this.lang.savedGames,
+    ];
 
     this.add
       .text(
@@ -89,6 +94,10 @@ export default class Menu extends Phaser.Scene {
 
     (): void => {
       this.scene.start('Statistic');
+    },
+
+    (): void => {
+      this.scene.start('Saved_games');
     },
   ];
 }

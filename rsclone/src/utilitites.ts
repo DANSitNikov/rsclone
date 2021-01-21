@@ -153,6 +153,24 @@ function makeStatisticInfo():void {
   localStorage.removeItem('deaths_count');
 }
 
+function makeSavedGamesInfo(time: number, deaths: number, scene: string):void {
+  const gameInfo = [correctTime(time), deaths, scene.slice(5)];
+  const year = new Date().getFullYear();
+  const month = new Date().getMonth();
+  const date = new Date().getDate();
+  const normalMonth = month + 1;
+  const gameDate = `${date}:${normalMonth < 10 ? `0${normalMonth}` : normalMonth}:${year}`;
+  gameInfo.push(gameDate);
+  gameInfo.push('play');
+  gameInfo.push(time);
+  const nextInfo = JSON.parse(localStorage.getItem('saved_games'));
+  nextInfo.push(gameInfo);
+  if (nextInfo.length > 7) {
+    nextInfo.shift();
+  }
+  localStorage.setItem('saved_games', JSON.stringify(nextInfo));
+}
+
 export {
   setLang,
   switchLang,
@@ -167,4 +185,5 @@ export {
   makeDecor,
   changeTime,
   makeStatisticInfo,
+  makeSavedGamesInfo,
 };

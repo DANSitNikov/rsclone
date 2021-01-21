@@ -6,6 +6,8 @@ export default {
   settings: 'Settings',
   credits: 'Credits',
   statistic: 'Statistic',
+  savedGames: 'Saved games',
+  saveGame: 'Save game',
   soundVolume: 'Sound volume:',
   language: 'Language:',
   languageName: 'English',
@@ -18,4 +20,8 @@ export default {
   restart: 'Try again',
   newGame: 'New game',
   gameOverHeading: 'You dead',
+  time: 'Time',
+  deaths: 'Deaths',
+  scene: 'Scene',
+  date: 'Date'
 };
