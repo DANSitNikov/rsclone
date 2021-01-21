@@ -16,6 +16,10 @@ export default class Statistic extends Phaser.Scene {
 
   private player;
 
+  private rexUI;
+
+  private table;
+
   constructor() {
     super({ key: 'Statistic', active: false });
   }
@@ -29,7 +33,6 @@ export default class Statistic extends Phaser.Scene {
   create(): void {
     this.lang = this.registry.get('lang');
     const styleTitle = { font: '40px monospace' };
-    const styleStat = { font: '35px monospace' };
     this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400,
         this.lang.statistic, styleTitle)
@@ -41,21 +44,86 @@ export default class Statistic extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ cursor: 'pointer' });
 
-    this.emptyStatistic = 'There is no statistic yet...';
+    const CreateItems = () => {
+      const arr = JSON.parse(localStorage.getItem('statistic'));
+      arr.unshift(['Top', this.lang.time, this.lang.deaths]);
+      console.log(this.lang.time);
+      const data = [];
+
+      for (let i = 0; i < arr.length; i += 1) {
+        for (let j = 0; j < arr[i].length; j += 1) {
+          data.push({
+            id: arr[i][j],
+            color: Phaser.Math.Between(0, 0xffffff),
+          });
+        }
+      }
+      return data;
+    };
+
     if (JSON.parse(localStorage.getItem('statistic')).length === 0) {
+      this.emptyStatistic = 'There is no statistic yet...';
       this.add.text(this.game.renderer.width / 2, 400, this.emptyStatistic, styleTitle)
         .setOrigin(0.5)
         .setInteractive();
     } else {
-      const title = ['Top', 'Time', 'Deaths'];
-      title.forEach((el, i) => this.add.text(this.game.renderer.width / 2 + i * 160 - 200, 200,
-        el, styleTitle));
-      JSON.parse(localStorage.getItem('statistic')).forEach((el, i) => {
-        el.forEach((param, j) => {
-          this.add.text(this.game.renderer.width / 2 + j * 160 - 200, 300 + i * 75,
-            param, styleStat);
-        });
-      });
+      this.table = this.rexUI.add.gridTable({
+        x: this.game.renderer.width / 2,
+        y: this.game.renderer.height / 2,
+        width: 675,
+        height: 700,
+
+        table: {
+          cellWidth: 215,
+          cellHeight: 82,
+
+          columns: 3,
+
+          mask: {
+            padding: 10,
+          },
+
+          reuseCellContainer: false,
+        },
+
+        space: {
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: 20,
+
+          table: 10,
+        },
+
+        createCellContainerCallback(cell, cellContainer) {
+          const {
+            scene, width, height, item,
+          } = cell;
+
+          if (cellContainer === null) {
+            cellContainer = scene.rexUI.add.label({
+              width,
+              height,
+
+              background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0)
+                .setStrokeStyle(20, 0xffffff),
+              text: scene.add.text(0, 0, ''),
+
+              space: {
+                icon: 10,
+                left: 10,
+              },
+            });
+          }
+          // Set properties from item value
+          cellContainer.setMinSize(width, height); // Size might changed in this demo
+          cellContainer.getElement('text').setText(item.id).setStyle({ font: '25px monospace' }); // Set text of text object
+          cellContainer.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
+          return cellContainer;
+        },
+
+        items: CreateItems(),
+      }).layout();
     }
 
     this.backButton.on('pointerup', this.backToMenu, this);

@@ -144,7 +144,7 @@ function makeStatisticInfo():void {
     el[0] = `${i + 1})`;
   });
 
-  if (nextStatistic.length > 8) {
+  if (nextStatistic.length > 7) {
     nextStatistic.pop();
   }
 
