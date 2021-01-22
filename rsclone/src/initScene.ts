@@ -1,6 +1,9 @@
 import Player from './player';
 
-export default function initScene(sc, number: number, x: number, y: number): void {
+export default function initScene(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  sc, number: number, x: number, y: number,
+): void {
   const scene = sc;
   const map = scene.make.tilemap({ key: `map${number}` });
   const tileset = map.addTilesetImage(`bg${number}`, `bg${number}`);

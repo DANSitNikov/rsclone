@@ -52,13 +52,14 @@ export default class Scene5 extends Phaser.Scene {
   }
 
   public update():void {
-    const cursors = this.input.keyboard.createCursorKeys();
-    const keyboardKeys = this.input.keyboard.addKeys({
+    const cursors: Phaser.Types.Input.Keyboard.CursorKeys = this.input.keyboard.createCursorKeys();
+    const keyboardKeys: {
+      action?
+    } = this.input.keyboard.addKeys({
       action: 'e',
     });
-    // @ts-ignore
-    const action = cursors.space.isDown || keyboardKeys.action.isDown;
 
+    const action = cursors.space.isDown || keyboardKeys.action.isDown;
 
     this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
     this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.3);
@@ -86,10 +87,10 @@ export default class Scene5 extends Phaser.Scene {
           this.light.visible = false;
         }
         this.switchClicked = true;
-        setTimeout(() => this.switchClicked = false, 500)
+        setTimeout(() => {
+          this.switchClicked = false;
+        }, 500);
       }
-
-
     }
   }
 
