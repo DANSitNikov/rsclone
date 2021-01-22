@@ -171,6 +171,24 @@ function makeSavedGamesInfo(time: number, deaths: number, scene: string):void {
   localStorage.setItem('saved_games', JSON.stringify(nextInfo));
 }
 
+function statisticInGame(scene):void {
+  const currentScene = scene;
+
+  makeDecor(currentScene);
+
+  currentScene.deathStatus = false;
+
+  setTimeout(() => {
+    currentScene.timeReload = true;
+  }, 1000);
+
+  currentScene.events.on('resume', () => {
+    setTimeout(() => {
+      this.timeReload = true;
+    }, 1000);
+  });
+}
+
 export {
   setLang,
   switchLang,
@@ -186,4 +204,5 @@ export {
   changeTime,
   makeStatisticInfo,
   makeSavedGamesInfo,
+  statisticInGame,
 };

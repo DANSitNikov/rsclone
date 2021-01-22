@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
-import { changeTime, countDeath, makeDecor } from './utilitites';
+import { changeTime, countDeath, statisticInGame } from './utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -52,19 +52,7 @@ export default class Scene1 extends Phaser.Scene {
     this.spikes1 = this.add.zone(1048, 940, 200, 150);
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
 
-    makeDecor(this);
-
-    this.deathStatus = false;
-
-    setTimeout(() => {
-      this.timeReload = true;
-    }, 1000);
-
-    this.events.on('resume', () => {
-      setTimeout(() => {
-        this.timeReload = true;
-      }, 1000);
-    });
+    statisticInGame(this);
   }
 
   public update(): void {

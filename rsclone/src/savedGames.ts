@@ -102,7 +102,8 @@ export default class SavedGames extends Phaser.Scene {
           } = cell;
 
           if (cellContainer === null) {
-            cellContainer = scene.rexUI.add.label({
+            let container = cellContainer;
+            container = scene.rexUI.add.label({
               width,
               height,
 

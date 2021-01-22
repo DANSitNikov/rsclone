@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { changeTime, countDeath, makeDecor } from './utilitites';
+import { changeTime, countDeath, statisticInGame } from './utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -86,19 +86,7 @@ export default class Scene3 extends Phaser.Scene {
     this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
 
-    makeDecor(this);
-
-    this.deathStatus = false;
-
-    setTimeout(() => {
-      this.timeReload = true;
-    }, 1000);
-
-    this.events.on('resume', () => {
-      setTimeout(() => {
-        this.timeReload = true;
-      }, 1000);
-    });
+    statisticInGame(this);
   }
 
   public update():void {

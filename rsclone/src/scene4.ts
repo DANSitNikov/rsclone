@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { changeTime, makeDecor } from './utilitites';
+import { changeTime, statisticInGame } from './utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -34,17 +34,7 @@ export default class Scene4 extends Phaser.Scene {
     });
     this.demonHand.anims.play('demonHand', true);
 
-    makeDecor(this);
-
-    setTimeout(() => {
-      this.timeReload = true;
-    }, 1000);
-
-    this.events.on('resume', () => {
-      setTimeout(() => {
-        this.timeReload = true;
-      }, 1000);
-    });
+    statisticInGame(this);
   }
 
   public update(): void {
@@ -61,6 +51,5 @@ export default class Scene4 extends Phaser.Scene {
         }, 1000);
       }
     }
-
   }
 }

@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
-import { changeTime, makeDecor, makeStatisticInfo } from './utilitites';
+import { changeTime, makeStatisticInfo, statisticInGame } from './utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -26,19 +26,7 @@ export default class Scene5 extends Phaser.Scene {
 
   private player: Player;
 
-  private deaths;
-
-  private deathsCount;
-
-  private timeGame;
-
-  private flag;
-
-  private count: number;
-
   private interval;
-
-  private deathStatus: boolean;
 
   resetCloudPosition: () => number;
 
@@ -67,17 +55,7 @@ export default class Scene5 extends Phaser.Scene {
     this.switchClicked = false;
     this.switchStatus = false;
 
-    makeDecor(this);
-
-    setTimeout(() => {
-      this.timeReload = true;
-    }, 1000);
-
-    this.events.on('resume', () => {
-      setTimeout(() => {
-        this.timeReload = true;
-      }, 1000);
-    });
+    statisticInGame(this);
   }
 
   public update():void {
