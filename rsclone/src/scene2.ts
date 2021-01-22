@@ -35,6 +35,8 @@ export default class Scene2 extends Phaser.Scene {
 
   private deathStatus: boolean;
 
+  private timeReload: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -117,11 +119,17 @@ export default class Scene2 extends Phaser.Scene {
 
     makeDecor(this);
 
-    this.interval = setInterval(() => {
-      changeTime(this);
+    this.deathStatus = false;
+
+    setTimeout(() => {
+      this.timeReload = true;
     }, 1000);
 
-    this.deathStatus = false;
+    this.events.on('resume', () => {
+      setTimeout(() => {
+        this.timeReload = true;
+      }, 1000);
+    });
   }
 
   public update(): void {
@@ -172,6 +180,16 @@ export default class Scene2 extends Phaser.Scene {
       if (!this.deathStatus) {
         countDeath();
         this.deathStatus = true;
+      }
+    }
+
+    if (this.scene.isActive()) {
+      if (this.timeReload) {
+        changeTime(this);
+        this.timeReload = false;
+        this.interval = setTimeout(() => {
+          this.timeReload = true;
+        }, 1000);
       }
     }
   }

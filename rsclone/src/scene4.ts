@@ -15,6 +15,8 @@ export default class Scene4 extends Phaser.Scene {
 
   private interval;
 
+  private timeReload: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -34,14 +36,31 @@ export default class Scene4 extends Phaser.Scene {
 
     makeDecor(this);
 
-    this.interval = setInterval(() => {
-      changeTime(this);
+    setTimeout(() => {
+      this.timeReload = true;
     }, 1000);
+
+    this.events.on('resume', () => {
+      setTimeout(() => {
+        this.timeReload = true;
+      }, 1000);
+    });
   }
 
   public update(): void {
     if (this.player.player.getBottomCenter().x >= 1640) {
       clearInterval(this.interval);
     }
+
+    if (this.scene.isActive()) {
+      if (this.timeReload) {
+        changeTime(this);
+        this.timeReload = false;
+        this.interval = setTimeout(() => {
+          this.timeReload = true;
+        }, 1000);
+      }
+    }
+
   }
 }

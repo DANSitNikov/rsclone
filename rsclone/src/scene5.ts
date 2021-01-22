@@ -42,6 +42,8 @@ export default class Scene5 extends Phaser.Scene {
 
   resetCloudPosition: () => number;
 
+  private timeReload: boolean;
+
   constructor() {
     super(sceneConfig);
 
@@ -67,9 +69,15 @@ export default class Scene5 extends Phaser.Scene {
 
     makeDecor(this);
 
-    this.interval = setInterval(() => {
-      changeTime(this);
+    setTimeout(() => {
+      this.timeReload = true;
     }, 1000);
+
+    this.events.on('resume', () => {
+      setTimeout(() => {
+        this.timeReload = true;
+      }, 1000);
+    });
   }
 
   public update():void {
@@ -113,6 +121,16 @@ export default class Scene5 extends Phaser.Scene {
     if (this.player.player.getBottomCenter().x >= 1640) {
       clearInterval(this.interval);
       makeStatisticInfo();
+    }
+
+    if (this.scene.isActive()) {
+      if (this.timeReload) {
+        changeTime(this);
+        this.timeReload = false;
+        this.interval = setTimeout(() => {
+          this.timeReload = true;
+        }, 1000);
+      }
     }
   }
 

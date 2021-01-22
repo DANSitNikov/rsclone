@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser';
-import {setBtnActive, disableBtnActive, keyboardControl, makeStatisticInfo, makeSavedGamesInfo} from './utilitites';
+import {
+  setBtnActive, disableBtnActive, keyboardControl, makeSavedGamesInfo,
+} from './utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
   private playButton: Phaser.GameObjects.Text;
@@ -25,6 +27,8 @@ export default class PauseMenu extends Phaser.Scene {
   private player;
 
   private tabIndex: number;
+
+  private myScene;
 
   constructor() {
     super({ key: 'PauseMenu', active: false });
