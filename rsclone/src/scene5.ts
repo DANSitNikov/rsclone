@@ -59,7 +59,6 @@ export default class Scene5 extends Phaser.Scene {
     // @ts-ignore
     const action = cursors.space.isDown || keyboardKeys.action.isDown;
 
-
     this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
     this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.3);
 

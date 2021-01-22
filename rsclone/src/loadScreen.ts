@@ -80,11 +80,13 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('boatCollides', 'assets/objects/boatCollides.png');
     this.load.image('bgLight', 'assets/objects/bgLight.png');
 
+    this.load.image('bg6', 'assets/world/bg6.png');
     this.load.image('bg5', 'assets/world/bg5.png');
     this.load.image('bg4', 'assets/world/bg4.png');
     this.load.image('bg3', 'assets/world/bg3.png');
     this.load.image('bg2', 'assets/world/bg2.png');
     this.load.image('bg1', 'assets/world/bg1.png');
+    this.load.tilemapTiledJSON('map6', 'assets/world/bg6.json', null);
     this.load.tilemapTiledJSON('map5', 'assets/world/bg5.json', null);
     this.load.tilemapTiledJSON('map4', 'assets/world/bg4.json', null);
     this.load.tilemapTiledJSON('map3', 'assets/world/bg3.json', null);
@@ -130,6 +132,12 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/objects/water2.png',
       'assets/objects/water2.json',
     );
+    this.load.atlas(
+      'door',
+      'assets/objects/door.png',
+      'assets/objects/door.json',
+    );
+
 
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');
