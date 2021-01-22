@@ -1,0 +1,461 @@
+{
+	"textures": [
+		{
+			"image": "hand.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 238,
+				"h": 1586
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "hand16.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 10,
+						"w": 76,
+						"h": 697
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 76,
+						"h": 697
+					}
+				},
+				{
+					"filename": "hand15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 14,
+						"w": 76,
+						"h": 693
+					},
+					"frame": {
+						"x": 1,
+						"y": 700,
+						"w": 76,
+						"h": 693
+					}
+				},
+				{
+					"filename": "hand17.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 14,
+						"w": 76,
+						"h": 693
+					},
+					"frame": {
+						"x": 1,
+						"y": 700,
+						"w": 76,
+						"h": 693
+					}
+				},
+				{
+					"filename": "hand9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 551,
+						"w": 76,
+						"h": 156
+					},
+					"frame": {
+						"x": 1,
+						"y": 1395,
+						"w": 76,
+						"h": 156
+					}
+				},
+				{
+					"filename": "hand14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 33,
+						"w": 76,
+						"h": 674
+					},
+					"frame": {
+						"x": 79,
+						"y": 1,
+						"w": 76,
+						"h": 674
+					}
+				},
+				{
+					"filename": "hand18.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 33,
+						"w": 76,
+						"h": 674
+					},
+					"frame": {
+						"x": 79,
+						"y": 1,
+						"w": 76,
+						"h": 674
+					}
+				},
+				{
+					"filename": "hand13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 44,
+						"w": 78,
+						"h": 663
+					},
+					"frame": {
+						"x": 79,
+						"y": 677,
+						"w": 78,
+						"h": 663
+					}
+				},
+				{
+					"filename": "hand19.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 44,
+						"w": 78,
+						"h": 663
+					},
+					"frame": {
+						"x": 79,
+						"y": 677,
+						"w": 78,
+						"h": 663
+					}
+				},
+				{
+					"filename": "hand10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 464,
+						"w": 78,
+						"h": 243
+					},
+					"frame": {
+						"x": 79,
+						"y": 1342,
+						"w": 78,
+						"h": 243
+					}
+				},
+				{
+					"filename": "hand12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 145,
+						"w": 76,
+						"h": 562
+					},
+					"frame": {
+						"x": 157,
+						"y": 1,
+						"w": 76,
+						"h": 562
+					}
+				},
+				{
+					"filename": "hand20.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 145,
+						"w": 76,
+						"h": 562
+					},
+					"frame": {
+						"x": 157,
+						"y": 1,
+						"w": 76,
+						"h": 562
+					}
+				},
+				{
+					"filename": "hand7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 613,
+						"w": 76,
+						"h": 94
+					},
+					"frame": {
+						"x": 157,
+						"y": 565,
+						"w": 76,
+						"h": 94
+					}
+				},
+				{
+					"filename": "hand11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 299,
+						"w": 76,
+						"h": 408
+					},
+					"frame": {
+						"x": 159,
+						"y": 661,
+						"w": 76,
+						"h": 408
+					}
+				},
+				{
+					"filename": "hand21.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 299,
+						"w": 76,
+						"h": 408
+					},
+					"frame": {
+						"x": 159,
+						"y": 661,
+						"w": 76,
+						"h": 408
+					}
+				},
+				{
+					"filename": "hand8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 578,
+						"w": 76,
+						"h": 129
+					},
+					"frame": {
+						"x": 159,
+						"y": 1071,
+						"w": 76,
+						"h": 129
+					}
+				},
+				{
+					"filename": "hand6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 636,
+						"w": 76,
+						"h": 71
+					},
+					"frame": {
+						"x": 159,
+						"y": 1202,
+						"w": 76,
+						"h": 71
+					}
+				},
+				{
+					"filename": "hand5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 636,
+						"w": 67,
+						"h": 71
+					},
+					"frame": {
+						"x": 159,
+						"y": 1275,
+						"w": 67,
+						"h": 71
+					}
+				},
+				{
+					"filename": "hand4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 636,
+						"w": 61,
+						"h": 71
+					},
+					"frame": {
+						"x": 159,
+						"y": 1348,
+						"w": 61,
+						"h": 71
+					}
+				},
+				{
+					"filename": "hand3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 636,
+						"w": 56,
+						"h": 71
+					},
+					"frame": {
+						"x": 159,
+						"y": 1421,
+						"w": 56,
+						"h": 71
+					}
+				},
+				{
+					"filename": "hand2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 636,
+						"w": 51,
+						"h": 71
+					},
+					"frame": {
+						"x": 159,
+						"y": 1494,
+						"w": 51,
+						"h": 71
+					}
+				},
+				{
+					"filename": "hand1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 88,
+						"h": 707
+					},
+					"spriteSourceSize": {
+						"x": 52,
+						"y": 636,
+						"w": 25,
+						"h": 71
+					},
+					"frame": {
+						"x": 212,
+						"y": 1494,
+						"w": 25,
+						"h": 71
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:ce7f91f7e559976e6916a7400ba5a488:d0b2b82f7cc56e7faa9a1a3957b3f754:b2489f6b7d10447a0d6fee1c4a9f4924$"
+	}
+}
