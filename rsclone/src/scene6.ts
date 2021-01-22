@@ -49,7 +49,7 @@ export default class Scene6 extends Phaser.Scene {
         prefix: '',
         suffix: '.png',
       }),
-      frameRate: 19,
+      frameRate: 15,
       repeat: 0,
     });
     this.lantern = this.add.sprite(900, 565, 'lantern', 1);
@@ -82,13 +82,13 @@ export default class Scene6 extends Phaser.Scene {
         if (this.doorOpened) {
           this.door.anims.play('door');
           this.doorOpened = false;
-          this.sound.add('switch').play({ loop: false });
+          this.sound.add('door').play({ loop: false });
           this.doorBlock.setY(797)
 
         } else {
           this.door.anims.playReverse('door');
           this.doorOpened = true;
-          this.sound.add('switch').play({ loop: false });
+          this.sound.add('door').play({ loop: false });
           this.doorBlock.setY(0)
         }
         this.doorClicked = true;
