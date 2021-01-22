@@ -32,8 +32,8 @@ export default class Menu extends Phaser.Scene {
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.menuNames = [
-      this.lang.play, this.lang.settings, this.lang.credits,
-      this.lang.statistic, this.lang.savedGames,
+      this.lang.play, this.lang.settings, this.lang.statistic,
+      this.lang.savedGames, this.lang.credits,
     ];
 
     this.add
@@ -89,15 +89,15 @@ export default class Menu extends Phaser.Scene {
     },
 
     (): void => {
-      this.scene.start('Credits');
-    },
-
-    (): void => {
       this.scene.start('Statistic');
     },
 
     (): void => {
       this.scene.start('Saved_games');
+    },
+
+    (): void => {
+      this.scene.start('Credits');
     },
   ];
 }

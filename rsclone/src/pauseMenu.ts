@@ -102,7 +102,7 @@ export default class PauseMenu extends Phaser.Scene {
       this.scene.bringToTop('Settings');
     },
     (): void => {
-      this.scene.start('Statistic', { key: this.lastScene, pause: true });
+      this.scene.start('Statistic', { key: this.lastScene, pause: true, player: this.player });
       this.scene.bringToTop('Statistic');
     },
     (): void => {

@@ -24,4 +24,5 @@ export default {
   deaths: '死亡人數',
   scene: '現場',
   date: '日期',
+  place: '地点',
 };

@@ -24,4 +24,5 @@ export default {
   deaths: 'Смерти',
   scene: 'Сцена',
   date: 'Дата',
+  place: 'Место',
 };

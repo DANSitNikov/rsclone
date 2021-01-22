@@ -46,8 +46,7 @@ export default class Statistic extends Phaser.Scene {
 
     const CreateItems = () => {
       const arr = JSON.parse(localStorage.getItem('statistic'));
-      arr.unshift(['Top', this.lang.time, this.lang.deaths]);
-      console.log(this.lang.time);
+      arr.unshift([this.lang.place, this.lang.time, this.lang.deaths]);
       const data = [];
 
       for (let i = 0; i < arr.length; i += 1) {
@@ -115,9 +114,9 @@ export default class Statistic extends Phaser.Scene {
               },
             });
           }
-          // Set properties from item value
-          cellContainer.setMinSize(width, height); // Size might changed in this demo
-          cellContainer.getElement('text').setText(item.id).setStyle({ font: '25px monospace' }); // Set text of text object
+
+          cellContainer.setMinSize(width, height);
+          cellContainer.getElement('text').setText(item.id).setStyle({ font: '25px monospace' });
           cellContainer.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
           return cellContainer;
         },

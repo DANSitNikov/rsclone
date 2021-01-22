@@ -23,5 +23,6 @@ export default {
   time: 'Time',
   deaths: 'Deaths',
   scene: 'Scene',
-  date: 'Date'
+  date: 'Date',
+  place: 'Place',
 };
