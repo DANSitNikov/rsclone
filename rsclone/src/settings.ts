@@ -7,8 +7,6 @@ import {
 export default class Settings extends Phaser.Scene {
   private lang: Record<string, string>;
 
-  private soundButton: Phaser.GameObjects.Text;
-
   private backButton: Phaser.GameObjects.Text;
 
   private rexUI;
@@ -108,65 +106,64 @@ export default class Settings extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive();
 
-    const btnList = {
-      labels: [
-        this.soundLabel,
-        this.langLabel,
-        this.backButton,
-      ],
-      btns: [
-        this.volume,
-        this.langBtn,
-        this.backButton,
-      ],
-      handlers: [
-        null,
-        () => this.switchLangHandler(),
-        () => this.backToMenu(),
-      ],
-    };
+    const list = [
+      {
+        label: this.soundLabel,
+        btn: this.volume,
+      },
+      {
+        label: this.langLabel,
+        btn: this.langBtn,
+        handler: () => this.switchLangHandler(),
+      },
+      {
+        label: this.backButton,
+        btn: this.backButton,
+        handler: () => this.backToMenu(),
+      },
+    ];
 
-    btnList.btns.forEach((button, index) => {
-      if (btnList.handlers[index]) {
-        button.on('pointerup', btnList.handlers[index], this);
+    list.forEach((item, index) => {
+      if (item.handler) {
+        item.label.on('pointerup', item.handler, this);
       }
-      button.on('pointerover', () => {
-        disableBtnActive(btnList.labels[this.tabIndex]);
+      item.label.on('pointerover', () => {
+        disableBtnActive(list[this.tabIndex].label);
         this.tabIndex = index;
-        setBtnActive(btnList.labels[this.tabIndex]);
+        setBtnActive(item.label);
       }, this);
-      button.on('pointerout', () => disableBtnActive(btnList.labels[this.tabIndex]), this);
+      item.label.on('pointerout', () => disableBtnActive(item.label), this);
     });
 
-    btnList.labels.forEach((button, index) => {
-      if (btnList.handlers[index]) {
-        button.on('pointerup', btnList.handlers[index], this);
+    list.forEach((item, index) => {
+      if (item.handler) {
+        item.btn.on('pointerup', item.handler, this);
       }
-      button.on('pointerover', () => {
-        disableBtnActive(btnList.labels[this.tabIndex]);
+      item.btn.on('pointerover', () => {
+        disableBtnActive(list[this.tabIndex].label);
         this.tabIndex = index;
-        setBtnActive(btnList.labels[this.tabIndex]);
+        setBtnActive(item.label);
       }, this);
-      button.on('pointerout', () => disableBtnActive(btnList.labels[this.tabIndex]), this);
+      item.btn.on('pointerout', () => disableBtnActive(item.label), this);
     });
 
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
     this.input.keyboard.on('keydown-ENTER', () => {
-      if (typeof btnList.handlers[this.tabIndex] === 'function') {
-        btnList.handlers[this.tabIndex]();
+      if (typeof list[this.tabIndex].handler === 'function') {
+        list[this.tabIndex].handler();
       }
     }, this);
 
     this.input.keyboard.on('keydown', (e) => {
-      this.tabIndex = keyboardControl(e, this.tabIndex, btnList.labels);
+      this.tabIndex = keyboardControl(e, this.tabIndex, list.map((item) => item.label));
 
       const currentValue = this.volume.getValue();
       if (!(e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;
-      if (this.tabIndex !== btnList.labels.indexOf(this.soundLabel)) return;
+      if (this.tabIndex !== list.map((item) => item.label).indexOf(this.soundLabel)) return;
       const n = e.key === 'ArrowLeft' ? -0.1 : 0.1;
       this.volume.setValue(Math.round((currentValue + n) * 10) / 10);
     }, this);
-    setBtnActive(btnList.labels[this.tabIndex]);
+    setBtnActive(list[this.tabIndex].label);
   }
 
   backToMenu(): void {

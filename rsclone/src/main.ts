@@ -43,6 +43,10 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
       },
     ],
   },
+  fps: {
+    target: 60,
+    forceSetTimeOut: true,
+  },
   scene: [LoadScreen, Menu, Settings, Credits, Statistic, SavedGames, Scene1, Scene2,
     Scene3, Scene4, Scene5, PauseMenu, GameOverMenu],
 
