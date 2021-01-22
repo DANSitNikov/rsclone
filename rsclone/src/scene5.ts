@@ -26,6 +26,10 @@ export default class Scene5 extends Phaser.Scene {
   private player: Player;
 
   resetCloudPosition: () => number;
+  private plort: Phaser.GameObjects.Sprite;
+  private wall: Phaser.Physics.Matter.Sprite;
+
+
 
   constructor() {
     super(sceneConfig);
@@ -49,6 +53,12 @@ export default class Scene5 extends Phaser.Scene {
 
     this.switchClicked = false;
     this.switchStatus = false;
+
+    this.plort = this.add.sprite(1505, 490, 'plort1');
+    this.wall = this.matter.add.sprite(1665, 490, 'plort1').setScale(0.1, 1);
+    this.wall.setStatic(true);
+    this.wall.setVisible(false);
+
   }
 
   public update():void {
@@ -78,6 +88,8 @@ export default class Scene5 extends Phaser.Scene {
           this.switchStatus = true;
           this.sound.add('switch').play({ loop: false });
           this.light.visible = true;
+          this.plort.setTexture('plort2');
+          this.wall.setScale(0);
         } else {
           this.switch.setTexture('switchRed');
           this.switchStatus = false;

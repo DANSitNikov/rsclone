@@ -83,13 +83,13 @@ export default class Scene6 extends Phaser.Scene {
           this.door.anims.play('door');
           this.doorOpened = false;
           this.sound.add('door').play({ loop: false });
-          this.doorBlock.setY(797)
+          this.doorBlock.setY(797);
 
         } else {
           this.door.anims.playReverse('door');
           this.doorOpened = true;
           this.sound.add('door').play({ loop: false });
-          this.doorBlock.setY(0)
+          this.doorBlock.setY(0);
         }
         this.doorClicked = true;
         setTimeout(() => this.doorClicked = false, 500)
