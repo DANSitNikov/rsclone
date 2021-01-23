@@ -8,7 +8,7 @@ export default {
   soundVolume: 'Sound volume:',
   language: 'Language:',
   languageName: 'English',
-  backToMenu: 'back to menu',
+  backToMenu: 'Back to menu',
   devs: 'Developers',
   artist: 'Artist',
   pauseHeading: 'Paused',
