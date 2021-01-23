@@ -171,7 +171,9 @@ export default class Scene5 extends Phaser.Scene {
           this.light.visible = false;
         }
         this.switchClicked = true;
-        setTimeout(() => this.switchClicked = false, 500)
+        setTimeout(() => {
+          this.switchClicked = false;
+        }, 500);
       }
     }
 
@@ -189,16 +191,20 @@ export default class Scene5 extends Phaser.Scene {
       if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, rect)) {
         this.player.die();
       }
-    }
+    };
     checkDie(this.spidey.getBounds());
     if (this.handZone1 && this.handsActive) {
       checkDie(this.handZone1.getBounds());
       checkDie(this.handZone2.getBounds());
       checkDie(this.handZone3.getBounds());
     }
-    if (this.player.player.y <= 380 && this.spideySpeed && this.player.player.x > 1200) this.startHands();
+    if (
+      this.player.player.y <= 380
+      && this.spideySpeed
+      && this.player.player.x > 1200
+    ) this.startHands();
     if (this.handsActive) {
-      function getDirection(hand) {
+      function getDirection(hand: Phaser.GameObjects.Sprite) {
         if (hand.y >= 770 || hand.y <= 430) return -1;
         return 1;
       }
@@ -220,10 +226,11 @@ export default class Scene5 extends Phaser.Scene {
   private startHands() {
     this.spidey.anims.play('spideyDie');
     this.spideySpeed = 0;
-    setTimeout(() => this.handRise() , 1000);
+    setTimeout(() => this.handRise(), 1000);
   }
+
   private handRise() {
-    this.hands1 = this.add.sprite(760, 540, 'hand')
+    this.hands1 = this.add.sprite(760, 540, 'hand');
     this.hands1.anims.play('handRise');
     setTimeout(() => {
       this.hands2 = this.add.sprite(1000, 535, 'hand').setScale(-1, 1);
@@ -235,6 +242,7 @@ export default class Scene5 extends Phaser.Scene {
     }, 100);
     setTimeout(() => this.handsMove(), 1100);
   }
+
   private handsMove() {
     this.handsActive = true;
     this.handZone1 = this.add.sprite(760, 740, 'hand');
@@ -247,11 +255,9 @@ export default class Scene5 extends Phaser.Scene {
     this.hands1.anims.play('handMove');
     setTimeout(() => {
       this.hands2.anims.play('handMove');
-      }, 200);
+    }, 200);
     setTimeout(() => {
       this.hands3.anims.play('handMove');
-
     }, 150);
   }
-
 }

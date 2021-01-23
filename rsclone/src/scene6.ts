@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import Player from "./player";
+import Player from './player';
 import getTintAppendFloatAlphaAndSwap = Phaser.Renderer.WebGL.Utils.getTintAppendFloatAlphaAndSwap;
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -61,10 +61,8 @@ export default class Scene6 extends Phaser.Scene {
     this.doorBlock.setStatic(true);
     this.doorBlock.setVisible(false);
 
-
     this.doorOpened = false;
     this.doorClicked = false;
-
   }
 
   public update(): void {
@@ -77,14 +75,12 @@ export default class Scene6 extends Phaser.Scene {
     if (Phaser.Geom.Intersects.RectangleToRectangle(
       this.door.getBounds(), this.player.player.getBounds(),
     )) {
-
       if (action && !this.doorClicked) {
         if (this.doorOpened) {
           this.door.anims.play('door');
           this.doorOpened = false;
           this.sound.add('door').play({ loop: false });
           this.doorBlock.setY(797);
-
         } else {
           this.door.anims.playReverse('door');
           this.doorOpened = true;
@@ -92,12 +88,8 @@ export default class Scene6 extends Phaser.Scene {
           this.doorBlock.setY(0);
         }
         this.doorClicked = true;
-        setTimeout(() => this.doorClicked = false, 500)
+        setTimeout(() => this.doorClicked = false, 500);
       }
     }
-
   }
-
-
-
 }
