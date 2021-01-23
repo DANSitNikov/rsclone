@@ -37,23 +37,6 @@ function disableBtnActive(btn: Phaser.GameObjects.Text): void {
   btn.clearTint();
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function setSliderActive(slider: { children: any[]; }):void {
-  slider.children.forEach((el, i) => {
-    if (i === 0) return;
-    const element = el;
-    element.fillColor = 0xFFA300;
-  });
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function disableSliderActive(slider: { children: any[]; }):void {
-  slider.children.forEach((el, i) => {
-    if (i === 0) return;
-    const element = el;
-    element.fillColor = 0xffffff;
-  });
-}
-
 const changeCurretIndex = (
   listLength:number, index:number, direction:number,
 ):number => (index + direction > -1 ? (index + direction) % listLength : listLength - 1);
@@ -76,8 +59,6 @@ export {
   switchLang,
   setBtnActive,
   disableBtnActive,
-  setSliderActive,
-  disableSliderActive,
   keyboardControl,
   changeCurretIndex,
 };
