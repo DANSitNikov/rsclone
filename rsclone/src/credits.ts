@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser';
-import { setBtnActive, disableBtnActive, keyboardControl } from './utilitites';
+import {
+  createBtnHandlers, keuboardNavigation, List,
+} from './utilitites';
 
 export default class Credits extends Phaser.Scene {
   private lang: Record<string, string>;
@@ -8,22 +10,7 @@ export default class Credits extends Phaser.Scene {
 
   private tabIndex: number;
 
-  private list: ({
-    name: string;
-      style: { font: string; };
-      btn: Phaser.GameObjects.Text;
-      handler?: undefined;
-    } | {
-      name: string;
-      handler: () => void;
-      style: { font: string; };
-      btn?: undefined;
-    } | {
-      name: string;
-      style: { font: string;};
-      btn?: undefined;
-      handler?: undefined;
-    })[];
+  private list: List;
 
   constructor() {
     super({ key: 'Credits', active: false });
@@ -106,30 +93,9 @@ export default class Credits extends Phaser.Scene {
     });
 
     this.list = this.list.filter((e) => e.btn);
-    this.list.forEach((e, i) => {
-      if (!e.handler) return;
-      e.btn.on('pointerup', e.handler, this);
 
-      e.btn.on('pointerover', () => {
-        disableBtnActive(this.list[this.tabIndex].btn);
-        this.tabIndex = i;
-        setBtnActive(e.btn);
-      }, this);
-      e.btn.on('pointerout', () => disableBtnActive(e.btn), this);
-    });
-
-    this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
-    setBtnActive(this.list[this.tabIndex].btn);
-
-    this.input.keyboard.on('keydown-ENTER', () => {
-      if (typeof this.list[this.tabIndex].handler === 'function') {
-        this.list[this.tabIndex].handler();
-      }
-    }, this);
-
-    this.input.keyboard.on('keydown', (e) => {
-      this.tabIndex = keyboardControl(e, this.tabIndex, this.list.map((item) => item.btn));
-    }, this);
+    createBtnHandlers.call(this);
+    keuboardNavigation.call(this, true);
   }
 
   backToMenu(): void {

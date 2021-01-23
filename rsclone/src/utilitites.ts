@@ -7,6 +7,7 @@ export type List = {
   name?: string;
   handler?: () => void;
   btn?: Phaser.GameObjects.Text;
+  style?;
 }[];
 
 export const setLang = (lang: string): Record<string, string> => {
@@ -113,7 +114,7 @@ export function createBtnHandlers(): void {
         this,
       );
       item.btn.on('pointerout', () => disableBtnActive(item.label), this);
-    } else {
+    } else if ('btn' in item) {
       if (item.handler) {
         item.btn.on('pointerup', item.handler, this);
       }
