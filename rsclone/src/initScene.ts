@@ -12,7 +12,7 @@ export default function initScene(sc, number: number, x: number, y: number): voi
 
   scene.input.keyboard.on('keydown-ESC', () => {
     scene.scene.pause();
-    clearTimeout(scene.interval);
+    scene.time.paused = true;
     scene.scene.launch('PauseMenu', { key: `Scene${number}`, player: scene.player });
   });
 }

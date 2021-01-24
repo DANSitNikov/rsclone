@@ -78,6 +78,9 @@ export default class PauseMenu extends Phaser.Scene {
           this.game.sound.stopAll();
 
           this.player.stop();
+          localStorage.setItem('gaming_time', JSON.stringify(0));
+
+          localStorage.setItem('deaths_count', JSON.stringify(0));
 
           this.scene.stop(this.lastScene);
           this.scene.start('Menu');

@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { changeTime, countDeath, statisticInGame } from './utilitites';
+import { countDeath, statisticInGame } from './utilitites';
 import Player from './player';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -17,10 +17,6 @@ export default class Scene4 extends Phaser.Scene {
   private spikes2: Phaser.GameObjects.Zone;
 
   private player: Player;
-
-  private interval;
-
-  private timeReload: boolean;
 
   private deathStatus: boolean;
 
@@ -53,20 +49,6 @@ export default class Scene4 extends Phaser.Scene {
   }
 
   public update(): void {
-    if (this.player.player.getBottomCenter().x >= 1640) {
-      clearInterval(this.interval);
-    }
-
-    if (this.scene.isActive()) {
-      if (this.timeReload) {
-        changeTime(this);
-        this.timeReload = false;
-        this.interval = setTimeout(() => {
-          this.timeReload = true;
-        }, 1000);
-      }
-    }
-
     this.killOnSpikes(this.spikes);
     this.killOnSpikes(this.spikes2);
   }
@@ -76,7 +58,7 @@ export default class Scene4 extends Phaser.Scene {
       spikeid.getBounds(), this.player.player.getBounds(),
     )) {
       this.player.die();
-      clearInterval(this.interval);
+      this.time.paused = true;
       if (!this.deathStatus) {
         countDeath();
         this.deathStatus = true;

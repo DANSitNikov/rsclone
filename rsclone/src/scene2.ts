@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { changeTime, countDeath, statisticInGame } from './utilitites';
+import { countDeath, statisticInGame } from './utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -31,11 +31,7 @@ export default class Scene2 extends Phaser.Scene {
 
   private fish;
 
-  private interval;
-
   private deathStatus: boolean;
-
-  private timeReload: boolean;
 
   constructor() {
     super(sceneConfig);
@@ -142,12 +138,7 @@ export default class Scene2 extends Phaser.Scene {
       if (this.boat.x >= 1460) {
         this.player.stop();
         this.scene.start('Scene3');
-        clearInterval(this.interval);
       }
-    }
-
-    if (this.player.player.getBottomCenter().x >= 1640) {
-      clearInterval(this.interval);
     }
 
     if (this.pauseFish) {
@@ -164,20 +155,10 @@ export default class Scene2 extends Phaser.Scene {
     // Kill the character in water
     if (this.player.player.y > 969 && this.player.isAlive) {
       this.player.die();
-      clearInterval(this.interval);
+      this.time.paused = true;
       if (!this.deathStatus) {
         countDeath();
         this.deathStatus = true;
-      }
-    }
-
-    if (this.scene.isActive()) {
-      if (this.timeReload) {
-        changeTime(this);
-        this.timeReload = false;
-        this.interval = setTimeout(() => {
-          this.timeReload = true;
-        }, 1000);
       }
     }
   }

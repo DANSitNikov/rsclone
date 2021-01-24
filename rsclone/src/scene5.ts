@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
-import { changeTime, countDeath, makeStatisticInfo, statisticInGame } from './utilitites';
+import { countDeath, makeStatisticInfo, statisticInGame } from './utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -185,18 +185,7 @@ export default class Scene5 extends Phaser.Scene {
     }
 
     if (this.player.player.getBottomCenter().x >= 1640) {
-      clearInterval(this.interval);
       makeStatisticInfo();
-    }
-
-    if (this.scene.isActive()) {
-      if (this.timeReload) {
-        changeTime(this);
-        this.timeReload = false;
-        this.interval = setTimeout(() => {
-          this.timeReload = true;
-        }, 1000);
-      }
     }
 
     this.spidey.x += this.spideySpeed;
@@ -212,7 +201,7 @@ export default class Scene5 extends Phaser.Scene {
     const checkDie = (rect) => {
       if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, rect)) {
         this.player.die();
-        clearInterval(this.interval);
+        this.time.paused = true;
         if (!this.deathStatus) {
           countDeath();
           this.deathStatus = true;
@@ -281,7 +270,6 @@ export default class Scene5 extends Phaser.Scene {
     }, 200);
     setTimeout(() => {
       this.hands3.anims.play('handMove');
-
     }, 150);
   }
 }

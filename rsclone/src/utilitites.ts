@@ -179,15 +179,16 @@ function statisticInGame(scene):void {
 
   currentScene.deathStatus = false;
 
-  setTimeout(() => {
-    currentScene.timeReload = true;
-  }, 1000);
-
   currentScene.events.on('resume', () => {
-    setTimeout(() => {
-      currentScene.timeReload = true;
-    }, 1000);
+    currentScene.time.paused = false;
   });
+
+  function callback():void {
+    changeTime(scene);
+  }
+
+  currentScene.time.addEvent({ delay: 1000, loop: true, callback });
+  currentScene.time.paused = false;
 }
 
 function notification(scene, UI): void {
