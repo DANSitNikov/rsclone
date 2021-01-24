@@ -62,7 +62,7 @@ export default class Statistic extends Phaser.Scene {
     };
 
     if (JSON.parse(localStorage.getItem('statistic')).length === 0) {
-      this.emptyStatistic = 'There is no statistic yet...';
+      this.emptyStatistic = this.lang.emptyStatistic;
       this.add.text(this.game.renderer.width / 2, 400, this.emptyStatistic, {
         font: '42px monospace',
       })

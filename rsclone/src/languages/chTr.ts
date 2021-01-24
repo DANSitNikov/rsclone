@@ -26,4 +26,6 @@ export default {
   scene: '現場',
   date: '日期',
   place: '地点',
+  emptyStatistic: '尚无统计资料...',
+  emptySavedGames: '暂无游戏...',
 };

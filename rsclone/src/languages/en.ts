@@ -26,4 +26,6 @@ export default {
   scene: 'Scene',
   date: 'Date',
   place: 'Place',
+  emptyStatistic: 'There is no statistic yet...',
+  emptySavedGames: 'There are no saved games yet...',
 };

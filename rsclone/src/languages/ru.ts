@@ -26,4 +26,6 @@ export default {
   scene: 'Сцена',
   date: 'Дата',
   place: 'Место',
+  emptyStatistic: 'Статистики пока нет...',
+  emptySavedGames: 'Сохраненных игр пока нет...',
 };

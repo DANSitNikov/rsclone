@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
-import { changeTime, makeStatisticInfo, statisticInGame } from './utilitites';
+import { changeTime, countDeath, makeStatisticInfo, statisticInGame } from './utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -28,9 +28,39 @@ export default class Scene5 extends Phaser.Scene {
 
   private interval;
 
+  private deathStatus;
+
   resetCloudPosition: () => number;
 
   private timeReload: boolean;
+
+  private plort: Phaser.GameObjects.Sprite;
+
+  private wall: Phaser.Physics.Matter.Sprite;
+
+  private spidey: Phaser.GameObjects.Sprite;
+
+  private spideySpeed: number;
+
+  private hands1: Phaser.GameObjects.Sprite;
+
+  private hands2: Phaser.GameObjects.Sprite;
+
+  private hands3: Phaser.GameObjects.Sprite;
+
+  private handZone1: Phaser.GameObjects.Sprite;
+
+  private handZone2: Phaser.GameObjects.Sprite;
+
+  private handZone3: Phaser.GameObjects.Sprite;
+
+  private handsActive: boolean;
+
+  private hand1Speed: number;
+
+  private hand2Speed: number;
+
+  private hand3Speed: number;
 
   constructor() {
     super(sceneConfig);
@@ -56,6 +86,62 @@ export default class Scene5 extends Phaser.Scene {
     this.switchStatus = false;
 
     statisticInGame(this);
+
+    this.plort = this.add.sprite(1505, 490, 'plort1');
+    this.wall = this.matter.add.sprite(1665, 490, 'plort1').setScale(0.1, 1);
+    this.wall.setStatic(true);
+    this.wall.setVisible(false);
+
+    this.anims.create({
+      key: 'spidey',
+      frames: this.anims.generateFrameNames('spidey', {
+        start: 1,
+        end: 8,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 11,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'spideyDie',
+      frames: this.anims.generateFrameNames('spideyDie', {
+        start: 1,
+        end: 12,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 11,
+      repeat: 0,
+    });
+    this.anims.create({
+      key: 'handRise',
+      frames: this.anims.generateFrameNames('hand', {
+        start: 1,
+        end: 10,
+        prefix: 'hand',
+        suffix: '.png',
+      }),
+      frameRate: 8,
+      repeat: 0,
+    });
+    this.anims.create({
+      key: 'handMove',
+      frames: this.anims.generateFrameNames('hand', {
+        start: 10,
+        end: 21,
+        prefix: 'hand',
+        suffix: '.png',
+      }),
+      frameRate: 8,
+      repeat: -1,
+    });
+    this.spidey = this.add.sprite(1000, 782, 'spidey').setScale(0.6);
+    this.spidey.anims.play('spidey');
+    this.spideySpeed = -6;
+    this.handsActive = false;
+
+    this.sound.add('wind').play({ loop: true });
   }
 
   public update():void {
@@ -85,6 +171,8 @@ export default class Scene5 extends Phaser.Scene {
           this.switchStatus = true;
           this.sound.add('switch').play({ loop: false });
           this.light.visible = true;
+          this.plort.setTexture('plort2');
+          this.wall.setScale(0);
         } else {
           this.switch.setTexture('switchRed');
           this.switchStatus = false;
@@ -110,9 +198,90 @@ export default class Scene5 extends Phaser.Scene {
         }, 1000);
       }
     }
+
+    this.spidey.x += this.spideySpeed;
+    if (this.spidey.x <= 600) {
+      this.spidey.flipX = true;
+      this.spideySpeed *= -1;
+    }
+    if (this.spidey.x >= 1600) {
+      this.spidey.flipX = false;
+      this.spideySpeed *= -1;
+    }
+
+    const checkDie = (rect) => {
+      if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, rect)) {
+        this.player.die();
+        clearInterval(this.interval);
+        if (!this.deathStatus) {
+          countDeath();
+          this.deathStatus = true;
+        }
+      }
+    };
+    checkDie(this.spidey.getBounds());
+    if (this.handZone1 && this.handsActive) {
+      checkDie(this.handZone1.getBounds());
+      checkDie(this.handZone2.getBounds());
+      checkDie(this.handZone3.getBounds());
+    }
+    if (this.player.player.y <= 380 && this.spideySpeed && this.player.player.x > 1200) this.startHands();
+    if (this.handsActive) {
+      function getDirection(hand) {
+        if (hand.y >= 770 || hand.y <= 430) return -1;
+        return 1;
+      }
+
+      this.hand1Speed *= getDirection(this.handZone1);
+      this.hand2Speed *= getDirection(this.handZone2);
+      this.hand3Speed *= getDirection(this.handZone3);
+
+      this.handZone1.y += this.hand1Speed;
+      this.handZone2.y += this.hand2Speed;
+      this.handZone3.y += this.hand3Speed;
+    }
   }
 
   public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? this.resetCloudPosition() : cloudX + speed;
+  }
+
+  private startHands() {
+    this.spidey.anims.play('spideyDie');
+    this.spideySpeed = 0;
+    setTimeout(() => this.handRise() , 1000);
+  }
+
+  private handRise() {
+    this.hands1 = this.add.sprite(760, 540, 'hand')
+    this.hands1.anims.play('handRise');
+    setTimeout(() => {
+      this.hands2 = this.add.sprite(1000, 535, 'hand').setScale(-1, 1);
+      this.hands2.anims.play('handRise');
+    }, 300);
+    setTimeout(() => {
+      this.hands3 = this.add.sprite(1250, 525, 'hand').setScale(-1, 1);
+      this.hands3.anims.play('handRise');
+    }, 100);
+    setTimeout(() => this.handsMove(), 1100);
+  }
+
+  private handsMove() {
+    this.handsActive = true;
+    this.handZone1 = this.add.sprite(760, 740, 'hand');
+    this.handZone2 = this.add.sprite(1000, 710, 'hand');
+    this.handZone3 = this.add.sprite(1250, 750, 'hand');
+    this.handZone1.visible = false;
+    this.handZone2.visible = false;
+    this.handZone3.visible = false;
+    this.hand1Speed = this.hand2Speed = this.hand3Speed = 7.7;
+    this.hands1.anims.play('handMove');
+    setTimeout(() => {
+      this.hands2.anims.play('handMove');
+    }, 200);
+    setTimeout(() => {
+      this.hands3.anims.play('handMove');
+
+    }, 150);
   }
 }

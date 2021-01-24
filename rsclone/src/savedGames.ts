@@ -67,7 +67,7 @@ export default class SavedGames extends Phaser.Scene {
     };
 
     if (JSON.parse(localStorage.getItem('saved_games')).length === 0) {
-      this.emptySavedGames = 'There is no saved games yet...';
+      this.emptySavedGames = this.lang.emptySavedGames;
       this.add.text(this.game.renderer.width / 2, 400, this.emptySavedGames, styleTitle)
         .setOrigin(0.5)
         .setInteractive();
