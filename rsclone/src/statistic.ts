@@ -8,8 +8,6 @@ export default class Statistic extends Phaser.Scene {
 
   private emptyStatistic: string;
 
-  private openLink: (link: string) => void;
-
   private pause: boolean;
 
   private lastScene: string;
@@ -32,19 +30,22 @@ export default class Statistic extends Phaser.Scene {
 
   create(): void {
     this.lang = this.registry.get('lang');
-    const styleTitle = { font: '40px monospace' };
     this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400,
-        this.lang.statistic, styleTitle)
+        this.lang.statistic, {
+          font: '42px monospace',
+        })
       .setOrigin(0.5);
 
     this.backButton = this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height - 100,
-        this.lang.backToMenu, styleTitle)
+        this.lang.backToMenu, {
+          font: '32px monospace',
+        })
       .setOrigin(0.5)
-      .setInteractive({ cursor: 'pointer' });
+      .setInteractive();
 
-    const CreateItems = () => {
+    const createItems = () => {
       const arr = JSON.parse(localStorage.getItem('statistic'));
       arr.unshift([this.lang.place, this.lang.time, this.lang.deaths]);
       const data = [];
@@ -125,14 +126,25 @@ export default class Statistic extends Phaser.Scene {
           return container;
         },
 
-        items: CreateItems(),
+        items: createItems(),
       }).layout();
     }
 
+    setBtnActive(this.backButton);
     this.backButton.on('pointerup', this.backToMenu, this);
     this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
     this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
+    this.input.keyboard.on('keydown-ENTER', () => {
+      this.backToMenu();
+    }, this);
+    this.input.keyboard.on('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        setBtnActive(this.backButton);
+      } else if (e.key === 'ArrowUp') {
+        setBtnActive(this.backButton);
+      }
+    }, this);
   }
 
   backToMenu(): void {

@@ -33,14 +33,18 @@ export default class SavedGames extends Phaser.Scene {
     const styleTitle = { font: '40px monospace' };
     this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height / 2 - 400,
-        this.lang.savedGames, styleTitle)
+        this.lang.savedGames, {
+          font: '42px monospace',
+        })
       .setOrigin(0.5);
 
     this.backButton = this.add
       .text(this.game.renderer.width / 2, this.game.renderer.height - 100,
-        this.lang.backToMenu, styleTitle)
+        this.lang.backToMenu, {
+          font: '32px monospace',
+        })
       .setOrigin(0.5)
-      .setInteractive({ cursor: 'pointer' });
+      .setInteractive();
 
     const CreateItems = () => {
       const arr = JSON.parse(localStorage.getItem('saved_games'));
