@@ -101,8 +101,9 @@ export default class SavedGames extends Phaser.Scene {
             scene, width, height, item,
           } = cell;
 
+          let container = cellContainer;
+
           if (cellContainer === null) {
-            let container = cellContainer;
             container = scene.rexUI.add.label({
               width,
               height,
@@ -117,11 +118,11 @@ export default class SavedGames extends Phaser.Scene {
               },
             });
           }
-          // Set properties from item value
-          cellContainer.setMinSize(width, height); // Size might changed in this demo
-          cellContainer.getElement('text').setText(item.id).setStyle({ font: '25px monospace' }); // Set text of text object
-          cellContainer.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
-          return cellContainer;
+
+          container.setMinSize(width, height);
+          container.getElement('text').setText(item.id).setStyle({ font: '25px monospace' }); // Set text of text object
+          container.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
+          return container;
         },
 
         items: CreateItems(),

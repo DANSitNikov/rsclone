@@ -8,6 +8,7 @@ export default {
   statistic: 'Statistic',
   savedGames: 'Saved games',
   saveGame: 'Save game',
+  save: 'Your game has been saved',
   soundVolume: 'Sound volume:',
   language: 'Language:',
   languageName: 'English',

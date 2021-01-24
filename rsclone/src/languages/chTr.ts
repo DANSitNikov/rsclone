@@ -8,6 +8,7 @@ export default {
   statistic: '統計',
   savedGames: '保存的游戏',
   saveGame: '保存游戏',
+  save: '您的游戏已保存',
   soundVolume: '音量:',
   language: '語言:',
   languageName: '漢語',

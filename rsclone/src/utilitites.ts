@@ -1,7 +1,6 @@
 import en from './languages/en';
 import ru from './languages/ru';
 import chTr from './languages/chTr';
-import {runInThisContext} from "vm";
 
 const setLang = (lang: string):Record<string, string> => {
   let language = {};
@@ -141,7 +140,9 @@ function makeStatisticInfo():void {
   prevStatistic.push(gameResult);
   const nextStatistic = prevStatistic.sort((a, b) => (a[1] > b[1] ? 1 : -1));
   nextStatistic.forEach((el, i) => {
-    el[0] = `${i + 1})`;
+    const gameInfo = el;
+    gameInfo[0] = `${i + 1})`;
+    return gameInfo;
   });
 
   if (nextStatistic.length > 7) {
@@ -184,9 +185,28 @@ function statisticInGame(scene):void {
 
   currentScene.events.on('resume', () => {
     setTimeout(() => {
-      this.timeReload = true;
+      currentScene.timeReload = true;
     }, 1000);
   });
+}
+
+function notification(scene, UI): void {
+  const toast = UI.add.toast({
+    x: scene.game.renderer.width / 2,
+    y: 50,
+
+    background: UI.add.roundRectangle(0, 0, 2, 2, 20, 0x000000),
+    text: scene.add.text(0, 0, '', {
+      font: '24px monospace',
+    }),
+    space: {
+      left: 15,
+      right: 15,
+      top: 10,
+      bottom: 10,
+    },
+  })
+    .show(scene.lang.save);
 }
 
 export {
@@ -205,4 +225,5 @@ export {
   makeStatisticInfo,
   makeSavedGamesInfo,
   statisticInGame,
+  notification,
 };

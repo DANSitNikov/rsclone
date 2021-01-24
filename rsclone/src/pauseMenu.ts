@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import {
-  setBtnActive, disableBtnActive, keyboardControl, makeSavedGamesInfo,
+  setBtnActive, disableBtnActive, keyboardControl, makeSavedGamesInfo, notification,
 } from './utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
@@ -15,6 +15,8 @@ export default class PauseMenu extends Phaser.Scene {
   private player;
 
   private tabIndex: number;
+
+  private rexUI;
 
   private list: ({
     name: string;
@@ -63,7 +65,7 @@ export default class PauseMenu extends Phaser.Scene {
       {
         name: this.lang.saveGame,
         handler: (): void => {
-          alert('your game has been saved!!');
+          notification(this, this.rexUI);
           const time = JSON.parse(localStorage.getItem('gaming_time'));
           const deaths = JSON.parse(localStorage.getItem('deaths_count'));
           const scene = this.lastScene;

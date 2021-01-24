@@ -8,6 +8,7 @@ export default {
   statistic: 'Статистика',
   savedGames: 'Сохраненные игры',
   saveGame: 'Сохранить игру',
+  save: 'Ваша игра была сохранена',
   soundVolume: 'Громкость звуков',
   language: 'Язык:',
   languageName: 'Русский',

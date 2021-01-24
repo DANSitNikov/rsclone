@@ -62,7 +62,9 @@ export default class Statistic extends Phaser.Scene {
 
     if (JSON.parse(localStorage.getItem('statistic')).length === 0) {
       this.emptyStatistic = 'There is no statistic yet...';
-      this.add.text(this.game.renderer.width / 2, 400, this.emptyStatistic, styleTitle)
+      this.add.text(this.game.renderer.width / 2, 400, this.emptyStatistic, {
+        font: '42px monospace',
+      })
         .setOrigin(0.5)
         .setInteractive();
     } else {
@@ -99,8 +101,10 @@ export default class Statistic extends Phaser.Scene {
             scene, width, height, item,
           } = cell;
 
+          let container = cellContainer;
+
           if (cellContainer === null) {
-            cellContainer = scene.rexUI.add.label({
+            container = scene.rexUI.add.label({
               width,
               height,
 
@@ -115,10 +119,10 @@ export default class Statistic extends Phaser.Scene {
             });
           }
 
-          cellContainer.setMinSize(width, height);
-          cellContainer.getElement('text').setText(item.id).setStyle({ font: '25px monospace' });
-          cellContainer.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
-          return cellContainer;
+          container.setMinSize(width, height);
+          container.getElement('text').setText(item.id).setStyle({ font: '25px monospace' });
+          container.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
+          return container;
         },
 
         items: CreateItems(),
