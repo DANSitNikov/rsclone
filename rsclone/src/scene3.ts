@@ -71,6 +71,17 @@ export default class Scene3 extends Phaser.Scene {
       frameRate: 3,
       repeat: -1,
     });
+    this.anims.create({
+      key: 'cuttlefish',
+      frames: this.anims.generateFrameNames('cuttlefish', {
+        start: 1,
+        end: 6,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 7,
+      repeat: -1,
+    });
     this.waterHands = this.add.sprite(0, 900, 'waterHands', 2);
     this.waterHands.anims.play('waterHands', true);
     this.waterHands = this.add.sprite(300, 910, 'waterHands').setScale(-0.9, 1);
@@ -158,7 +169,7 @@ export default class Scene3 extends Phaser.Scene {
 
     this.path.add(curve);
 
-    this.fish = this.add.follower(this.path, 0, 0, 'angry-fish').setScale(0.5);
+    this.fish = this.add.follower(this.path, 0, 0, 'cuttlefish');
 
     this.fish.startFollow({
       ease: 'Linear',
@@ -167,6 +178,7 @@ export default class Scene3 extends Phaser.Scene {
       rotateToPath: true,
       rotationOffset: 30,
     });
+    this.fish.anims.play('cuttlefish');
 
   }
   public moveCloud(cloudX:number, speed:number):number {
