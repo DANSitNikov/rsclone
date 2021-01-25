@@ -16,6 +16,5 @@ export default {
   mainMenu: 'Главное меню',
   restart: 'Попробовать снова',
   newGame: 'Начать сначала',
-  gameOverHeading: 'Вы умерли',
-  note1: 'Список покупок: \n1) перчатки, \n2) мячи для жонглирования, \n3) крем для рук...'
+  gameOverHeading: 'Вы умерли'
 };

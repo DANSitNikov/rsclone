@@ -114,6 +114,11 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/character/jump/playerJump.json',
     );
     this.load.atlas(
+      'playerClimb',
+      'assets/character/jump/climb.png',
+      'assets/character/jump/climb.json',
+    );
+    this.load.atlas(
       'playerDie',
       'assets/character/die/playerDie.png',
       'assets/character/die/playerDie.json',
