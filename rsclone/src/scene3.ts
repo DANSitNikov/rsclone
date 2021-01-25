@@ -132,6 +132,9 @@ export default class Scene3 extends Phaser.Scene {
     if (boatVelocity.y > 3) this.boat.setVelocityY(2);
 
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
+
+    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.8);
+    this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.45);
   }
 
   public activeFish():void {
@@ -165,10 +168,6 @@ export default class Scene3 extends Phaser.Scene {
       rotationOffset: 30,
     });
 
-    this.water = this.add.sprite(617, 824, 'water2', 1);
-    this.water.anims.play('water2', true);
-    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.8);
-    this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.45);
   }
   public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
