@@ -19,6 +19,8 @@ export default class Scene1 extends Phaser.Scene {
 
   private player: Player;
 
+  private cloudOne;
+
   constructor() {
     super(sceneConfig);
   }
@@ -27,7 +29,7 @@ export default class Scene1 extends Phaser.Scene {
     const x = 350; // player position
     const y = 640;
 
-    initScene(this, 1, x, y);
+    initScene.call(this, 1, x, y);
 
     this.sound.add('wind').play({ loop: true });
 
@@ -35,7 +37,7 @@ export default class Scene1 extends Phaser.Scene {
       key: 'lantern',
       frames: this.anims.generateFrameNames('lantern', {
         start: 1,
-        end: 3,
+        end: 4,
         prefix: '',
         suffix: '.png',
       }),
@@ -46,11 +48,14 @@ export default class Scene1 extends Phaser.Scene {
     this.lantern.anims.play('lantern', true);
     this.spikes1 = this.add.zone(1048, 940, 200, 150);
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
+
+    this.cloudOne = this.add.image(300, 110, 'cloud2').setAlpha(0.6).setScale(0.9);
   }
 
   public update(): void {
     this.killOnSpikes(this.spikes1);
     this.killOnSpikes(this.spikes2);
+    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
   }
 
   private killOnSpikes(spikeid): void {
@@ -59,5 +64,8 @@ export default class Scene1 extends Phaser.Scene {
     )) {
       this.player.die();
     }
+  }
+  public moveCloud(cloudX:number, speed:number):number {
+    return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }
 }

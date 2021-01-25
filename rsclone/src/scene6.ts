@@ -29,12 +29,12 @@ export default class Scene6 extends Phaser.Scene {
   }
 
   public create(): void {
-    initScene(this, 6, 0, 740);
+    initScene.call(this,6, 0, 740);
     this.anims.create({
       key: 'lantern',
       frames: this.anims.generateFrameNames('lantern', {
         start: 1,
-        end: 3,
+        end: 4,
         prefix: '',
         suffix: '.png',
       }),

@@ -30,6 +30,12 @@ export default class Scene3 extends Phaser.Scene {
 
   private fish;
 
+  private fence: Phaser.GameObjects.Sprite;
+
+  private cloudOne: Phaser.GameObjects.Image;
+
+  private cloudTwo: Phaser.GameObjects.Image;
+
   constructor() {
     super(sceneConfig);
   }
@@ -37,7 +43,7 @@ export default class Scene3 extends Phaser.Scene {
   public create():void {
     const x = 130; // player position
     const y = 560;
-    initScene(this, 3, x, y);
+    initScene.call(this, 3, x, y)
     this.boat = this.matter.add.sprite(100, 670, 'boatCollides');
     this.boat.setIgnoreGravity(true).setFixedRotation();
     this.boat.visible = false;
@@ -75,9 +81,13 @@ export default class Scene3 extends Phaser.Scene {
     this.waterHands.anims.play('waterHands', true);
 
     this.activeFish();
+    this.fence = this.add.sprite(1225, 518, 'fence');
 
     this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
+
+    this.cloudOne = this.add.image(300, 160, 'cloud2').setAlpha(0.6).setScale(0.9);
+    this.cloudTwo = this.add.image(1200, 85, 'cloud1').setAlpha(0.6).setScale(0.8);
   }
 
   public update():void {
@@ -157,5 +167,10 @@ export default class Scene3 extends Phaser.Scene {
 
     this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
+    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.8);
+    this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.45);
+  }
+  public moveCloud(cloudX:number, speed:number):number {
+    return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }
 }
