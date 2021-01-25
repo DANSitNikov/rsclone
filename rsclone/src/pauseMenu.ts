@@ -67,6 +67,7 @@ export default class PauseMenu extends Phaser.Scene {
         name: this.lang.saveGame,
         handler: (): void => {
           notification(this, this.rexUI);
+          this.sound.add('save').play({ loop: false });
           const time = JSON.parse(localStorage.getItem('gaming_time'));
           const deaths = JSON.parse(localStorage.getItem('deaths_count'));
           const scene = this.lastScene;

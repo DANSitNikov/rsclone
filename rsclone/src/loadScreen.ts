@@ -164,7 +164,6 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/enemies/hand.json',
     );
 
-
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');
     this.load.audio('switch', [
@@ -194,6 +193,7 @@ export default class LoadScreen extends Phaser.Scene {
 
     this.load.audio('die', 'assets/sounds/die/playerDie.mp3');
     this.load.audio('door', 'assets/sounds/door.mp3');
+    this.load.audio('save', 'assets/sounds/saveGame/saveGame.mp3');
   }
 
   create(): void {
