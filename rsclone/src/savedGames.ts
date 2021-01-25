@@ -81,13 +81,12 @@ export default class SavedGames extends Phaser.Scene {
       this.table = this.rexUI.add.gridTable({
         x: this.game.renderer.width / 2,
         y: this.game.renderer.height / 2,
-        width: 1065,
+        width: 840,
         height: 700,
         scrollMode: 0,
 
         table: {
-          width: undefined,
-          cellWidth: undefined,
+          cellWidth: 160,
           cellHeight: 82,
 
           columns: 5,
@@ -110,13 +109,8 @@ export default class SavedGames extends Phaser.Scene {
 
         createCellContainerCallback(cell, cellContainer) {
           const {
-            scene, height, item,
+            scene, width, height, item,
           } = cell;
-
-          let { width } = cell;
-
-          width = ((cell.index + 1) % 5) ? 205 : 120;
-          cell.width = width;
 
           let container = cellContainer;
 

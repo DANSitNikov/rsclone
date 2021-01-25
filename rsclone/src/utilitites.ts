@@ -125,9 +125,7 @@ function makeDecor(scene):void {
 function changeTime():void {
   let time = JSON.parse(localStorage.getItem('gaming_time'));
   time += 1;
-  console.log(time);
   localStorage.setItem('gaming_time', JSON.stringify(time));
- // thisScene.timeGame.setText(correctTime(thisScene.count));
 }
 
 function makeStatisticInfo():void {
@@ -142,7 +140,7 @@ function makeStatisticInfo():void {
   const nextStatistic = prevStatistic.sort((a, b) => (a[1] > b[1] ? 1 : -1));
   nextStatistic.forEach((el, i) => {
     const gameInfo = el;
-    gameInfo[0] = `${i + 1})`;
+    gameInfo[0] = `${i + 1}`;
     return gameInfo;
   });
 
@@ -174,8 +172,6 @@ function makeSavedGamesInfo(time: number, deaths: number, scene: string):void {
 
 function statisticInGame(scene):void {
   const currentScene = scene;
-
-//  makeDecor(currentScene);
 
   currentScene.deathStatus = false;
 

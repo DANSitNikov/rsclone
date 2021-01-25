@@ -72,11 +72,11 @@ export default class Statistic extends Phaser.Scene {
       this.table = this.rexUI.add.gridTable({
         x: this.game.renderer.width / 2,
         y: this.game.renderer.height / 2,
-        width: 675,
+        width: 655,
         height: 700,
 
         table: {
-          cellWidth: 215,
+          cellWidth: 205,
           cellHeight: 82,
 
           columns: 3,
@@ -115,13 +115,13 @@ export default class Statistic extends Phaser.Scene {
 
               space: {
                 icon: 10,
-                left: 10,
+                left: 15,
               },
             });
           }
 
           container.setMinSize(width, height);
-          container.getElement('text').setText(item.id).setStyle({ font: '25px monospace' });
+          container.getElement('text').setText(item.id).setStyle({ font: '30px monospace' });
           container.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
           return container;
         },
