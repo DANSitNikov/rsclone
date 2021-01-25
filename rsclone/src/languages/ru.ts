@@ -28,4 +28,5 @@ export default {
   place: 'Место',
   emptyStatistic: 'Статистики пока нет...',
   emptySavedGames: 'Сохраненных игр пока нет...',
+  load: 'загрузить',
 };

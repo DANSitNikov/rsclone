@@ -28,4 +28,5 @@ export default {
   place: '地点',
   emptyStatistic: '尚无统计资料...',
   emptySavedGames: '暂无游戏...',
+  load: '下载',
 };

@@ -122,11 +122,12 @@ function makeDecor(scene):void {
   });
 }
 
-function changeTime(scene):void {
-  const thisScene = scene;
-  thisScene.count += 1;
-  localStorage.setItem('gaming_time', JSON.stringify(thisScene.count));
-  thisScene.timeGame.setText(correctTime(thisScene.count));
+function changeTime():void {
+  let time = JSON.parse(localStorage.getItem('gaming_time'));
+  time += 1;
+  console.log(time);
+  localStorage.setItem('gaming_time', JSON.stringify(time));
+ // thisScene.timeGame.setText(correctTime(thisScene.count));
 }
 
 function makeStatisticInfo():void {
@@ -162,7 +163,6 @@ function makeSavedGamesInfo(time: number, deaths: number, scene: string):void {
   const normalMonth = month + 1;
   const gameDate = `${date}:${normalMonth < 10 ? `0${normalMonth}` : normalMonth}:${year}`;
   gameInfo.push(gameDate);
-  gameInfo.push('play');
   gameInfo.push(time);
   const nextInfo = JSON.parse(localStorage.getItem('saved_games'));
   nextInfo.push(gameInfo);
@@ -175,7 +175,7 @@ function makeSavedGamesInfo(time: number, deaths: number, scene: string):void {
 function statisticInGame(scene):void {
   const currentScene = scene;
 
-  makeDecor(currentScene);
+//  makeDecor(currentScene);
 
   currentScene.deathStatus = false;
 
@@ -184,7 +184,7 @@ function statisticInGame(scene):void {
   });
 
   function callback():void {
-    changeTime(scene);
+    changeTime();
   }
 
   currentScene.time.addEvent({ delay: 1000, loop: true, callback });

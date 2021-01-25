@@ -52,6 +52,12 @@ export default class SavedGames extends Phaser.Scene {
       arr.reverse();
       const data = [];
 
+      arr.forEach((el, i) => {
+        if (i !== 0) {
+          el.splice(4, 0, this.lang.load);
+        }
+      });
+
       for (let i = 0; i < arr.length; i += 1) {
         for (let j = 0; j < arr[i].length; j += 1) {
           if (j !== 5) {
@@ -75,11 +81,13 @@ export default class SavedGames extends Phaser.Scene {
       this.table = this.rexUI.add.gridTable({
         x: this.game.renderer.width / 2,
         y: this.game.renderer.height / 2,
-        width: 1125,
+        width: 1065,
         height: 700,
+        scrollMode: 0,
 
         table: {
-          cellWidth: 215,
+          width: undefined,
+          cellWidth: undefined,
           cellHeight: 82,
 
           columns: 5,
@@ -102,8 +110,13 @@ export default class SavedGames extends Phaser.Scene {
 
         createCellContainerCallback(cell, cellContainer) {
           const {
-            scene, width, height, item,
+            scene, height, item,
           } = cell;
+
+          let { width } = cell;
+
+          width = ((cell.index + 1) % 5) ? 205 : 120;
+          cell.width = width;
 
           let container = cellContainer;
 
@@ -123,9 +136,10 @@ export default class SavedGames extends Phaser.Scene {
             });
           }
 
-          container.setMinSize(width, height);
+          container.setMinSize(cell.width, height);
           container.getElement('text').setText(item.id).setStyle({ font: '25px monospace' }); // Set text of text object
           container.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
+
           return container;
         },
 
@@ -134,7 +148,7 @@ export default class SavedGames extends Phaser.Scene {
 
       this.table.on('cell.down', (a, index) => {
         const item = this.table.items[index];
-        if (item.id === 'play') {
+        if (item.id === this.lang.load) {
           this.scene.start(`Scene${item.data[2]}`);
           localStorage.setItem('deaths_count', JSON.stringify(item.data[1]));
           localStorage.setItem('gaming_time', JSON.stringify(item.data[0]));
@@ -143,7 +157,7 @@ export default class SavedGames extends Phaser.Scene {
 
       this.table.on('cell.over', (cellContainer) => {
         cellContainer.getElement('background')
-          .setStrokeStyle(2, 0xff0000)
+          .setStrokeStyle(2, 0xFFA300)
           .setDepth(200);
       });
 

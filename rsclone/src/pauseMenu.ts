@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import {
-  setBtnActive, disableBtnActive, keyboardControl, makeSavedGamesInfo, notification,
+  setBtnActive, disableBtnActive, keyboardControl, makeSavedGamesInfo, notification, makeDecor,
 } from './utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
@@ -38,6 +38,7 @@ export default class PauseMenu extends Phaser.Scene {
   }
 
   create(): void {
+    makeDecor(this);
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.list = [

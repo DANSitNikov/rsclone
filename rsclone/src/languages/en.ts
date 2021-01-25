@@ -28,4 +28,5 @@ export default {
   place: 'Place',
   emptyStatistic: 'There is no statistic yet...',
   emptySavedGames: 'There are no saved games yet...',
+  load: 'load',
 };
