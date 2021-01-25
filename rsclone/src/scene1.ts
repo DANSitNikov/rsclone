@@ -9,8 +9,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene1 extends Phaser.Scene {
-  private lang: Record<string, string>;
-
   private lantern: Phaser.GameObjects.Sprite;
 
   private spikes1: Phaser.GameObjects.Zone;
@@ -22,8 +20,6 @@ export default class Scene1 extends Phaser.Scene {
   private cloudOne;
 
   private note: Phaser.GameObjects.Sprite;
-
-  private noteOpened: boolean;
 
   private dialogue: Phaser.GameObjects.Sprite;
 
@@ -63,7 +59,7 @@ export default class Scene1 extends Phaser.Scene {
     this.player.player.setDepth(2);
 
     this.cloudOne = this.add.image(300, 110, 'cloud2').setAlpha(0.6).setScale(0.9);
-    this.noteOpened = false;
+
     this.dialogue = this.add.sprite(800, 200, 'dialogueNote').setDepth(999);
     this.dialogue.visible = false;
     this.text = this.add.text(

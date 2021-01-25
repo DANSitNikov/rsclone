@@ -26,6 +26,10 @@ export default class Scene6 extends Phaser.Scene {
 
   private friend: Phaser.GameObjects.Sprite;
 
+  private dialogue: Phaser.GameObjects.Sprite;
+
+  private text: Phaser.GameObjects.Text;
+
   constructor() {
     super(sceneConfig);
   }
@@ -88,6 +92,16 @@ export default class Scene6 extends Phaser.Scene {
     this.doorOpened = false;
     this.doorClicked = false;
 
+    this.dialogue = this.add.sprite(800, 200, 'dialogueArm').setDepth(999);
+    this.text = this.add.text(
+      530,
+      100,
+      'Привет, ты все-таки пришел!',
+      {
+        font: '22px monospace',
+      },
+    ).setDepth(1000);
+    this.initDialogue();
   }
 
   public update(): void {
@@ -120,9 +134,24 @@ export default class Scene6 extends Phaser.Scene {
     if (this.player.player.x >= 650) {  // player entered the house
       this.friend.anims.play('friendWave', true);
     } else this.friend.anims.play('friendSit', true);
+    if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.player.getBounds(), this.friend.getBounds())) {
+      this.dialogue.visible = true;
+      this.text.visible = true;
+      if (action) {
+        this.dialogue.setTexture('dialogueLeg');
+        this.text.text = 'Я не мог поступить иначе...';
+        this.text.x = 560;
+      }
+    } else {
+      this.initDialogue();
+    }
 
   }
 
-
-
+  private initDialogue() {
+    this.dialogue.setTexture('dialogueArm');
+    this.text.text = 'Привет, ты все-таки пришел!';
+    this.dialogue.visible = false;
+    this.text.visible = false;
+  }
 }
