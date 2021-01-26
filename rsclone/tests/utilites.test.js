@@ -1,7 +1,7 @@
-import { setLang, switchLang, changeCurretIndex } from './src/utilitites';
-import en from './src/languages/en';
-import ru from './src/languages/ru';
-import chTr from './src/languages/chTr';
+import { setLang, switchLang, changeCurretIndex } from '../src/utilitites';
+import en from '../src/languages/en';
+import ru from '../src/languages/ru';
+import chTr from '../src/languages/chTr';
 
 describe('changeCurretIndex check', () => {
   test('basic tests', () => {

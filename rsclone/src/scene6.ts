@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import Player from "./player";
+import Player from './player';
 import getTintAppendFloatAlphaAndSwap = Phaser.Renderer.WebGL.Utils.getTintAppendFloatAlphaAndSwap;
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -30,12 +30,17 @@ export default class Scene6 extends Phaser.Scene {
 
   private text: Phaser.GameObjects.Text;
 
+  private lang: Record<string, string>;
+
+  private pause: boolean;
+
   constructor() {
     super(sceneConfig);
   }
 
   public create(): void {
-    initScene.call(this,6, 0, 740);
+    this.lang = this.registry.get('lang');
+    initScene.call(this, 6, 0, 740);
     this.anims.create({
       key: 'lantern',
       frames: this.anims.generateFrameNames('lantern', {
@@ -96,7 +101,7 @@ export default class Scene6 extends Phaser.Scene {
     this.text = this.add.text(
       530,
       100,
-      'Привет, ты все-таки пришел!',
+      this.lang.scene6_greeting,
       {
         font: '22px monospace',
       },
@@ -105,6 +110,7 @@ export default class Scene6 extends Phaser.Scene {
   }
 
   public update(): void {
+    this.changeLang();
     const cursors = this.input.keyboard.createCursorKeys();
     const keyboardKeys = this.input.keyboard.addKeys({
       action: 'e',
@@ -120,7 +126,6 @@ export default class Scene6 extends Phaser.Scene {
           this.doorOpened = false;
           this.sound.add('door').play({ loop: false });
           this.doorBlock.setY(797);
-
         } else {
           this.door.anims.playReverse('door');
           this.doorOpened = true;
@@ -128,10 +133,10 @@ export default class Scene6 extends Phaser.Scene {
           this.doorBlock.setY(0);
         }
         this.doorClicked = true;
-        setTimeout(() => this.doorClicked = false, 500)
+        setTimeout(() => this.doorClicked = false, 500);
       }
     }
-    if (this.player.player.x >= 650) {  // player entered the house
+    if (this.player.player.x >= 650) { // player entered the house
       this.friend.anims.play('friendWave', true);
     } else this.friend.anims.play('friendSit', true);
     if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.player.getBounds(), this.friend.getBounds())) {
@@ -139,19 +144,24 @@ export default class Scene6 extends Phaser.Scene {
       this.text.visible = true;
       if (action) {
         this.dialogue.setTexture('dialogueLeg');
-        this.text.text = 'Я не мог поступить иначе...';
+        this.text.setText(this.lang.scene6_greeting1);
         this.text.x = 560;
       }
     } else {
       this.initDialogue();
     }
-
   }
 
   private initDialogue() {
     this.dialogue.setTexture('dialogueArm');
-    this.text.text = 'Привет, ты все-таки пришел!';
+    this.text.setText(this.lang.scene6_greeting);
     this.dialogue.visible = false;
     this.text.visible = false;
+  }
+
+  private changeLang() {
+    if (!this.pause) return;
+    this.lang = this.registry.get('lang');
+    this.pause = false;
   }
 }
