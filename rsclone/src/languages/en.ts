@@ -17,4 +17,5 @@ export default {
   restart: 'Try again',
   newGame: 'New game',
   gameOverHeading: 'You dead',
+  shoppingList: 'Shopping list: \n1) gloves, \n2) juggling balls, \n3) hand cream',
 };

@@ -27,6 +27,8 @@ export default class Scene1 extends Phaser.Scene {
 
   private clickable: boolean;
 
+  private lang: Record<string, string>;
+
   constructor() {
     super(sceneConfig);
   }
@@ -38,6 +40,8 @@ export default class Scene1 extends Phaser.Scene {
     initScene.call(this, 1, x, y);
 
     this.sound.add('wind').play({ loop: true });
+
+    this.lang = this.registry.get('lang');
 
     this.anims.create({
       key: 'lantern',
@@ -63,13 +67,13 @@ export default class Scene1 extends Phaser.Scene {
     this.dialogue = this.add.sprite(800, 200, 'dialogueNote').setDepth(999);
     this.dialogue.visible = false;
     this.text = this.add.text(
-        530,
-        100,
-        'Список покупок: \n1) перчатки, \n2) мячи для жонглирования, \n3) крем для рук...',
-        {
-          font: '22px monospace',
-        },
-      ).setDepth(1000);
+      530,
+      100,
+      this.lang.shoppingList,
+      {
+        font: '22px monospace',
+      },
+    ).setDepth(1000);
     this.text.visible = false;
     this.clickable = true;
   }
@@ -95,9 +99,9 @@ export default class Scene1 extends Phaser.Scene {
         setTimeout(() => this.clickable = true, 200);
       }
     } else {
-        this.note.setTexture('note');
-        this.dialogue.visible = false;
-        this.text.visible = false;
+      this.note.setTexture('note');
+      this.dialogue.visible = false;
+      this.text.visible = false;
     }
   }
 
@@ -108,6 +112,7 @@ export default class Scene1 extends Phaser.Scene {
       this.player.die();
     }
   }
+
   public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }
