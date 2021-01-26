@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 
 import {
-  setBtnActive, disableBtnActive, keyboardControl,
+  createList, createBtnHandlers, keuboardNavigation, List,
 } from './utilitites';
 
 export default class GameOverMenu extends Phaser.Scene {
@@ -20,6 +20,8 @@ export default class GameOverMenu extends Phaser.Scene {
     private lastScene: string;
 
     private tabIndex: number;
+
+    private list: List;
 
     constructor() {
       super({ key: 'GameOverMenu', active: false });
@@ -44,47 +46,27 @@ export default class GameOverMenu extends Phaser.Scene {
         )
         .setOrigin(0.5).setDepth(1000);
 
-      this.menu = this.menuNames.map((button, index) => this.add
-        .text(
-          this.game.renderer.width / 2,
-          this.game.renderer.height / 2 - 80 + index * 80,
-          button,
-          this.btn,
-        )
-        .setOrigin(0.5)
-        .setInteractive());
-      this.menu.forEach((button, index) => {
-        button.on('pointerup', this.onClick[index], this);
-        button.on('pointerover', () => {
-          disableBtnActive(this.menu[this.tabIndex]);
-          this.tabIndex = index;
-          setBtnActive(button);
-        }, this);
-        button.on('pointerout', () => disableBtnActive(button), this);
-      });
+      this.list = [
+        {
+          name: this.lang.restart,
+          handler: () => this.startScene(this.lastScene),
+        },
+        {
+          name: this.lang.newGame,
+          handler: () => this.startScene('Scene1'),
+        },
+        {
+          name: this.lang.mainMenu,
+          handler: () => this.startScene('Menu'),
+        }];
 
-      this.input.keyboard.on('keydown-ENTER', () => {
-        this.onClick[this.tabIndex]();
-      }, this);
-
-      this.input.keyboard.on('keydown', (e: KeyboardEvent) => {
-        this.tabIndex = keyboardControl(e, this.tabIndex, this.menu);
-      }, this);
-      setBtnActive(this.menu[this.tabIndex]);
+      createList.call(this);
+      createBtnHandlers.call(this);
+      keuboardNavigation.call(this);
     }
 
-    onClick = [
-      (): void => {
-        this.sound.stopAll();
-        this.scene.start(this.lastScene);
-      },
-      (): void => {
-        this.sound.stopAll();
-        this.scene.start('Scene1');
-      },
-      (): void => {
-        this.sound.stopAll();
-        this.scene.start('Menu');
-      },
-    ];
+    startScene(scName:string):void {
+      this.sound.stopAll();
+      this.scene.start(scName);
+    }
 }
