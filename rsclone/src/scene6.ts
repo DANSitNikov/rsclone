@@ -30,11 +30,16 @@ export default class Scene6 extends Phaser.Scene {
 
   private text: Phaser.GameObjects.Text;
 
+  private lang: Record<string, string>;
+
+  private pause: boolean;
+
   constructor() {
     super(sceneConfig);
   }
 
   public create(): void {
+    this.lang = this.registry.get('lang');
     initScene.call(this, 6, 0, 740);
     this.anims.create({
       key: 'lantern',
@@ -96,7 +101,7 @@ export default class Scene6 extends Phaser.Scene {
     this.text = this.add.text(
       530,
       100,
-      'Привет, ты все-таки пришел!',
+      this.lang.scene6_greeting,
       {
         font: '22px monospace',
       },
@@ -105,6 +110,7 @@ export default class Scene6 extends Phaser.Scene {
   }
 
   public update(): void {
+    this.changeLang();
     const cursors = this.input.keyboard.createCursorKeys();
     const keyboardKeys = this.input.keyboard.addKeys({
       action: 'e',
@@ -138,7 +144,7 @@ export default class Scene6 extends Phaser.Scene {
       this.text.visible = true;
       if (action) {
         this.dialogue.setTexture('dialogueLeg');
-        this.text.text = 'Я не мог поступить иначе...';
+        this.text.setText(this.lang.scene6_greeting1);
         this.text.x = 560;
       }
     } else {
@@ -148,8 +154,14 @@ export default class Scene6 extends Phaser.Scene {
 
   private initDialogue() {
     this.dialogue.setTexture('dialogueArm');
-    this.text.text = 'Привет, ты все-таки пришел!';
+    this.text.setText(this.lang.scene6_greeting);
     this.dialogue.visible = false;
     this.text.visible = false;
+  }
+
+  private changeLang() {
+    if (!this.pause) return;
+    this.lang = this.registry.get('lang');
+    this.pause = false;
   }
 }

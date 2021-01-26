@@ -18,4 +18,6 @@ export default {
   newGame: 'New game',
   gameOverHeading: 'You dead',
   shoppingList: 'Shopping list: \n1) gloves, \n2) juggling balls, \n3) hand cream',
+  scene6_greeting: 'Hey, you still managed to come!',
+  scene6_greeting1: 'I could not do otherwise...',
 };

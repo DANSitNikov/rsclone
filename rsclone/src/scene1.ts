@@ -29,6 +29,8 @@ export default class Scene1 extends Phaser.Scene {
 
   private lang: Record<string, string>;
 
+  private pause: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -79,6 +81,8 @@ export default class Scene1 extends Phaser.Scene {
   }
 
   public update(): void {
+    this.changeLang();
+
     const cursors = this.input.keyboard.createCursorKeys();
     const keyboardKeys = this.input.keyboard.addKeys({
       action: 'e',
@@ -115,5 +119,12 @@ export default class Scene1 extends Phaser.Scene {
 
   public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
+  }
+
+  private changeLang() {
+    if (!this.pause) return;
+    this.lang = this.registry.get('lang');
+    this.text.setText(this.lang.shoppingList);
+    this.pause = false;
   }
 }

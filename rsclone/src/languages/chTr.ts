@@ -18,4 +18,6 @@ export default {
   newGame: '新游戏',
   gameOverHeading: '你死了',
   shoppingList: '購物清單：\n1）手套，\n2）雜耍球，\n3）護手霜...',
+  scene6_greeting: '嘿，你還是設法來的！',
+  scene6_greeting1: '我不能否則。',
 };

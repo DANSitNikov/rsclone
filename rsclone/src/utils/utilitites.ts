@@ -189,7 +189,12 @@ export function keuboardNavigation(escBtn?: boolean, slider?: boolean): void {
 
 export function backToMenu(): void {
   if (!this.pause) {
-    this.scene.start('Menu');
+    if (this.scene.key === 'PauseMenu') {
+      this.scene.stop();
+      this.scene.start(this.lastScene, { test: 'test' });
+    } else {
+      this.scene.start('Menu');
+    }
   } else {
     this.scene.start('PauseMenu', { key: this.lastScene, player: this.player });
   }
