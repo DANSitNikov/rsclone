@@ -25,8 +25,6 @@ export default class Scene5 extends Phaser.Scene {
 
   private player: Player;
 
-  resetCloudPosition: () => number;
-
   private plort: Phaser.GameObjects.Sprite;
 
   private wall: Phaser.Physics.Matter.Sprite;
@@ -58,22 +56,16 @@ export default class Scene5 extends Phaser.Scene {
   constructor() {
     super(sceneConfig);
 
-    this.resetCloudPosition = ():number => -400;
   }
 
   public create():void {
-    const x = 200; // player position
-    const y = 812;
-    initScene(this, 5, x, y);
+    const x = 0; // player position
+    const y = 552;
+    initScene.call(this, 5, x, y)
     this.ladder = this.add.zone(1540, 630, 77, 513);
-    this.switch = this.add.sprite(610, 250, 'switchRed').setScale(-0.3, 0.3);
-    this.switch.angle = 5;
+    this.switch = this.add.sprite(590, 230, 'switchRed').setDepth(1);
+    this.player.player.setDepth(2);
 
-    this.light = this.add.image(842, 522, 'bgLight');
-    this.light.visible = false;
-
-    this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6);
-    this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6);
 
     this.switchClicked = false;
     this.switchStatus = false;
@@ -131,6 +123,11 @@ export default class Scene5 extends Phaser.Scene {
     this.spidey.anims.play('spidey');
     this.spideySpeed = -6;
     this.handsActive = false;
+
+    this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6).setDepth(999);
+    this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);
+    this.light = this.add.image(842, 522, 'bgLight').setDepth(999);
+    this.light.visible = false;
 
     this.sound.add('wind').play({ loop: true });
   }
@@ -220,7 +217,7 @@ export default class Scene5 extends Phaser.Scene {
   }
 
   public moveCloud(cloudX:number, speed:number):number {
-    return cloudX > window.innerWidth + 400 ? this.resetCloudPosition() : cloudX + speed;
+    return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }
 
   private startHands() {

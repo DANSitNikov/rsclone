@@ -79,6 +79,12 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('boat', 'assets/objects/boat.png');
     this.load.image('boatCollides', 'assets/objects/boatCollides.png');
     this.load.image('bgLight', 'assets/objects/bgLight.png');
+    this.load.image('fence', 'assets/objects/fence.png');
+    this.load.image('note', 'assets/objects/note.png');
+    this.load.image('noteActive', 'assets/objects/noteActive.png');
+    this.load.image('dialogueNote', 'assets/objects/dialogueNote.png');
+    this.load.image('dialogueArm', 'assets/objects/dialogueArm.png');
+    this.load.image('dialogueLeg', 'assets/objects/dialogueLeg.png');
     this.load.image('plort1', 'assets/enemies/plort.png');
     this.load.image('plort2', 'assets/enemies/plort2.png');
 
@@ -108,6 +114,11 @@ export default class LoadScreen extends Phaser.Scene {
       'playerJump',
       'assets/character/jump/playerJump.png',
       'assets/character/jump/playerJump.json',
+    );
+    this.load.atlas(
+      'playerClimb',
+      'assets/character/jump/climb.png',
+      'assets/character/jump/climb.json',
     );
     this.load.atlas(
       'playerDie',
@@ -140,6 +151,16 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/objects/door.json',
     );
     this.load.atlas(
+      'friendSit',
+      'assets/objects/friendSit.png',
+      'assets/objects/friendSit.json',
+    );
+    this.load.atlas(
+      'friendWave',
+      'assets/objects/friendWave.png',
+      'assets/objects/friendWave.json',
+    );
+    this.load.atlas(
       'spidey',
       'assets/enemies/spidey.png',
       'assets/enemies/spidey.json',
@@ -148,6 +169,11 @@ export default class LoadScreen extends Phaser.Scene {
       'spideyDie',
       'assets/enemies/spideyDie.png',
       'assets/enemies/spideyDie.json',
+    );
+    this.load.atlas(
+      'cuttlefish',
+      'assets/enemies/cuttlefish.png',
+      'assets/enemies/cuttlefish.json',
     );
     this.load.atlas(
       'hand',
@@ -164,8 +190,6 @@ export default class LoadScreen extends Phaser.Scene {
 
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
-
-    this.load.image('angry-fish', 'assets/enemies/fish.svg');
 
     this.load.audio('wind', 'assets/sounds/wind.mp3');
     this.load.audio('wind2', 'assets/sounds/wind2.mp3');
