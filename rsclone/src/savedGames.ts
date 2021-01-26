@@ -140,7 +140,7 @@ export default class SavedGames extends Phaser.Scene {
         items: CreateItems(),
       }).layout();
 
-      this.table.on('cell.down', (a, index) => {
+      this.table.on('cell.down', (cellContainer, index) => {
         const item = this.table.items[index];
         if (item.id === this.lang.load) {
           this.scene.start(`Scene${item.data[2]}`);
@@ -149,16 +149,22 @@ export default class SavedGames extends Phaser.Scene {
         }
       });
 
-      this.table.on('cell.over', (cellContainer) => {
-        cellContainer.getElement('background')
-          .setStrokeStyle(2, 0xFFA300)
-          .setDepth(200);
+      this.table.on('cell.over', (cellContainer, index) => {
+        const item = this.table.items[index];
+        if (item.id === this.lang.load) {
+          cellContainer.getElement('background')
+            .setStrokeStyle(5, 0xFFA300)
+            .setDepth(200);
+        }
       });
 
-      this.table.on('cell.out', (cellContainer) => {
-        cellContainer.getElement('background')
-          .setStrokeStyle(2, 0xffffff)
-          .setDepth(0);
+      this.table.on('cell.out', (cellContainer, index) => {
+        const item = this.table.items[index];
+        if (item.id === this.lang.load) {
+          cellContainer.getElement('background')
+            .setStrokeStyle(2, 0xffffff)
+            .setDepth(0);
+        }
       });
     }
 
