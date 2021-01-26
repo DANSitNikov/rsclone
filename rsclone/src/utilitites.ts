@@ -146,7 +146,12 @@ export function keuboardNavigation(escBtn?: boolean, slider?: boolean): void {
       'keydown-ESC',
       () => {
         if (!this.pause) {
-          this.scene.start('Menu');
+          if (this.scene.key === 'PauseMenu') {
+            this.scene.stop();
+            this.scene.resume(this.lastScene);
+          } else {
+            this.scene.start('Menu');
+          }
         } else {
           this.scene.start('PauseMenu', { key: this.lastScene, player: this.player });
         }
