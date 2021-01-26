@@ -17,4 +17,10 @@ export default {
   restart: 'Попробовать снова',
   newGame: 'Начать сначала',
   gameOverHeading: 'Вы умерли',
+  gameControl: 'Управление',
+  left: 'влево',
+  right: 'вправо',
+  jump: 'прыжок',
+  action: 'действие',
+  doNotShowAgain: 'больше не показывать',
 };

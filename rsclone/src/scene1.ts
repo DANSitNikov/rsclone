@@ -9,8 +9,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene1 extends Phaser.Scene {
-  private isPaused: boolean;
-
   private lantern: Phaser.GameObjects.Sprite;
 
   private spikes1: Phaser.GameObjects.Zone;
@@ -46,6 +44,11 @@ export default class Scene1 extends Phaser.Scene {
     this.lantern.anims.play('lantern', true);
     this.spikes1 = this.add.zone(1048, 940, 200, 150);
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
+
+    if (!JSON.parse(localStorage.getItem('showControl'))) {
+      this.scene.pause();
+      this.scene.launch('GameControl', { key: 'Scene1', player: this.player });
+    }
   }
 
   public update(): void {

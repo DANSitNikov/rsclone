@@ -155,7 +155,6 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/enemies/hand.json',
     );
 
-
     this.load.image('switchRed', 'assets/objects/switchRed.png');
     this.load.image('switchGreen', 'assets/objects/switchGreen.png');
     this.load.audio('switch', [
@@ -167,6 +166,13 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('cloud2', 'assets/world/cloud2.png');
 
     this.load.image('angry-fish', 'assets/enemies/fish.svg');
+
+    this.load.image('backControl', 'assets/control/back.jpg');
+    this.load.image('arrow', 'assets/control/arrow.svg');
+    this.load.image('a', 'assets/control/a.svg');
+    this.load.image('d', 'assets/control/d.svg');
+    this.load.image('w', 'assets/control/w.svg');
+    this.load.image('space', 'assets/control/space.svg');
 
     this.load.audio('wind', 'assets/sounds/wind.mp3');
     this.load.audio('wind2', 'assets/sounds/wind2.mp3');

@@ -12,6 +12,7 @@ import Scene4 from './scene4';
 import Scene5 from './scene5';
 import Scene6 from './scene6';
 import GameOverMenu from './gameOverMenu';
+import GameControl from './gameControlWindow';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Long Legs journey',
@@ -47,7 +48,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     forceSetTimeOut: true,
   },
   scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2,
-    Scene3, Scene4, Scene5, Scene6, PauseMenu, GameOverMenu],
+    Scene3, Scene4, Scene5, Scene6, PauseMenu, GameOverMenu, GameControl],
 
   backgroundColor: '#000000',
 };
