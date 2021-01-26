@@ -41,6 +41,7 @@ export default class Settings extends Phaser.Scene {
   create(): void {
     this.tabIndex = this.tabIndex || 0;
     this.lang = this.registry.get('lang');
+
     const soundBox = this.add.graphics();
     soundBox.fillStyle(0x222222, 0.8);
 
@@ -120,7 +121,7 @@ export default class Settings extends Phaser.Scene {
       {
         label: this.backButton,
         btn: this.backButton,
-        handler: () => backToMenu(),
+        handler: backToMenu.bind(this),
       },
     ];
 
