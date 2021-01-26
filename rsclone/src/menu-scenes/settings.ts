@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import {
   switchLang, createBtnHandlers, keuboardNavigation, backToMenu, List,
-} from './utilitites';
+} from '../utils/utilitites';
 
 export default class Settings extends Phaser.Scene {
   private lang: Record<string, string>;

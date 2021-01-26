@@ -1,6 +1,6 @@
-import en from './languages/en';
-import ru from './languages/ru';
-import chTr from './languages/chTr';
+import en from '../languages/en';
+import ru from '../languages/ru';
+import chTr from '../languages/chTr';
 
 export type List = {
   label?;

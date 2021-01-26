@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import {
   createBtnHandlers, keuboardNavigation, List,
-} from './utilitites';
+} from '../utils/utilitites';
 
 export default class Credits extends Phaser.Scene {
   private lang: Record<string, string>;
