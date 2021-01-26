@@ -109,6 +109,18 @@ export default class Player {
     });
 
     scene.anims.create({
+      key: 'climb',
+      frames: scene.anims.generateFrameNames('playerClimb', {
+        start: 1,
+        end: 8,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 13,
+      repeat: -1,
+    });
+
+    scene.anims.create({
       key: 'die',
       frames: scene.anims.generateFrameNames('playerDie', {
         start: 1,
@@ -163,7 +175,7 @@ export default class Player {
       ) {
         if (keys.up) {
           this.player.setVelocityY(-speed / 1.5);
-          this.player.anims.play('idle', true); // there will be ladder animation
+          this.player.anims.play('climb', true); // there will be ladder animation
           if (this.soundWalk) {
             this.makeSound(`ladder${this.soundQueue.ladder}`);
             this.soundQueue.ladder = (Number(this.soundQueue.ladder) + 1) % 4;
