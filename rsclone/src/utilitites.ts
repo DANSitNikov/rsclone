@@ -206,6 +206,20 @@ function notification(scene, UI): void {
     .show(scene.lang.save);
 }
 
+function clearActive(arr: number[], table):void {
+  for (let i = 0; i < arr.length; i += 1) {
+    table.children[arr[i]].getElement('background')
+      .setStrokeStyle(2, 0xffffff)
+      .setDepth(0);
+  }
+}
+
+function setActiveItem(arr: number[], index: number, table):void {
+  table.children[arr[index]].getElement('background')
+    .setStrokeStyle(5, 0xFFA300)
+    .setDepth(200);
+}
+
 export {
   setLang,
   switchLang,
@@ -223,4 +237,6 @@ export {
   makeSavedGamesInfo,
   statisticInGame,
   notification,
+  clearActive,
+  setActiveItem,
 };

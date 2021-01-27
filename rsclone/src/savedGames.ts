@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser';
-import { setBtnActive, disableBtnActive } from './utilitites';
+import {
+  setBtnActive, disableBtnActive, clearActive, setActiveItem,
+} from './utilitites';
 
 export default class SavedGames extends Phaser.Scene {
   private lang: Record<string, string>;
@@ -75,8 +77,20 @@ export default class SavedGames extends Phaser.Scene {
     if (JSON.parse(localStorage.getItem('saved_games')).length === 0) {
       this.emptySavedGames = this.lang.emptySavedGames;
       this.add.text(this.game.renderer.width / 2, 400, this.emptySavedGames, styleTitle)
-        .setOrigin(0.5)
-        .setInteractive();
+        .setOrigin(0.5);
+
+      setBtnActive(this.backButton);
+      this.backButton.on('pointerup', this.backToMenu, this);
+      this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
+      this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
+      this.input.keyboard.on('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          setBtnActive(this.backButton);
+        } else if (e.key === 'ArrowUp') {
+          setBtnActive(this.backButton);
+        }
+      }, this);
+      this.input.keyboard.on('keydown-ENTER', () => this.backToMenu(), this);
     } else {
       this.table = this.rexUI.add.gridTable({
         x: this.game.renderer.width / 2,
@@ -157,24 +171,21 @@ export default class SavedGames extends Phaser.Scene {
 
       const countOfItems = this.table.items.length / 5 - 1;
       const numbers = [];
+      let index = 0;
+
       for (let i = 0; i < countOfItems; i += 1) {
         const num = 10;
         numbers.push(num + (5 * i));
       }
 
-      let index = 0;
-
       this.table.on('cell.over', (cellContainer, indexLocal) => {
-        index = (indexLocal + 1) / 5 - 2;
         const item = this.table.items[indexLocal];
         const table = this.table.getElement('table');
-        disableBtnActive(this.backButton);
-        for (let i = 0; i < numbers.length; i += 1) {
-          table.children[numbers[i]].getElement('background')
-            .setStrokeStyle(2, 0xffffff)
-            .setDepth(0);
-        }
+
         if (item.id === this.lang.load) {
+          disableBtnActive(this.backButton);
+          clearActive(numbers, table);
+          index = (indexLocal + 1) / 5 - 2;
           cellContainer.getElement('background')
             .setStrokeStyle(5, 0xFFA300)
             .setDepth(200);
@@ -182,62 +193,43 @@ export default class SavedGames extends Phaser.Scene {
       });
 
       const keyObjUp = this.input.keyboard.addKey('UP');
+      const keyObjDown = this.input.keyboard.addKey('DOWN');
+      const keyObjEnter = this.input.keyboard.addKey('ENTER');
+
       keyObjUp.on('down', () => {
         const table = this.table.getElement('table');
         index -= 1;
         disableBtnActive(this.backButton);
         if (index === -1) {
-          for (let i = 0; i < numbers.length; i += 1) {
-            table.children[numbers[i]].getElement('background')
-              .setStrokeStyle(2, 0xffffff)
-              .setDepth(0);
-          }
+          clearActive(numbers, table);
           setBtnActive(this.backButton);
         } else {
           if (index === -2) {
             index = numbers.length - 1;
           }
-          for (let i = 0; i < numbers.length; i += 1) {
-            table.children[numbers[i]].getElement('background')
-              .setStrokeStyle(2, 0xffffff)
-              .setDepth(0);
-          }
-          table.children[numbers[index]].getElement('background')
-            .setStrokeStyle(5, 0xFFA300)
-            .setDepth(200);
+          clearActive(numbers, table);
+          setActiveItem(numbers, index, table);
         }
       });
 
-      const keyObjDown = this.input.keyboard.addKey('DOWN');
       keyObjDown.on('down', () => {
         const table = this.table.getElement('table');
         index += 1;
         disableBtnActive(this.backButton);
         if (index === numbers.length) {
-          for (let i = 0; i < numbers.length; i += 1) {
-            table.children[numbers[i]].getElement('background')
-              .setStrokeStyle(2, 0xffffff)
-              .setDepth(0);
-          }
+          clearActive(numbers, table);
           setBtnActive(this.backButton);
         } else {
           if (index > numbers.length) {
             index = 0;
           }
-          for (let i = 0; i < numbers.length; i += 1) {
-            table.children[numbers[i]].getElement('background')
-              .setStrokeStyle(2, 0xffffff)
-              .setDepth(0);
-          }
-          table.children[numbers[index]].getElement('background')
-            .setStrokeStyle(5, 0xFFA300)
-            .setDepth(200);
+          clearActive(numbers, table);
+          setActiveItem(numbers, index, table);
         }
       });
 
-      const keyObjEnter = this.input.keyboard.addKey('ENTER');
       keyObjEnter.on('down', () => {
-        if (index === 7 || index === -1) {
+        if (index === numbers.length || index === -1) {
           this.backToMenu();
         } else {
           const item = this.table.items[numbers[index] - 1];
@@ -261,24 +253,16 @@ export default class SavedGames extends Phaser.Scene {
       this.backButton.on('pointerup', this.backToMenu, this);
       this.backButton.on('pointerover', () => {
         setBtnActive(this.backButton);
-        index = 7;
         const table = this.table.getElement('table');
-        for (let i = 0; i < numbers.length; i += 1) {
-          table.children[numbers[i]].getElement('background')
-            .setStrokeStyle(2, 0xffffff)
-            .setDepth(0);
-        }
+        index = numbers.length;
+        clearActive(numbers, table);
       }, this);
       this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
-      this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
     }
+    this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
   }
 
   backToMenu(): void {
-    if (!this.pause) {
-      this.scene.start('Menu');
-    } else {
-      this.scene.start('PauseMenu', { key: this.lastScene, player: this.player });
-    }
+    this.scene.start('Menu');
   }
 }
