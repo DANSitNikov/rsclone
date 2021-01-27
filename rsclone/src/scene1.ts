@@ -31,6 +31,10 @@ export default class Scene1 extends Phaser.Scene {
 
   private pause: boolean;
 
+  private atHome: boolean;
+
+  private homeZone: Phaser.GameObjects.Zone;
+
   constructor() {
     super(sceneConfig);
   }
@@ -40,8 +44,6 @@ export default class Scene1 extends Phaser.Scene {
     const y = 640;
 
     initScene.call(this, 1, x, y);
-
-    this.sound.add('wind').play({ loop: true });
 
     this.lang = this.registry.get('lang');
 
@@ -78,6 +80,10 @@ export default class Scene1 extends Phaser.Scene {
     ).setDepth(1000);
     this.text.visible = false;
     this.clickable = true;
+
+    this.sound.play('home', {loop: true});
+    this.atHome = true;
+    this.homeZone = this.add.zone(280, 500, 440, 150);
   }
 
   public update(): void {
@@ -94,9 +100,24 @@ export default class Scene1 extends Phaser.Scene {
     this.killOnSpikes(this.spikes2);
     this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
 
+    if (!(Phaser.Geom.Intersects.RectangleToRectangle(this.homeZone.getBounds(), this.player.player.getBounds()))) {
+      if (this.atHome) {
+        this.atHome = false;
+        this.sound.stopAll();
+        this.sound.play('wind', {loop: true});
+      }
+    } else {
+      if (!this.atHome) {
+        this.atHome = true;
+        this.sound.stopAll();
+        this.sound.play('home', {loop: true});
+      }
+    }
+
     if (Phaser.Geom.Intersects.RectangleToRectangle(this.note.getBounds(), this.player.player.getBounds())) {
       this.note.setTexture('noteActive');
       if (action && this.clickable) {
+        this.sound.play(`note${1 + +this.dialogue.visible}`);
         this.dialogue.visible = !this.dialogue.visible;
         this.text.visible = !this.text.visible;
         this.clickable = false;
