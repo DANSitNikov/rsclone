@@ -131,8 +131,14 @@ export default class SavedGames extends Phaser.Scene {
           }
 
           container.setMinSize(cell.width, height);
-          container.getElement('text').setText(item.id).setStyle({ font: '25px monospace' }); // Set text of text object
+          container.getElement('text').setText(item.id).setStyle({ font: '25px monospace', background: '' }); // Set text of text object
           container.getElement('background').setStrokeStyle(2, 0xffffff).setDepth(0);
+
+          if (cell.index === 9) {
+            container.getElement('background')
+              .setStrokeStyle(5, 0xFFA300)
+              .setDepth(200);
+          }
 
           return container;
         },
@@ -140,17 +146,34 @@ export default class SavedGames extends Phaser.Scene {
         items: CreateItems(),
       }).layout();
 
-      this.table.on('cell.down', (cellContainer, index) => {
-        const item = this.table.items[index];
+      this.table.on('cell.out', (cellContainer, indexLocal) => {
+        const item = this.table.items[indexLocal];
         if (item.id === this.lang.load) {
-          this.scene.start(`Scene${item.data[2]}`);
-          localStorage.setItem('deaths_count', JSON.stringify(item.data[1]));
-          localStorage.setItem('gaming_time', JSON.stringify(item.data[0]));
+          cellContainer.getElement('background')
+            .setStrokeStyle(2, 0xffffff)
+            .setDepth(0);
         }
       });
 
-      this.table.on('cell.over', (cellContainer, index) => {
-        const item = this.table.items[index];
+      const countOfItems = this.table.items.length / 5 - 1;
+      const numbers = [];
+      for (let i = 0; i < countOfItems; i += 1) {
+        const num = 10;
+        numbers.push(num + (5 * i));
+      }
+
+      let index = 0;
+
+      this.table.on('cell.over', (cellContainer, indexLocal) => {
+        index = (indexLocal + 1) / 5 - 2;
+        const item = this.table.items[indexLocal];
+        const table = this.table.getElement('table');
+        disableBtnActive(this.backButton);
+        for (let i = 0; i < numbers.length; i += 1) {
+          table.children[numbers[i]].getElement('background')
+            .setStrokeStyle(2, 0xffffff)
+            .setDepth(0);
+        }
         if (item.id === this.lang.load) {
           cellContainer.getElement('background')
             .setStrokeStyle(5, 0xFFA300)
@@ -158,20 +181,97 @@ export default class SavedGames extends Phaser.Scene {
         }
       });
 
-      this.table.on('cell.out', (cellContainer, index) => {
-        const item = this.table.items[index];
+      const keyObjUp = this.input.keyboard.addKey('UP');
+      keyObjUp.on('down', () => {
+        const table = this.table.getElement('table');
+        index -= 1;
+        disableBtnActive(this.backButton);
+        if (index === -1) {
+          for (let i = 0; i < numbers.length; i += 1) {
+            table.children[numbers[i]].getElement('background')
+              .setStrokeStyle(2, 0xffffff)
+              .setDepth(0);
+          }
+          setBtnActive(this.backButton);
+        } else {
+          if (index === -2) {
+            index = numbers.length - 1;
+          }
+          for (let i = 0; i < numbers.length; i += 1) {
+            table.children[numbers[i]].getElement('background')
+              .setStrokeStyle(2, 0xffffff)
+              .setDepth(0);
+          }
+          table.children[numbers[index]].getElement('background')
+            .setStrokeStyle(5, 0xFFA300)
+            .setDepth(200);
+        }
+      });
+
+      const keyObjDown = this.input.keyboard.addKey('DOWN');
+      keyObjDown.on('down', () => {
+        const table = this.table.getElement('table');
+        index += 1;
+        disableBtnActive(this.backButton);
+        if (index === numbers.length) {
+          for (let i = 0; i < numbers.length; i += 1) {
+            table.children[numbers[i]].getElement('background')
+              .setStrokeStyle(2, 0xffffff)
+              .setDepth(0);
+          }
+          setBtnActive(this.backButton);
+        } else {
+          if (index > numbers.length) {
+            index = 0;
+          }
+          for (let i = 0; i < numbers.length; i += 1) {
+            table.children[numbers[i]].getElement('background')
+              .setStrokeStyle(2, 0xffffff)
+              .setDepth(0);
+          }
+          table.children[numbers[index]].getElement('background')
+            .setStrokeStyle(5, 0xFFA300)
+            .setDepth(200);
+        }
+      });
+
+      const keyObjEnter = this.input.keyboard.addKey('ENTER');
+      keyObjEnter.on('down', () => {
+        if (index === 7 || index === -1) {
+          this.backToMenu();
+        } else {
+          const item = this.table.items[numbers[index] - 1];
+          this.scene.start(`Scene${item.data[2]}`);
+          localStorage.setItem('deaths_count', JSON.stringify(item.data[1]));
+          localStorage.setItem('gaming_time', JSON.stringify(item.data[0]));
+        }
+        keyObjEnter.destroy();
+      });
+
+      this.table.on('cell.down', (cellContainer, indexLocal) => {
+        const item = this.table.items[indexLocal];
         if (item.id === this.lang.load) {
-          cellContainer.getElement('background')
+          this.scene.start(`Scene${item.data[2]}`);
+          localStorage.setItem('deaths_count', JSON.stringify(item.data[1]));
+          localStorage.setItem('gaming_time', JSON.stringify(item.data[0]));
+          keyObjEnter.destroy();
+        }
+      });
+
+      this.backButton.on('pointerup', this.backToMenu, this);
+      this.backButton.on('pointerover', () => {
+        setBtnActive(this.backButton);
+        index = 7;
+        const table = this.table.getElement('table');
+        for (let i = 0; i < numbers.length; i += 1) {
+          table.children[numbers[i]].getElement('background')
             .setStrokeStyle(2, 0xffffff)
             .setDepth(0);
         }
-      });
+      }, this);
+      this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
+      this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
     }
-
-    this.backButton.on('pointerup', this.backToMenu, this);
-    this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
-    this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
-    this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
   }
 
   backToMenu(): void {
