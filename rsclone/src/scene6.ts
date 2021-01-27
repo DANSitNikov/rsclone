@@ -34,6 +34,8 @@ export default class Scene6 extends Phaser.Scene {
 
   private pause: boolean;
 
+  private atHome: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -41,6 +43,7 @@ export default class Scene6 extends Phaser.Scene {
   public create(): void {
     this.lang = this.registry.get('lang');
     initScene.call(this, 6, 0, 740);
+    this.sound.play('wind2', {loop: true})
     this.anims.create({
       key: 'lantern',
       frames: this.anims.generateFrameNames('lantern', {
@@ -107,6 +110,7 @@ export default class Scene6 extends Phaser.Scene {
       },
     ).setDepth(1000);
     this.initDialogue();
+    this.atHome = false;
   }
 
   public update(): void {
@@ -137,8 +141,20 @@ export default class Scene6 extends Phaser.Scene {
       }
     }
     if (this.player.player.x >= 650) { // player entered the house
-      this.friend.anims.play('friendWave', true);
-    } else this.friend.anims.play('friendSit', true);
+      if (!this.atHome) {
+        this.atHome = true;
+        this.sound.stopAll();
+        this.sound.play('home2', {loop: true, volume: 0.5});
+        this.friend.anims.play('friendWave', true);
+      }
+    } else {
+      if (this.atHome) {
+        this.atHome = false;
+        this.sound.stopAll();
+        this.sound.play('wind2', {loop: true});
+        this.friend.anims.play('friendSit', true);
+      }
+    }
     if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.player.getBounds(), this.friend.getBounds())) {
       this.dialogue.visible = true;
       this.text.visible = true;
