@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { setLang } from './utilitites';
+import { setLang } from '../utils/utilitites';
 
 export default class LoadScreen extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;

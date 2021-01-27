@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import {
   setBtnActive, disableBtnActive, clearActive, setActiveItem,
-} from './utilitites';
+} from '../utils/utilitites';
 
 export default class SavedGames extends Phaser.Scene {
   private lang: Record<string, string>;

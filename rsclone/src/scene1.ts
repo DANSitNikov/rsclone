@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
-import { countDeath, statisticInGame } from './utilitites';
+import { countDeath, statisticInGame } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -30,6 +30,10 @@ export default class Scene1 extends Phaser.Scene {
 
   private clickable: boolean;
 
+  private lang: Record<string, string>;
+
+  private pause: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -41,6 +45,8 @@ export default class Scene1 extends Phaser.Scene {
     initScene.call(this, 1, x, y);
 
     this.sound.add('wind').play({ loop: true });
+
+    this.lang = this.registry.get('lang');
 
     this.anims.create({
       key: 'lantern',
@@ -70,7 +76,7 @@ export default class Scene1 extends Phaser.Scene {
     this.text = this.add.text(
       530,
       100,
-      'Список покупок: \n1) перчатки, \n2) мячи для жонглирования, \n3) крем для рук...',
+      this.lang.shoppingList,
       {
         font: '22px monospace',
       },
@@ -80,6 +86,8 @@ export default class Scene1 extends Phaser.Scene {
   }
 
   public update(): void {
+    this.changeLang();
+
     const cursors = this.input.keyboard.createCursorKeys();
     const keyboardKeys = this.input.keyboard.addKeys({
       action: 'e',
@@ -124,5 +132,12 @@ export default class Scene1 extends Phaser.Scene {
 
   public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
+  }
+
+  private changeLang() {
+    if (!this.pause) return;
+    this.lang = this.registry.get('lang');
+    this.text.setText(this.lang.shoppingList);
+    this.pause = false;
   }
 }

@@ -12,7 +12,7 @@ export default {
   soundVolume: 'Sound volume:',
   language: 'Language:',
   languageName: 'English',
-  backToMenu: 'back to menu',
+  backToMenu: 'Back to menu',
   devs: 'Developers',
   artist: 'Artist',
   pauseHeading: 'Paused',
@@ -29,4 +29,7 @@ export default {
   emptyStatistic: 'There is no statistic yet...',
   emptySavedGames: 'There are no saved games yet...',
   load: 'load',
+  shoppingList: 'Shopping list: \n1) gloves, \n2) juggling balls, \n3) hand cream',
+  scene6_greeting: 'Hey, you still managed to come!',
+  scene6_greeting1: 'I could not do otherwise...',
 };

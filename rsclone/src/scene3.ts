@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { countDeath, statisticInGame } from './utilitites';
+import { countDeath, statisticInGame } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,

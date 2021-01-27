@@ -29,4 +29,7 @@ export default {
   emptyStatistic: '尚无统计资料...',
   emptySavedGames: '暂无游戏...',
   load: '下载',
+  shoppingList: '購物清單：\n1）手套，\n2）雜耍球，\n3）護手霜...',
+  scene6_greeting: '嘿，你還是設法來的！',
+  scene6_greeting1: '我不能否則。',
 };

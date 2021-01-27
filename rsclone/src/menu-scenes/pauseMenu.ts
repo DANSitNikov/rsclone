@@ -1,7 +1,8 @@
 import * as Phaser from 'phaser';
 import {
-  setBtnActive, disableBtnActive, keyboardControl, makeSavedGamesInfo, notification, makeDecor,
-} from './utilitites';
+  makeSavedGamesInfo, notification, makeDecor,
+  createList, createBtnHandlers, keuboardNavigation, List,
+} from '../utils/utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
   private lang: Record<string, string>;
@@ -18,15 +19,7 @@ export default class PauseMenu extends Phaser.Scene {
 
   private rexUI;
 
-  private list: ({
-    name: string;
-    handler: () => void;
-    btn: Phaser.GameObjects.Text;
-  } | {
-    name: string;
-    handler: () => void;
-    btn?: undefined;
-  })[];
+  private list: List;
 
   constructor() {
     super({ key: 'PauseMenu', active: false });
@@ -100,40 +93,8 @@ export default class PauseMenu extends Phaser.Scene {
       )
       .setOrigin(0.5).setDepth(1000);
 
-    this.list.forEach((item, index) => {
-      this.list[index].btn = this.add
-        .text(
-          this.game.renderer.width / 2,
-          this.game.renderer.height / 2 - 80 + index * 80,
-          item.name,
-          this.btn,
-        )
-        .setOrigin(0.5)
-        .setInteractive();
-    });
-
-    this.list.forEach((item, index) => {
-      item.btn.on('pointerup', item.handler, this);
-      item.btn.on('pointerover', () => {
-        disableBtnActive(this.list[this.tabIndex].btn);
-        this.tabIndex = index;
-        setBtnActive(item.btn);
-      }, this);
-      item.btn.on('pointerout', () => disableBtnActive(item.btn), this);
-    });
-
-    this.input.keyboard.on('keydown-ESC', () => {
-      this.scene.stop();
-      this.scene.resume(this.lastScene);
-    }, this);
-
-    this.input.keyboard.on('keydown-ENTER', () => {
-      this.list[this.tabIndex].handler();
-    }, this);
-
-    this.input.keyboard.on('keydown', (e: KeyboardEvent) => {
-      this.tabIndex = keyboardControl(e, this.tabIndex, this.list.map((item) => item.btn));
-    }, this);
-    setBtnActive(this.list[this.tabIndex].btn);
+    createList.call(this);
+    createBtnHandlers.call(this);
+    keuboardNavigation.call(this, [true]);
   }
 }

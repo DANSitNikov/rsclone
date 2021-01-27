@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { setBtnActive, disableBtnActive } from './utilitites';
+import { setBtnActive, disableBtnActive } from '../utils/utilitites';
 
 export default class Statistic extends Phaser.Scene {
   private lang: Record<string, string>;

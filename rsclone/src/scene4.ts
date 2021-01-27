@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { countDeath, statisticInGame } from './utilitites';
+import { countDeath, statisticInGame } from './utils/utilitites';
 import Player from './player';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -25,7 +25,7 @@ export default class Scene4 extends Phaser.Scene {
   }
 
   public create(): void {
-    initScene.call(this,4, 0, 300);
+    initScene.call(this, 4, 0, 300);
     this.sound.removeByKey('wind');
     this.sound.add('wind2').play({ loop: true });
     this.waterHands = this.add.sprite(170, 710, 'demonHand').setScale(0.5, 0.6);

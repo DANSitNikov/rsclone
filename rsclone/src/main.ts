@@ -1,19 +1,21 @@
 import * as Phaser from 'phaser';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-import LoadScreen from './loadScreen';
-import Menu from './menu';
-import Credits from './credits';
-import Settings from './settings';
-import Statistic from './statistic';
-import SavedGames from './savedGames';
-import PauseMenu from './pauseMenu';
+
+import Statistic from './menu-scenes/statistic';
+import SavedGames from './menu-scenes/savedGames';
+import LoadScreen from './menu-scenes/loadScreen';
+import Menu from './menu-scenes/menu';
+import Credits from './menu-scenes/credits';
+import Settings from './menu-scenes/settings';
+import PauseMenu from './menu-scenes/pauseMenu';
+
 import Scene1 from './scene1';
 import Scene2 from './scene2';
 import Scene3 from './scene3';
 import Scene4 from './scene4';
 import Scene5 from './scene5';
 import Scene6 from './scene6';
-import GameOverMenu from './gameOverMenu';
+import GameOverMenu from './menu-scenes/gameOverMenu';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Long Legs journey',
