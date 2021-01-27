@@ -61,7 +61,8 @@ export default class Scene5 extends Phaser.Scene {
   public create():void {
     const x = 0; // player position
     const y = 552;
-    initScene.call(this, 5, x, y)
+    initScene.call(this, 5, x, y);
+    this.sound.play('danger', { loop: true });
     this.ladder = this.add.zone(1540, 630, 77, 513);
     this.switch = this.add.sprite(590, 230, 'switchRed').setDepth(1);
     this.player.player.setDepth(2);
@@ -128,8 +129,8 @@ export default class Scene5 extends Phaser.Scene {
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);
     this.light = this.add.image(842, 522, 'bgLight').setDepth(999);
     this.light.visible = false;
+    this.sound.play('spidey', {loop: true, volume: 0.3})
 
-    this.sound.add('wind').play({ loop: true });
   }
 
   public update():void {
@@ -156,21 +157,19 @@ export default class Scene5 extends Phaser.Scene {
       if (action && !this.switchClicked) {
         if (!this.switchStatus) {
           this.switch.setTexture('switchGreen');
-          this.switchStatus = true;
-          this.sound.add('switch').play({ loop: false });
-          this.light.visible = true;
           this.plort.setTexture('plort2');
+          if (this.wall.scale) this.sound.play('mud');
           this.wall.setScale(0);
         } else {
           this.switch.setTexture('switchRed');
-          this.switchStatus = false;
-          this.sound.add('switch').play({ loop: false });
-          this.light.visible = false;
         }
+        this.light.visible = !this.light.visible;
+        this.switchStatus = !this.switchStatus;
+        this.sound.play('switch');
         this.switchClicked = true;
         setTimeout(() => {
           this.switchClicked = false;
-        }, 500);
+        }, 200);
       }
     }
 
@@ -189,7 +188,7 @@ export default class Scene5 extends Phaser.Scene {
         this.player.die();
       }
     };
-    checkDie(this.spidey.getBounds());
+    if (this.spideySpeed) checkDie(this.spidey.getBounds());
     if (this.handZone1 && this.handsActive) {
       checkDie(this.handZone1.getBounds());
       checkDie(this.handZone2.getBounds());
@@ -223,6 +222,7 @@ export default class Scene5 extends Phaser.Scene {
   private startHands() {
     this.spidey.anims.play('spideyDie');
     this.spideySpeed = 0;
+    this.sound.stopByKey('spidey');
     setTimeout(() => this.handRise(), 1000);
   }
 

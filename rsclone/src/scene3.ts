@@ -43,7 +43,9 @@ export default class Scene3 extends Phaser.Scene {
   public create():void {
     const x = 130; // player position
     const y = 560;
-    initScene.call(this, 3, x, y)
+    initScene.call(this, 3, x, y);
+    this.sound.play('sea', {loop: true});
+
     this.boat = this.matter.add.sprite(100, 670, 'boatCollides');
     this.boat.setIgnoreGravity(true).setFixedRotation();
     this.boat.visible = false;

@@ -42,6 +42,7 @@ export default class Scene2 extends Phaser.Scene {
     const x = 0; // player position
     const y = 350;
     initScene.call(this, 2, x, y);
+    this.sound.play('sea', {loop: true});
 
     this.boat = this.matter.add.sprite(740, 700, 'boatCollides');
     this.boat.visible = false;

@@ -99,6 +99,7 @@ export default class Credits extends Phaser.Scene {
   }
 
   backToMenu(): void {
+    this.sound.play('click');
     this.scene.start('Menu');
   }
 }

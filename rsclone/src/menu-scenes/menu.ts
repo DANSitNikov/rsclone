@@ -19,24 +19,28 @@ export default class Menu extends Phaser.Scene {
   }
 
   create(): void {
+    this.sound.play('menu', {loop: true});
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.list = [
       {
         name: this.lang.play,
         handler: (): void => {
+          this.sound.play('click');
           this.scene.start('Scene1');
         },
       },
       {
         name: this.lang.settings,
         handler: (): void => {
+          this.sound.play('click');
           this.scene.start('Settings', { pause: false });
         },
       },
       {
         name: this.lang.credits,
         handler: (): void => {
+          this.sound.play('click');
           this.scene.start('Credits');
         },
       },
