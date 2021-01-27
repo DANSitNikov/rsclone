@@ -19,7 +19,7 @@ export default class Menu extends Phaser.Scene {
   }
 
   create(): void {
-    this.sound.play('menu', {loop: true});
+    //this.sound.play('menu', {loop: true});
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.list = [
