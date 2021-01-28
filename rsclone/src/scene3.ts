@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
+import { countDeath, statisticInGame } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -30,6 +31,8 @@ export default class Scene3 extends Phaser.Scene {
 
   private fish;
 
+  private deathStatus: boolean;
+
   private fence: Phaser.GameObjects.Sprite;
 
   private cloudOne: Phaser.GameObjects.Image;
@@ -43,7 +46,7 @@ export default class Scene3 extends Phaser.Scene {
   public create():void {
     const x = 130; // player position
     const y = 560;
-    initScene.call(this, 3, x, y)
+    initScene.call(this, 3, x, y);
     this.boat = this.matter.add.sprite(100, 670, 'boatCollides');
     this.boat.setIgnoreGravity(true).setFixedRotation();
     this.boat.visible = false;
@@ -97,6 +100,8 @@ export default class Scene3 extends Phaser.Scene {
     this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
 
+    statisticInGame(this);
+
     this.cloudOne = this.add.image(300, 160, 'cloud2').setAlpha(0.6).setScale(0.9);
     this.cloudTwo = this.add.image(1200, 85, 'cloud1').setAlpha(0.6).setScale(0.8);
   }
@@ -127,7 +132,12 @@ export default class Scene3 extends Phaser.Scene {
     }
 
     if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.fish.getBounds())) {
+      this.time.paused = true;
       this.player.die();
+      if (!this.deathStatus) {
+        countDeath();
+        this.deathStatus = true;
+      }
     }
 
     this.boatSprite.x = this.boat.x;
@@ -136,6 +146,11 @@ export default class Scene3 extends Phaser.Scene {
     // Kill the character in water
     if (this.player.player.y > 869 && this.player.isAlive) {
       this.player.die();
+      this.time.paused = true;
+      if (!this.deathStatus) {
+        countDeath();
+        this.deathStatus = true;
+      }
     }
 
     this.boatSprite.y = this.boat.y - 70;
@@ -179,8 +194,8 @@ export default class Scene3 extends Phaser.Scene {
       rotationOffset: 30,
     });
     this.fish.anims.play('cuttlefish');
-
   }
+
   public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }
