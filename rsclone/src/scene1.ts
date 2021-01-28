@@ -66,7 +66,7 @@ export default class Scene1 extends Phaser.Scene {
     this.spikes1 = this.add.zone(1048, 940, 200, 150);
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
 
-    statisticInGame(this);
+    statisticInGame.call(this);
 
     this.note = this.add.sprite(545, 824, 'note').setScale(0.8);
     this.player.player.setDepth(2);

@@ -112,7 +112,7 @@ export default class Scene6 extends Phaser.Scene {
     this.initDialogue();
 
     this.atHome = false;
-    statisticInGame(this);
+    statisticInGame.call(this);
   }
 
   public update(): void {

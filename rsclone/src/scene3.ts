@@ -102,7 +102,7 @@ export default class Scene3 extends Phaser.Scene {
     this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
 
-    statisticInGame(this);
+    statisticInGame.call(this);
 
     this.cloudOne = this.add.image(300, 160, 'cloud2').setAlpha(0.6).setScale(0.9);
     this.cloudTwo = this.add.image(1200, 85, 'cloud1').setAlpha(0.6).setScale(0.8);

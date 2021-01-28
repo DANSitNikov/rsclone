@@ -80,7 +80,7 @@ export default class Scene5 extends Phaser.Scene {
     this.switchClicked = false;
     this.switchStatus = false;
 
-    statisticInGame(this);
+    statisticInGame.call(this);
 
     this.plort = this.add.sprite(1505, 490, 'plort1');
     this.wall = this.matter.add.sprite(1665, 490, 'plort1').setScale(0.1, 1);
