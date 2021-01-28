@@ -108,7 +108,8 @@ export function countDeath():void {
   localStorage.setItem('deaths_count', JSON.stringify(deathsCount));
 }
 
-function correctTime(time:number):string {
+export function correctTime(time:number):string {
+  if (time < 0) throw new Error('invalid time >:(');
   let resultTime: string;
 
   if (time < 59) {

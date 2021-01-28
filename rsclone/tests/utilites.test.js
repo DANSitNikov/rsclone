@@ -1,7 +1,24 @@
-import { setLang, switchLang, changeCurretIndex } from '../src/utils/utilitites';
+import { setLang, switchLang, changeCurretIndex, correctTime } from '../src/utils/utilitites';
 import en from '../src/languages/en';
 import ru from '../src/languages/ru';
 import chTr from '../src/languages/chTr';
+
+describe('correctTime check', () => {
+  test('seconds', () => {
+    expect(correctTime(15)).toBe('00:15');
+    expect(correctTime(59)).toBe('00:59');
+  });
+  test('minutes', () => {
+    expect(correctTime(60)).toBe('01:00');
+    expect(correctTime(100501)).toBe('1675:01');
+  });
+  test('handle strings', () => {
+    expect(correctTime('15')).toBe('00:15');
+  });
+  test('handle negative numbers', () => {
+    expect(() => correctTime(-1)).toThrow('invalid time >:(');
+  });
+});
 
 describe('changeCurretIndex check', () => {
   test('basic tests', () => {
