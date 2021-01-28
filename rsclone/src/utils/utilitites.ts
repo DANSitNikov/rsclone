@@ -215,7 +215,7 @@ export function statisticInGame(scene):void {
 }
 
 export function notification(scene, UI): void {
-  const toast = UI.add.toast({
+  UI.add.toast({
     x: scene.game.renderer.width / 2,
     y: 50,
 
