@@ -26,8 +26,8 @@ export default class Scene4 extends Phaser.Scene {
 
   public create(): void {
     initScene.call(this, 4, 0, 300);
-    this.sound.removeByKey('wind');
-    this.sound.add('wind2').play({ loop: true });
+    this.sound.play('mourn', { loop: true });
+
     this.waterHands = this.add.sprite(170, 710, 'demonHand').setScale(0.5, 0.6);
     this.anims.create({
       key: 'waterHands',
