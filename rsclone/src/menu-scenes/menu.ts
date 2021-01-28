@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
+import keuboardNavigation from '../utils/keyboardNav';
 import {
-  createList, createBtnHandlers, keuboardNavigation, List,
+  createList, createBtnHandlers, List,
 } from '../utils/utilitites';
 
 export default class Menu extends Phaser.Scene {
