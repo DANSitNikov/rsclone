@@ -1,8 +1,9 @@
 import * as Phaser from 'phaser';
 import keuboardNavigation from '../utils/keyboardNav';
+import createBtnHandlers from '../utils/createBtnHandlers';
 import {
   makeSavedGamesInfo, notification, makeDecor,
-  createList, createBtnHandlers, List,
+  createList, List,
 } from '../utils/utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
