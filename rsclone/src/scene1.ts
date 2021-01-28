@@ -120,24 +120,24 @@ export default class Scene1 extends Phaser.Scene {
     }
 
     if (Phaser.Geom.Intersects.RectangleToRectangle(this.note.getBounds(), this.player.player.getBounds())) {
+      if (
+        Phaser.Geom.Intersects.RectangleToRectangle(this.note.getBounds(),
+          this.player.player.getBounds())
+      ) {
 
-    if (
-      Phaser.Geom.Intersects.RectangleToRectangle(this.note.getBounds(),
-        this.player.player.getBounds())
-    ) {
-
-      this.note.setTexture('noteActive');
-      if (action && this.clickable) {
-        this.sound.play(`note${1 + +this.dialogue.visible}`);
-        this.dialogue.visible = !this.dialogue.visible;
-        this.text.visible = !this.text.visible;
-        this.clickable = false;
-        setTimeout(() => this.clickable = true, 200);
+        this.note.setTexture('noteActive');
+        if (action && this.clickable) {
+          this.sound.play(`note${1 + +this.dialogue.visible}`);
+          this.dialogue.visible = !this.dialogue.visible;
+          this.text.visible = !this.text.visible;
+          this.clickable = false;
+          setTimeout(() => this.clickable = true, 200);
+        }
+      } else {
+        this.note.setTexture('note');
+        this.dialogue.visible = false;
+        this.text.visible = false;
       }
-    } else {
-      this.note.setTexture('note');
-      this.dialogue.visible = false;
-      this.text.visible = false;
     }
   }
 
