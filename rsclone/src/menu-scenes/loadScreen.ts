@@ -48,6 +48,15 @@ export default class LoadScreen extends Phaser.Scene {
       },
     });
 
+    if (!localStorage.getItem('statistic')) {
+      localStorage.setItem('statistic', JSON.stringify([]));
+    }
+    if (!localStorage.getItem('saved_games')) {
+      localStorage.setItem('saved_games', JSON.stringify([]));
+    }
+    localStorage.setItem('deaths_count', JSON.stringify(0));
+    localStorage.setItem('gaming_time', JSON.stringify(0));
+
     this.registry.set('lang', this.lang);
 
     assetText.setOrigin(0.5, -0.5);
@@ -191,6 +200,10 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('cloud1', 'assets/world/cloud1.png');
     this.load.image('cloud2', 'assets/world/cloud2.png');
 
+    this.load.image('angry-fish', 'assets/enemies/fish.svg');
+
+    this.load.image('flag', 'assets/decor/flag.png');
+
     this.load.audio('wind', 'assets/sounds/wind.mp3');
     this.load.audio('wind2', 'assets/sounds/wind2.mp3');
 
@@ -217,6 +230,8 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.audio('click', 'assets/sounds/click.mp3');
     this.load.audio('spidey', 'assets/sounds/spidey.mp3');
     this.load.audio('mud', 'assets/sounds/mud.mp3');
+    this.load.audio('save', 'assets/sounds/saveGame/saveGame.mp3');
+
   }
 
   create(): void {

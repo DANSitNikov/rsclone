@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
-import getTintAppendFloatAlphaAndSwap = Phaser.Renderer.WebGL.Utils.getTintAppendFloatAlphaAndSwap;
+import { makeStatisticInfo, statisticInGame } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -110,7 +110,10 @@ export default class Scene6 extends Phaser.Scene {
       },
     ).setDepth(1000);
     this.initDialogue();
+
     this.atHome = false;
+    statisticInGame(this);
+
   }
 
   public update(): void {
@@ -135,6 +138,7 @@ export default class Scene6 extends Phaser.Scene {
           this.doorOpened = true;
           this.sound.add('door').play({ loop: false });
           this.doorBlock.setY(0);
+          makeStatisticInfo();
         }
         this.doorClicked = true;
         setTimeout(() => this.doorClicked = false, 500);

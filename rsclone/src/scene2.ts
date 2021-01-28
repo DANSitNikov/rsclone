@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
+import { countDeath, statisticInGame } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -29,6 +30,8 @@ export default class Scene2 extends Phaser.Scene {
   private path;
 
   private fish;
+
+  private deathStatus: boolean;
 
   private cloudOne: Phaser.GameObjects.Image;
 
@@ -126,9 +129,10 @@ export default class Scene2 extends Phaser.Scene {
     this.water = this.add.sprite(1060, 835, 'water', 1).setAlpha(0.6);
     this.water.anims.play('water', true);
 
+    statisticInGame(this);
+
     this.cloudOne = this.add.image(300, 160, 'cloud2').setAlpha(0.6).setScale(0.9);
     this.cloudTwo = this.add.image(1200, 85, 'cloud1').setAlpha(0.6).setScale(0.8);
-
   }
 
   public update(): void {
@@ -170,6 +174,11 @@ export default class Scene2 extends Phaser.Scene {
     // Kill the character in water
     if (this.player.player.y > 969 && this.player.isAlive) {
       this.player.die();
+      this.time.paused = true;
+      if (!this.deathStatus) {
+        countDeath();
+        this.deathStatus = true;
+      }
     }
     this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.8);
     this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.45);
@@ -181,6 +190,7 @@ export default class Scene2 extends Phaser.Scene {
     this.pauseFish = false;
     this.fish.anims.play('cuttlefish', true);
   }
+
   public moveCloud(cloudX:number, speed:number):number {
     return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }

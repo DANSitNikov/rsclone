@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
+import { countDeath, statisticInGame } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -24,6 +25,10 @@ export default class Scene5 extends Phaser.Scene {
   private switch: Phaser.GameObjects.Sprite;
 
   private player: Player;
+
+  private deathStatus;
+
+  resetCloudPosition: () => number;
 
   private plort: Phaser.GameObjects.Sprite;
 
@@ -55,7 +60,6 @@ export default class Scene5 extends Phaser.Scene {
 
   constructor() {
     super(sceneConfig);
-
   }
 
   public create():void {
@@ -67,9 +71,10 @@ export default class Scene5 extends Phaser.Scene {
     this.switch = this.add.sprite(590, 230, 'switchRed').setDepth(1);
     this.player.player.setDepth(2);
 
-
     this.switchClicked = false;
     this.switchStatus = false;
+
+    statisticInGame(this);
 
     this.plort = this.add.sprite(1505, 490, 'plort1');
     this.wall = this.matter.add.sprite(1665, 490, 'plort1').setScale(0.1, 1);
@@ -167,6 +172,7 @@ export default class Scene5 extends Phaser.Scene {
         this.switchStatus = !this.switchStatus;
         this.sound.play('switch');
         this.switchClicked = true;
+
         setTimeout(() => {
           this.switchClicked = false;
         }, 200);
@@ -186,6 +192,11 @@ export default class Scene5 extends Phaser.Scene {
     const checkDie = (rect) => {
       if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, rect)) {
         this.player.die();
+        this.time.paused = true;
+        if (!this.deathStatus) {
+          countDeath();
+          this.deathStatus = true;
+        }
       }
     };
     if (this.spideySpeed) checkDie(this.spidey.getBounds());
@@ -194,11 +205,13 @@ export default class Scene5 extends Phaser.Scene {
       checkDie(this.handZone2.getBounds());
       checkDie(this.handZone3.getBounds());
     }
+
     if (
       this.player.player.y <= 380
       && this.spideySpeed
       && this.player.player.x > 1200
     ) this.startHands();
+
     if (this.handsActive) {
       function getDirection(hand: Phaser.GameObjects.Sprite) {
         if (hand.y >= 770 || hand.y <= 430) return -1;

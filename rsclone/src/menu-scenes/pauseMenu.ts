@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import {
+  makeSavedGamesInfo, notification, makeDecor,
   createList, createBtnHandlers, keuboardNavigation, List,
 } from '../utils/utilitites';
 
@@ -16,6 +17,8 @@ export default class PauseMenu extends Phaser.Scene {
 
   private tabIndex: number;
 
+  private rexUI;
+
   private list: List;
 
   constructor() {
@@ -28,6 +31,7 @@ export default class PauseMenu extends Phaser.Scene {
   }
 
   create(): void {
+    makeDecor(this);
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.list = [
@@ -46,11 +50,32 @@ export default class PauseMenu extends Phaser.Scene {
         },
       },
       {
+        name: this.lang.statistic,
+        handler: (): void => {
+          this.scene.start('Statistic', { key: this.lastScene, pause: true, player: this.player });
+          this.scene.bringToTop('Statistic');
+        },
+      },
+      {
+        name: this.lang.saveGame,
+        handler: (): void => {
+          notification(this, this.rexUI);
+          this.sound.add('save').play({ loop: false });
+          const time = JSON.parse(localStorage.getItem('gaming_time'));
+          const deaths = JSON.parse(localStorage.getItem('deaths_count'));
+          const scene = this.lastScene;
+          makeSavedGamesInfo(time, deaths, scene);
+        },
+      },
+      {
         name: this.lang.mainMenu,
         handler: (): void => {
           this.game.sound.stopAll();
 
           this.player.stop();
+          localStorage.setItem('gaming_time', JSON.stringify(0));
+
+          localStorage.setItem('deaths_count', JSON.stringify(0));
 
           this.scene.stop(this.lastScene);
           this.scene.start('Menu');

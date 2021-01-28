@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
+import { countDeath, statisticInGame } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -16,6 +17,8 @@ export default class Scene1 extends Phaser.Scene {
   private spikes2: Phaser.GameObjects.Zone;
 
   private player: Player;
+
+  private deathStatus: boolean;
 
   private cloudOne;
 
@@ -62,6 +65,8 @@ export default class Scene1 extends Phaser.Scene {
     this.lantern.anims.play('lantern', true);
     this.spikes1 = this.add.zone(1048, 940, 200, 150);
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
+
+    statisticInGame(this);
 
     this.note = this.add.sprite(545, 824, 'note').setScale(0.8);
     this.player.player.setDepth(2);
@@ -115,6 +120,12 @@ export default class Scene1 extends Phaser.Scene {
     }
 
     if (Phaser.Geom.Intersects.RectangleToRectangle(this.note.getBounds(), this.player.player.getBounds())) {
+
+    if (
+      Phaser.Geom.Intersects.RectangleToRectangle(this.note.getBounds(),
+        this.player.player.getBounds())
+    ) {
+
       this.note.setTexture('noteActive');
       if (action && this.clickable) {
         this.sound.play(`note${1 + +this.dialogue.visible}`);
@@ -135,6 +146,11 @@ export default class Scene1 extends Phaser.Scene {
       spikeid.getBounds(), this.player.player.getBounds(),
     )) {
       this.player.die();
+      this.time.paused = true;
+      if (!this.deathStatus) {
+        countDeath();
+        this.deathStatus = true;
+      }
     }
   }
 

@@ -1,10 +1,14 @@
 import * as Phaser from 'phaser';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+
+import Statistic from './menu-scenes/statistic';
+import SavedGames from './menu-scenes/savedGames';
 import LoadScreen from './menu-scenes/loadScreen';
 import Menu from './menu-scenes/menu';
 import Credits from './menu-scenes/credits';
 import Settings from './menu-scenes/settings';
 import PauseMenu from './menu-scenes/pauseMenu';
+
 import Scene1 from './scene1';
 import Scene2 from './scene2';
 import Scene3 from './scene3';
@@ -29,7 +33,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     default: 'matter',
     matter: {
       gravity: { y: 3 },
-      // debug: true
+    // debug: true
     },
   },
   plugins: {
@@ -46,7 +50,8 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     target: 60,
     forceSetTimeOut: true,
   },
-  scene: [LoadScreen, Menu, Settings, Credits, Scene1, Scene2,
+
+  scene: [LoadScreen, Menu, Settings, Credits, Statistic, SavedGames, Scene1, Scene2,
     Scene3, Scene4, Scene5, Scene6, PauseMenu, GameOverMenu],
 
   backgroundColor: '#000000',

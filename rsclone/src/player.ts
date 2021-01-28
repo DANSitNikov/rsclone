@@ -152,14 +152,14 @@ export default class Player {
     const keyboardKeys = this.scene.input.keyboard.addKeys({
       w: 'w',
       left: 'a',
-      right: 'd'
+      right: 'd',
     });
     const keys = {
       up: cursors.up.isDown || keyboardKeys.w.isDown,
       left: cursors.left.isDown || keyboardKeys.left.isDown,
       right: cursors.right.isDown || keyboardKeys.right.isDown,
       jump: cursors.up.isDown || keyboardKeys.w.isDown || cursors.space.isDown,
-    }
+    };
     const isOnGround = this.playerIsTouching.ground;
     const speed = 8;
     const PlayerVerticalCenter = new Phaser.Geom.Line(

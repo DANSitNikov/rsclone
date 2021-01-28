@@ -11,6 +11,7 @@ export default function init(number: number, x: number, y: number): void {
   this.sound.stopAll();
 
   this.input.keyboard.on('keydown-ESC', () => {
+    this.time.paused = true;
     this.pause = true;
     this.scene.pause();
     this.scene.launch('PauseMenu', { key: `Scene${number}`, player: this.player });
