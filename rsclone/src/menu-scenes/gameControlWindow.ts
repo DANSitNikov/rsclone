@@ -121,5 +121,13 @@ export default class GameControl extends Phaser.Scene {
         .setFillStyle((parameter) ? 0xffffff : undefined);
       localStorage.setItem('showControl', JSON.stringify(parameter));
     });
+
+    this.input.keyboard.on('keydown-SPACE', () => {
+      const buttonObjects = buttons.getElement('buttons[0]');
+      const parameter = !JSON.parse(localStorage.getItem('showControl'));
+      buttonObjects.getElement('icon')
+        .setFillStyle((parameter) ? 0xffffff : undefined);
+      localStorage.setItem('showControl', JSON.stringify(parameter));
+    });
   }
 }

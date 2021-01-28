@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { setLang } from './utilitites';
+import { setLang } from '../utils/utilitites';
 
 export default class LoadScreen extends Phaser.Scene {
   playButton: Phaser.GameObjects.Text;
@@ -48,6 +48,15 @@ export default class LoadScreen extends Phaser.Scene {
       },
     });
 
+    if (!localStorage.getItem('statistic')) {
+      localStorage.setItem('statistic', JSON.stringify([]));
+    }
+    if (!localStorage.getItem('saved_games')) {
+      localStorage.setItem('saved_games', JSON.stringify([]));
+    }
+    localStorage.setItem('deaths_count', JSON.stringify(0));
+    localStorage.setItem('gaming_time', JSON.stringify(0));
+
     this.registry.set('lang', this.lang);
 
     assetText.setOrigin(0.5, -0.5);
@@ -79,6 +88,12 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('boat', 'assets/objects/boat.png');
     this.load.image('boatCollides', 'assets/objects/boatCollides.png');
     this.load.image('bgLight', 'assets/objects/bgLight.png');
+    this.load.image('fence', 'assets/objects/fence.png');
+    this.load.image('note', 'assets/objects/note.png');
+    this.load.image('noteActive', 'assets/objects/noteActive.png');
+    this.load.image('dialogueNote', 'assets/objects/dialogueNote.png');
+    this.load.image('dialogueArm', 'assets/objects/dialogueArm.png');
+    this.load.image('dialogueLeg', 'assets/objects/dialogueLeg.png');
     this.load.image('plort1', 'assets/enemies/plort.png');
     this.load.image('plort2', 'assets/enemies/plort2.png');
 
@@ -108,6 +123,11 @@ export default class LoadScreen extends Phaser.Scene {
       'playerJump',
       'assets/character/jump/playerJump.png',
       'assets/character/jump/playerJump.json',
+    );
+    this.load.atlas(
+      'playerClimb',
+      'assets/character/jump/climb.png',
+      'assets/character/jump/climb.json',
     );
     this.load.atlas(
       'playerDie',
@@ -140,6 +160,16 @@ export default class LoadScreen extends Phaser.Scene {
       'assets/objects/door.json',
     );
     this.load.atlas(
+      'friendSit',
+      'assets/objects/friendSit.png',
+      'assets/objects/friendSit.json',
+    );
+    this.load.atlas(
+      'friendWave',
+      'assets/objects/friendWave.png',
+      'assets/objects/friendWave.json',
+    );
+    this.load.atlas(
       'spidey',
       'assets/enemies/spidey.png',
       'assets/enemies/spidey.json',
@@ -148,6 +178,11 @@ export default class LoadScreen extends Phaser.Scene {
       'spideyDie',
       'assets/enemies/spideyDie.png',
       'assets/enemies/spideyDie.json',
+    );
+    this.load.atlas(
+      'cuttlefish',
+      'assets/enemies/cuttlefish.png',
+      'assets/enemies/cuttlefish.json',
     );
     this.load.atlas(
       'hand',
@@ -173,6 +208,7 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('d', 'assets/control/d.svg');
     this.load.image('w', 'assets/control/w.svg');
     this.load.image('space', 'assets/control/space.svg');
+    this.load.image('flag', 'assets/decor/flag.png');
 
     this.load.audio('wind', 'assets/sounds/wind.mp3');
     this.load.audio('wind2', 'assets/sounds/wind2.mp3');
@@ -189,6 +225,7 @@ export default class LoadScreen extends Phaser.Scene {
 
     this.load.audio('die', 'assets/sounds/die/playerDie.mp3');
     this.load.audio('door', 'assets/sounds/door.mp3');
+    this.load.audio('save', 'assets/sounds/saveGame/saveGame.mp3');
   }
 
   create(): void {

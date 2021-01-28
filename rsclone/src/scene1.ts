@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
+import { countDeath, statisticInGame } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -17,6 +18,22 @@ export default class Scene1 extends Phaser.Scene {
 
   private player: Player;
 
+  private deathStatus: boolean;
+
+  private cloudOne;
+
+  private note: Phaser.GameObjects.Sprite;
+
+  private dialogue: Phaser.GameObjects.Sprite;
+
+  private text: Phaser.GameObjects.Text;
+
+  private clickable: boolean;
+
+  private lang: Record<string, string>;
+
+  private pause: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -25,15 +42,17 @@ export default class Scene1 extends Phaser.Scene {
     const x = 350; // player position
     const y = 640;
 
-    initScene(this, 1, x, y);
+    initScene.call(this, 1, x, y);
 
     this.sound.add('wind').play({ loop: true });
+
+    this.lang = this.registry.get('lang');
 
     this.anims.create({
       key: 'lantern',
       frames: this.anims.generateFrameNames('lantern', {
         start: 1,
-        end: 3,
+        end: 4,
         prefix: '',
         suffix: '.png',
       }),
@@ -49,11 +68,58 @@ export default class Scene1 extends Phaser.Scene {
       this.scene.pause();
       this.scene.launch('GameControl', { key: 'Scene1', player: this.player });
     }
+
+    statisticInGame(this);
+
+    this.note = this.add.sprite(545, 824, 'note').setScale(0.8);
+    this.player.player.setDepth(2);
+
+    this.cloudOne = this.add.image(300, 110, 'cloud2').setAlpha(0.6).setScale(0.9);
+
+    this.dialogue = this.add.sprite(800, 200, 'dialogueNote').setDepth(999);
+    this.dialogue.visible = false;
+    this.text = this.add.text(
+      530,
+      100,
+      this.lang.shoppingList,
+      {
+        font: '22px monospace',
+      },
+    ).setDepth(1000);
+    this.text.visible = false;
+    this.clickable = true;
   }
 
   public update(): void {
+    this.changeLang();
+
+    const cursors = this.input.keyboard.createCursorKeys();
+    const keyboardKeys = this.input.keyboard.addKeys({
+      action: 'e',
+    });
+    // @ts-ignore
+    const action = cursors.space.isDown || keyboardKeys.action.isDown;
+
     this.killOnSpikes(this.spikes1);
     this.killOnSpikes(this.spikes2);
+    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
+
+    if (
+      Phaser.Geom.Intersects.RectangleToRectangle(this.note.getBounds(),
+        this.player.player.getBounds())
+    ) {
+      this.note.setTexture('noteActive');
+      if (action && this.clickable) {
+        this.dialogue.visible = !this.dialogue.visible;
+        this.text.visible = !this.text.visible;
+        this.clickable = false;
+        setTimeout(() => this.clickable = true, 200);
+      }
+    } else {
+      this.note.setTexture('note');
+      this.dialogue.visible = false;
+      this.text.visible = false;
+    }
   }
 
   private killOnSpikes(spikeid): void {
@@ -61,6 +127,22 @@ export default class Scene1 extends Phaser.Scene {
       spikeid.getBounds(), this.player.player.getBounds(),
     )) {
       this.player.die();
+      this.time.paused = true;
+      if (!this.deathStatus) {
+        countDeath();
+        this.deathStatus = true;
+      }
     }
+  }
+
+  public moveCloud(cloudX:number, speed:number):number {
+    return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
+  }
+
+  private changeLang() {
+    if (!this.pause) return;
+    this.lang = this.registry.get('lang');
+    this.text.setText(this.lang.shoppingList);
+    this.pause = false;
   }
 }

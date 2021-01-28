@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import Player from "./player";
+import { countDeath, statisticInGame } from './utils/utilitites';
+import Player from './player';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -15,14 +16,16 @@ export default class Scene4 extends Phaser.Scene {
 
   private spikes2: Phaser.GameObjects.Zone;
 
-  private player:  Player;
+  private player: Player;
+
+  private deathStatus: boolean;
 
   constructor() {
     super(sceneConfig);
   }
 
   public create(): void {
-    initScene(this, 4, 0, 300);
+    initScene.call(this, 4, 0, 300);
     this.sound.removeByKey('wind');
     this.sound.add('wind2').play({ loop: true });
     this.waterHands = this.add.sprite(170, 710, 'demonHand').setScale(0.5, 0.6);
@@ -37,6 +40,8 @@ export default class Scene4 extends Phaser.Scene {
       frameRate: 7,
       repeat: -1,
     });
+
+    statisticInGame(this);
 
     this.waterHands.anims.play('waterHands', true);
     this.spikes = this.add.zone(1500, 600, 700, 150);
@@ -53,6 +58,11 @@ export default class Scene4 extends Phaser.Scene {
       spikeid.getBounds(), this.player.player.getBounds(),
     )) {
       this.player.die();
+      this.time.paused = true;
+      if (!this.deathStatus) {
+        countDeath();
+        this.deathStatus = true;
+      }
     }
   }
 }

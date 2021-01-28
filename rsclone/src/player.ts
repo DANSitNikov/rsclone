@@ -109,6 +109,18 @@ export default class Player {
     });
 
     scene.anims.create({
+      key: 'climb',
+      frames: scene.anims.generateFrameNames('playerClimb', {
+        start: 1,
+        end: 8,
+        prefix: '',
+        suffix: '.png',
+      }),
+      frameRate: 13,
+      repeat: -1,
+    });
+
+    scene.anims.create({
       key: 'die',
       frames: scene.anims.generateFrameNames('playerDie', {
         start: 1,
@@ -140,14 +152,14 @@ export default class Player {
     const keyboardKeys = this.scene.input.keyboard.addKeys({
       w: 'w',
       left: 'a',
-      right: 'd'
+      right: 'd',
     });
     const keys = {
       up: cursors.up.isDown || keyboardKeys.w.isDown,
       left: cursors.left.isDown || keyboardKeys.left.isDown,
       right: cursors.right.isDown || keyboardKeys.right.isDown,
       jump: cursors.up.isDown || keyboardKeys.w.isDown || cursors.space.isDown,
-    }
+    };
     const isOnGround = this.playerIsTouching.ground;
     const speed = 8;
     const PlayerVerticalCenter = new Phaser.Geom.Line(
@@ -163,7 +175,7 @@ export default class Player {
       ) {
         if (keys.up) {
           this.player.setVelocityY(-speed / 1.5);
-          this.player.anims.play('idle', true); // there will be ladder animation
+          this.player.anims.play('climb', true); // there will be ladder animation
           if (this.soundWalk) {
             this.makeSound(`ladder${this.soundQueue.ladder}`);
             this.soundQueue.ladder = (Number(this.soundQueue.ladder) + 1) % 4;
