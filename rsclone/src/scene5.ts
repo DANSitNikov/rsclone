@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
-import { countDeath, statisticInGame } from './utils/utilitites';
+import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -58,8 +58,14 @@ export default class Scene5 extends Phaser.Scene {
 
   private hand3Speed: number;
 
+  private getDirection;
+
   constructor() {
     super(sceneConfig);
+    this.getDirection = (hand: Phaser.GameObjects.Sprite):number => {
+      if (hand.y >= 770 || hand.y <= 430) return -1;
+      return 1;
+    };
   }
 
   public create():void {
@@ -134,20 +140,21 @@ export default class Scene5 extends Phaser.Scene {
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);
     this.light = this.add.image(842, 522, 'bgLight').setDepth(999);
     this.light.visible = false;
-    this.sound.play('spidey', {loop: true, volume: 0.3})
-
+    this.sound.play('spidey', { loop: true, volume: 0.3 });
   }
 
   public update():void {
     const cursors = this.input.keyboard.createCursorKeys();
-    const keyboardKeys = this.input.keyboard.addKeys({
+    const keyboardKeys: {
+      action?
+    } = this.input.keyboard.addKeys({
       action: 'e',
     });
-    // @ts-ignore
+
     const action = cursors.space.isDown || keyboardKeys.action.isDown;
 
-    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
-    this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.3);
+    this.cloudOne.x = moveCloud(this.cloudOne.x, 0.7);
+    this.cloudTwo.x = moveCloud(this.cloudTwo.x, 0.3);
 
     // switch
     const PlayerVerticalCenter = new Phaser.Geom.Line(
@@ -213,23 +220,14 @@ export default class Scene5 extends Phaser.Scene {
     ) this.startHands();
 
     if (this.handsActive) {
-      function getDirection(hand: Phaser.GameObjects.Sprite) {
-        if (hand.y >= 770 || hand.y <= 430) return -1;
-        return 1;
-      }
-
-      this.hand1Speed *= getDirection(this.handZone1);
-      this.hand2Speed *= getDirection(this.handZone2);
-      this.hand3Speed *= getDirection(this.handZone3);
+      this.hand1Speed *= this.getDirection(this.handZone1);
+      this.hand2Speed *= this.getDirection(this.handZone2);
+      this.hand3Speed *= this.getDirection(this.handZone3);
 
       this.handZone1.y += this.hand1Speed;
       this.handZone2.y += this.hand2Speed;
       this.handZone3.y += this.hand3Speed;
     }
-  }
-
-  public moveCloud(cloudX:number, speed:number):number {
-    return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }
 
   private startHands() {
@@ -261,7 +259,9 @@ export default class Scene5 extends Phaser.Scene {
     this.handZone1.visible = false;
     this.handZone2.visible = false;
     this.handZone3.visible = false;
-    this.hand1Speed = this.hand2Speed = this.hand3Speed = 7.7;
+    this.hand1Speed = 7.7;
+    this.hand2Speed = 7.7;
+    this.hand3Speed = 7.7;
     this.hands1.anims.play('handMove');
     setTimeout(() => {
       this.hands2.anims.play('handMove');

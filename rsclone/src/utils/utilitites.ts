@@ -349,3 +349,10 @@ export function setActiveItem(arr: number[], index: number, table):void {
     .setStrokeStyle(5, 0xFFA300)
     .setDepth(200);
 }
+
+export function moveCloud(
+  cloudX: number, speed: number,
+): number {
+  return cloudX > window.innerWidth + 400
+    ? -500 : cloudX + speed;
+}
