@@ -60,6 +60,16 @@ export default class Scene5 extends Phaser.Scene {
 
   private getDirection;
 
+  private note: Phaser.GameObjects.Sprite;
+
+  private dialogue: Phaser.GameObjects.Sprite;
+
+  private text: Phaser.GameObjects.Text;
+
+  private clickable: boolean;
+
+  private lang: Record<string, string>;
+
   constructor() {
     super(sceneConfig);
     this.getDirection = (hand: Phaser.GameObjects.Sprite):number => {
@@ -86,6 +96,8 @@ export default class Scene5 extends Phaser.Scene {
     this.wall = this.matter.add.sprite(1665, 490, 'plort1').setScale(0.1, 1);
     this.wall.setStatic(true);
     this.wall.setVisible(false);
+
+    this.lang = this.registry.get('lang');
 
     this.anims.create({
       key: 'spidey',
@@ -135,6 +147,16 @@ export default class Scene5 extends Phaser.Scene {
     this.spidey.anims.play('spidey');
     this.spideySpeed = -6;
     this.handsActive = false;
+    this.note = this.add.sprite(345, 774, 'note').setScale(0.8);
+    this.dialogue = this.add.sprite(800, 400, 'dialogueNote').setDepth(999);
+    this.dialogue.visible = false;
+    this.text = this.add
+      .text(480, 350, this.lang.scene5_tip, {
+        font: '22px monospace',
+      })
+      .setDepth(1000);
+    this.text.visible = false;
+    this.clickable = true;
 
     this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6).setDepth(999);
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);
@@ -227,6 +249,35 @@ export default class Scene5 extends Phaser.Scene {
       this.handZone1.y += this.hand1Speed;
       this.handZone2.y += this.hand2Speed;
       this.handZone3.y += this.hand3Speed;
+    }
+
+    if (
+      Phaser.Geom.Intersects.RectangleToRectangle(
+        this.note.getBounds(),
+        this.player.player.getBounds(),
+      )
+    ) {
+      if (
+        Phaser.Geom.Intersects.RectangleToRectangle(
+          this.note.getBounds(),
+          this.player.player.getBounds(),
+        )
+      ) {
+        this.note.setTexture('noteActive');
+        if (action && this.clickable) {
+          this.sound.play(`note${1 + +this.dialogue.visible}`);
+          this.dialogue.visible = !this.dialogue.visible;
+          this.text.visible = !this.text.visible;
+          this.clickable = false;
+          setTimeout(() => {
+            this.clickable = true;
+          }, 200);
+        }
+      } else {
+        this.note.setTexture('note');
+        this.dialogue.visible = false;
+        this.text.visible = false;
+      }
     }
   }
 

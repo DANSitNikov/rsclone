@@ -30,6 +30,7 @@ export default {
   emptySavedGames: 'There are no saved games yet...',
   load: 'load',
   shoppingList: 'Shopping list: \n1) gloves, \n2) juggling balls, \n3) hand cream',
+  scene5_tip: 'It seems the black slime afraids of light...',
   scene6_greeting: 'Hey, you still managed to come!',
   scene6_greeting1: 'I could not do otherwise...',
 };
