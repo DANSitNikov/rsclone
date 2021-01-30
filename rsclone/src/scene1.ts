@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
+import { createNote, showNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -67,21 +68,11 @@ export default class Scene1 extends Phaser.Scene {
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
 
     statisticInGame.call(this);
-
-    this.note = this.add.sprite(545, 824, 'note').setScale(0.8);
     this.player.player.setDepth(2);
 
     this.cloudOne = this.add.image(300, 110, 'cloud2').setAlpha(0.6).setScale(0.9);
 
-    this.dialogue = this.add.sprite(800, 200, 'dialogueNote').setDepth(999);
-    this.dialogue.visible = false;
-    this.text = this.add
-      .text(530, 100, this.lang.shoppingList, {
-        font: '22px monospace',
-      })
-      .setDepth(1000);
-    this.text.visible = false;
-    this.clickable = true;
+    createNote.call(this, 545, 824, 800, 200, 530, 100, this.lang.shoppingList);
 
     this.sound.play('home', { loop: true });
     this.atHome = true;
@@ -121,34 +112,7 @@ export default class Scene1 extends Phaser.Scene {
       this.sound.play('home', { loop: true });
     }
 
-    if (
-      Phaser.Geom.Intersects.RectangleToRectangle(
-        this.note.getBounds(),
-        this.player.player.getBounds(),
-      )
-    ) {
-      if (
-        Phaser.Geom.Intersects.RectangleToRectangle(
-          this.note.getBounds(),
-          this.player.player.getBounds(),
-        )
-      ) {
-        this.note.setTexture('noteActive');
-        if (action && this.clickable) {
-          this.sound.play(`note${1 + +this.dialogue.visible}`);
-          this.dialogue.visible = !this.dialogue.visible;
-          this.text.visible = !this.text.visible;
-          this.clickable = false;
-          setTimeout(() => {
-            this.clickable = true;
-          }, 200);
-        }
-      } else {
-        this.note.setTexture('note');
-        this.dialogue.visible = false;
-        this.text.visible = false;
-      }
-    }
+    showNote.call(this, action);
   }
 
   private killOnSpikes(spikeid): void {
