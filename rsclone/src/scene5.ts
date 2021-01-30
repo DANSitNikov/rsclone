@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
-import { countDeath, statisticInGame } from './utils/utilitites';
+import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -58,14 +58,21 @@ export default class Scene5 extends Phaser.Scene {
 
   private hand3Speed: number;
 
+  private getDirection;
+
   constructor() {
     super(sceneConfig);
+    this.getDirection = (hand: Phaser.GameObjects.Sprite):number => {
+      if (hand.y >= 770 || hand.y <= 430) return -1;
+      return 1;
+    };
   }
 
   public create():void {
     const x = 0; // player position
     const y = 552;
     initScene.call(this, 5, x, y);
+    this.sound.play('danger', { loop: true });
     this.ladder = this.add.zone(1540, 630, 77, 513);
     this.switch = this.add.sprite(590, 230, 'switchRed').setDepth(1);
     this.player.player.setDepth(2);
@@ -73,7 +80,7 @@ export default class Scene5 extends Phaser.Scene {
     this.switchClicked = false;
     this.switchStatus = false;
 
-    statisticInGame(this);
+    statisticInGame.call(this);
 
     this.plort = this.add.sprite(1505, 490, 'plort1');
     this.wall = this.matter.add.sprite(1665, 490, 'plort1').setScale(0.1, 1);
@@ -133,20 +140,21 @@ export default class Scene5 extends Phaser.Scene {
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);
     this.light = this.add.image(842, 522, 'bgLight').setDepth(999);
     this.light.visible = false;
-
-    this.sound.add('wind').play({ loop: true });
+    this.sound.play('spidey', { loop: true, volume: 0.3 });
   }
 
   public update():void {
     const cursors = this.input.keyboard.createCursorKeys();
-    const keyboardKeys = this.input.keyboard.addKeys({
+    const keyboardKeys: {
+      action?
+    } = this.input.keyboard.addKeys({
       action: 'e',
     });
-    // @ts-ignore
+
     const action = cursors.space.isDown || keyboardKeys.action.isDown;
 
-    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.7);
-    this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.3);
+    this.cloudOne.x = moveCloud(this.cloudOne.x, 0.7);
+    this.cloudTwo.x = moveCloud(this.cloudTwo.x, 0.3);
 
     // switch
     const PlayerVerticalCenter = new Phaser.Geom.Line(
@@ -161,22 +169,20 @@ export default class Scene5 extends Phaser.Scene {
       if (action && !this.switchClicked) {
         if (!this.switchStatus) {
           this.switch.setTexture('switchGreen');
-          this.switchStatus = true;
-          this.sound.add('switch').play({ loop: false });
-          this.light.visible = true;
           this.plort.setTexture('plort2');
+          if (this.wall.scale) this.sound.play('mud');
           this.wall.setScale(0);
         } else {
           this.switch.setTexture('switchRed');
-          this.switchStatus = false;
-          this.sound.add('switch').play({ loop: false });
-          this.light.visible = false;
         }
+        this.light.visible = !this.light.visible;
+        this.switchStatus = !this.switchStatus;
+        this.sound.play('switch');
         this.switchClicked = true;
 
         setTimeout(() => {
           this.switchClicked = false;
-        }, 500);
+        }, 200);
       }
     }
 
@@ -200,7 +206,7 @@ export default class Scene5 extends Phaser.Scene {
         }
       }
     };
-    checkDie(this.spidey.getBounds());
+    if (this.spideySpeed) checkDie(this.spidey.getBounds());
     if (this.handZone1 && this.handsActive) {
       checkDie(this.handZone1.getBounds());
       checkDie(this.handZone2.getBounds());
@@ -214,14 +220,9 @@ export default class Scene5 extends Phaser.Scene {
     ) this.startHands();
 
     if (this.handsActive) {
-      function getDirection(hand: Phaser.GameObjects.Sprite) {
-        if (hand.y >= 770 || hand.y <= 430) return -1;
-        return 1;
-      }
-
-      this.hand1Speed *= getDirection(this.handZone1);
-      this.hand2Speed *= getDirection(this.handZone2);
-      this.hand3Speed *= getDirection(this.handZone3);
+      this.hand1Speed *= this.getDirection(this.handZone1);
+      this.hand2Speed *= this.getDirection(this.handZone2);
+      this.hand3Speed *= this.getDirection(this.handZone3);
 
       this.handZone1.y += this.hand1Speed;
       this.handZone2.y += this.hand2Speed;
@@ -229,13 +230,10 @@ export default class Scene5 extends Phaser.Scene {
     }
   }
 
-  public moveCloud(cloudX:number, speed:number):number {
-    return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
-  }
-
   private startHands() {
     this.spidey.anims.play('spideyDie');
     this.spideySpeed = 0;
+    this.sound.stopByKey('spidey');
     setTimeout(() => this.handRise(), 1000);
   }
 
@@ -261,7 +259,9 @@ export default class Scene5 extends Phaser.Scene {
     this.handZone1.visible = false;
     this.handZone2.visible = false;
     this.handZone3.visible = false;
-    this.hand1Speed = this.hand2Speed = this.hand3Speed = 7.7;
+    this.hand1Speed = 7.7;
+    this.hand2Speed = 7.7;
+    this.hand3Speed = 7.7;
     this.hands1.anims.play('handMove');
     setTimeout(() => {
       this.hands2.anims.play('handMove');

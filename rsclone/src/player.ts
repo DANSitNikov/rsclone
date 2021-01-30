@@ -232,7 +232,7 @@ export default class Player {
   }
 
   public makeSound(key: string):void {
-    this.scene.sound.add(key).play({ loop: false });
+    this.scene.sound.play(key, { loop: false });
     this.soundWalk = false;
     setTimeout(() => {
       this.soundWalk = true;

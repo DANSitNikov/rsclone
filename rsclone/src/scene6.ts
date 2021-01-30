@@ -36,6 +36,8 @@ export default class Scene6 extends Phaser.Scene {
 
   private theEnd: boolean;
 
+  private atHome: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -43,6 +45,7 @@ export default class Scene6 extends Phaser.Scene {
   public create(): void {
     this.lang = this.registry.get('lang');
     initScene.call(this, 6, 0, 740);
+    this.sound.play('wind2', { loop: true });
     this.anims.create({
       key: 'lantern',
       frames: this.anims.generateFrameNames('lantern', {
@@ -110,7 +113,8 @@ export default class Scene6 extends Phaser.Scene {
     ).setDepth(1000);
     this.initDialogue();
 
-    statisticInGame(this);
+    this.atHome = false;
+    statisticInGame.call(this);
 
     this.theEnd = false;
     localStorage.setItem('end_up', JSON.stringify(this.theEnd));
@@ -119,10 +123,12 @@ export default class Scene6 extends Phaser.Scene {
   public update(): void {
     this.changeLang();
     const cursors = this.input.keyboard.createCursorKeys();
-    const keyboardKeys = this.input.keyboard.addKeys({
+    const keyboardKeys: {
+      action?
+    } = this.input.keyboard.addKeys({
       action: 'e',
     });
-    // @ts-ignore
+
     const action = cursors.space.isDown || keyboardKeys.action.isDown;
     if (Phaser.Geom.Intersects.RectangleToRectangle(
       this.door.getBounds(), this.player.player.getBounds(),
@@ -145,13 +151,27 @@ export default class Scene6 extends Phaser.Scene {
           }
         }
         this.doorClicked = true;
-        setTimeout(() => this.doorClicked = false, 500);
+        setTimeout(() => {
+          this.doorClicked = false;
+        }, 500);
       }
     }
     if (this.player.player.x >= 650) { // player entered the house
-      this.friend.anims.play('friendWave', true);
-    } else this.friend.anims.play('friendSit', true);
-    if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.player.getBounds(), this.friend.getBounds())) {
+      if (!this.atHome) {
+        this.atHome = true;
+        this.sound.stopAll();
+        this.sound.play('home2', { loop: true, volume: 0.5 });
+        this.friend.anims.play('friendWave', true);
+      }
+    } else if (this.atHome) {
+      this.atHome = false;
+      this.sound.stopAll();
+      this.sound.play('wind2', { loop: true });
+      this.friend.anims.play('friendSit', true);
+    }
+    if (Phaser.Geom.Intersects.RectangleToRectangle(
+      this.player.player.getBounds(), this.friend.getBounds(),
+    )) {
       this.dialogue.visible = true;
       this.text.visible = true;
       if (action) {

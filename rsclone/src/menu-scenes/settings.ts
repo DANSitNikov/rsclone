@@ -1,6 +1,8 @@
 import * as Phaser from 'phaser';
+import keuboardNavigation from '../utils/keyboardNav';
+import createBtnHandlers from '../utils/createBtnHandlers';
 import {
-  switchLang, createBtnHandlers, keuboardNavigation, backToMenu, List,
+  switchLang, backToMenu, List,
 } from '../utils/utilitites';
 
 export default class Settings extends Phaser.Scene {
@@ -130,6 +132,7 @@ export default class Settings extends Phaser.Scene {
   }
 
   switchLangHandler():void {
+    this.sound.play('click');
     this.lang = switchLang(localStorage.getItem('lang'));
     this.registry.set('lang', this.lang);
     this.scene.restart();

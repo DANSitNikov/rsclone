@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { countDeath, statisticInGame } from './utils/utilitites';
+import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -45,6 +45,7 @@ export default class Scene2 extends Phaser.Scene {
     const x = 0; // player position
     const y = 350;
     initScene.call(this, 2, x, y);
+    this.sound.play('sea', { loop: true });
 
     this.boat = this.matter.add.sprite(740, 700, 'boatCollides');
     this.boat.visible = false;
@@ -128,7 +129,7 @@ export default class Scene2 extends Phaser.Scene {
     this.water = this.add.sprite(1060, 835, 'water', 1).setAlpha(0.6);
     this.water.anims.play('water', true);
 
-    statisticInGame(this);
+    statisticInGame.call(this);
 
     this.cloudOne = this.add.image(300, 160, 'cloud2').setAlpha(0.6).setScale(0.9);
     this.cloudTwo = this.add.image(1200, 85, 'cloud1').setAlpha(0.6).setScale(0.8);
@@ -179,8 +180,8 @@ export default class Scene2 extends Phaser.Scene {
         this.deathStatus = true;
       }
     }
-    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.8);
-    this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.45);
+    this.cloudOne.x = moveCloud(this.cloudOne.x, 0.8);
+    this.cloudTwo.x = moveCloud(this.cloudTwo.x, 0.45);
   }
 
   public activeFishFunc():void {
@@ -188,9 +189,5 @@ export default class Scene2 extends Phaser.Scene {
     this.fish.resumeFollow();
     this.pauseFish = false;
     this.fish.anims.play('cuttlefish', true);
-  }
-
-  public moveCloud(cloudX:number, speed:number):number {
-    return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }
 }
