@@ -15,4 +15,35 @@ function createNote(context,
   context.clickable = true;
 }
 
-export { createNote };
+function showNote(context, action) {
+  if (
+    Phaser.Geom.Intersects.RectangleToRectangle(
+      context.note.getBounds(),
+      context.player.player.getBounds(),
+    )
+  ) {
+    if (
+      Phaser.Geom.Intersects.RectangleToRectangle(
+        context.note.getBounds(),
+        context.player.player.getBounds(),
+      )
+    ) {
+      context.note.setTexture('noteActive');
+      if (action && context.clickable) {
+        context.sound.play(`note${1 + +context.dialogue.visible}`);
+        context.dialogue.visible = !context.dialogue.visible;
+        context.text.visible = !context.text.visible;
+        context.clickable = false;
+        setTimeout(() => {
+          context.clickable = true;
+        }, 200);
+      }
+    } else {
+      context.note.setTexture('note');
+      context.dialogue.visible = false;
+      context.text.visible = false;
+    }
+  }
+}
+
+export { createNote, showNote };

@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
-import { createNote } from './utils/notes';
+import { createNote, showNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -112,34 +112,7 @@ export default class Scene1 extends Phaser.Scene {
       this.sound.play('home', { loop: true });
     }
 
-    if (
-      Phaser.Geom.Intersects.RectangleToRectangle(
-        this.note.getBounds(),
-        this.player.player.getBounds(),
-      )
-    ) {
-      if (
-        Phaser.Geom.Intersects.RectangleToRectangle(
-          this.note.getBounds(),
-          this.player.player.getBounds(),
-        )
-      ) {
-        this.note.setTexture('noteActive');
-        if (action && this.clickable) {
-          this.sound.play(`note${1 + +this.dialogue.visible}`);
-          this.dialogue.visible = !this.dialogue.visible;
-          this.text.visible = !this.text.visible;
-          this.clickable = false;
-          setTimeout(() => {
-            this.clickable = true;
-          }, 200);
-        }
-      } else {
-        this.note.setTexture('note');
-        this.dialogue.visible = false;
-        this.text.visible = false;
-      }
-    }
+    showNote(this, action);
   }
 
   private killOnSpikes(spikeid): void {
