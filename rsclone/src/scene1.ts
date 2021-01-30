@@ -72,7 +72,7 @@ export default class Scene1 extends Phaser.Scene {
 
     this.cloudOne = this.add.image(300, 110, 'cloud2').setAlpha(0.6).setScale(0.9);
 
-    createNote(this, 545, 824, 800, 200, 530, 100, this.lang.shoppingList);
+    createNote.call(this, 545, 824, 800, 200, 530, 100, this.lang.shoppingList);
 
     this.sound.play('home', { loop: true });
     this.atHome = true;
@@ -112,7 +112,7 @@ export default class Scene1 extends Phaser.Scene {
       this.sound.play('home', { loop: true });
     }
 
-    showNote(this, action);
+    showNote.call(this, action);
   }
 
   private killOnSpikes(spikeid): void {

@@ -148,7 +148,7 @@ export default class Scene5 extends Phaser.Scene {
     this.spidey.anims.play('spidey');
     this.spideySpeed = -6;
     this.handsActive = false;
-    createNote(this, 345, 774, 800, 400, 480, 350, this.lang.scene5_tip);
+    createNote.call(this, 345, 774, 800, 400, 480, 350, this.lang.scene5_tip);
 
     this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6).setDepth(999);
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);
@@ -243,7 +243,7 @@ export default class Scene5 extends Phaser.Scene {
       this.handZone3.y += this.hand3Speed;
     }
 
-    showNote(this, action);
+    showNote.call(this, action);
   }
 
   private startHands() {

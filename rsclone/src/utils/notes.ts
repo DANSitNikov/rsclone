@@ -1,47 +1,48 @@
-function createNote(context,
-  noteX, noteY,
-  dialogueSpriteX,
-  dialogueSpriteY,
-  textX, textY, text) {
-  context.note = context.add.sprite(noteX, noteY, 'note').setScale(0.8);
-  context.dialogue = context.add.sprite(dialogueSpriteX, dialogueSpriteY, 'dialogueNote').setDepth(999);
-  context.dialogue.visible = false;
-  context.text = context.add
+function createNote(noteX: number, noteY: number,
+  dialogueSpriteX: number,
+  dialogueSpriteY: number,
+  textX: number, textY: number, text: string): void {
+  this.note = this.add.sprite(noteX, noteY, 'note').setScale(0.8);
+  this.dialogue = this.add.sprite(dialogueSpriteX, dialogueSpriteY, 'dialogueNote').setDepth(999);
+  this.dialogue.visible = false;
+  this.text = this.add
     .text(textX, textY, text, {
       font: '22px monospace',
     })
     .setDepth(1000);
-  context.text.visible = false;
-  context.clickable = true;
+  this.text.visible = false;
+	this.clickable = true;
+	console.log(typeof this);
+	console.log(typeof text);
 }
 
-function showNote(context, action) {
+function showNote(action) {
   if (
     Phaser.Geom.Intersects.RectangleToRectangle(
-      context.note.getBounds(),
-      context.player.player.getBounds(),
+      this.note.getBounds(),
+      this.player.player.getBounds(),
     )
   ) {
     if (
       Phaser.Geom.Intersects.RectangleToRectangle(
-        context.note.getBounds(),
-        context.player.player.getBounds(),
+        this.note.getBounds(),
+        this.player.player.getBounds(),
       )
     ) {
-      context.note.setTexture('noteActive');
-      if (action && context.clickable) {
-        context.sound.play(`note${1 + +context.dialogue.visible}`);
-        context.dialogue.visible = !context.dialogue.visible;
-        context.text.visible = !context.text.visible;
-        context.clickable = false;
+      this.note.setTexture('noteActive');
+      if (action && this.clickable) {
+        this.sound.play(`note${1 + +this.dialogue.visible}`);
+        this.dialogue.visible = !this.dialogue.visible;
+        this.text.visible = !this.text.visible;
+        this.clickable = false;
         setTimeout(() => {
-          context.clickable = true;
+          this.clickable = true;
         }, 200);
       }
     } else {
-      context.note.setTexture('note');
-      context.dialogue.visible = false;
-      context.text.visible = false;
+      this.note.setTexture('note');
+      this.dialogue.visible = false;
+      this.text.visible = false;
     }
   }
 }
