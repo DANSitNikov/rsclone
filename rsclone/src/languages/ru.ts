@@ -9,6 +9,7 @@ export default {
   savedGames: 'Сохраненные игры',
   saveGame: 'Сохранить игру',
   save: 'Ваша игра была сохранена',
+  dontSave: 'Вы не можете сохранить игру, после того как закончили ее',
   soundVolume: 'Громкость звуков',
   language: 'Язык:',
   languageName: 'Русский',

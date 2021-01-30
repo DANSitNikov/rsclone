@@ -238,17 +238,27 @@ function correctTime(time:number):string {
 export function makeDecor(scene):void {
   const thisScene = scene;
 
-  thisScene.flag = thisScene.add.sprite(1500, 70, 'flag').setScale(0.1);
+  thisScene.flag = thisScene.add.sprite(1500, 65, 'flag').setScale(0.1);
+  thisScene.clock = thisScene.add.sprite(1200, 65, 'clock').setScale(0.08);
 
   const deathsCount = JSON.parse(localStorage.getItem('deaths_count'));
-  thisScene.deaths = thisScene.add.text(1600, 30, `${deathsCount}`, {
-    font: '90px monospace',
-  });
-
   thisScene.count = JSON.parse(localStorage.getItem('gaming_time'));
-  thisScene.timeGame = thisScene.add.text(1150, 30, correctTime(thisScene.count), {
-    font: '90px monospace',
-  });
+
+  function result(deaths: string, time: string):void {
+    thisScene.deaths = thisScene.add.text(1550, 30, deaths, {
+      font: '70px monospace',
+    });
+    thisScene.timeGame = thisScene.add.text(1250, 30, time, {
+      font: '70px monospace',
+    });
+  }
+
+  if (typeof deathsCount !== 'number') {
+    const aree = JSON.parse(localStorage.getItem('game_result'));
+    result(`${aree[2]}`, aree[1]);
+  } else {
+    result(`${deathsCount}`, correctTime(thisScene.count));
+  }
 }
 
 export function changeTime():void {
@@ -277,6 +287,7 @@ export function makeStatisticInfo():void {
     nextStatistic.pop();
   }
 
+  localStorage.setItem('game_result', JSON.stringify(gameResult));
   localStorage.setItem('statistic', JSON.stringify(nextStatistic));
   localStorage.removeItem('gaming_time');
   localStorage.removeItem('deaths_count');
@@ -316,7 +327,7 @@ export function statisticInGame(scene):void {
   currentScene.time.paused = false;
 }
 
-export function notification(scene, UI): void {
+export function notificationSave(scene, UI): void {
   const toast = UI.add.toast({
     x: scene.game.renderer.width / 2,
     y: 50,
@@ -335,6 +346,25 @@ export function notification(scene, UI): void {
     .show(scene.lang.save);
 }
 
+export function notificationDontSave(): void {
+  const toast = this.rexUI.add.toast({
+    x: this.game.renderer.width / 2,
+    y: 50,
+
+    background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0x000000),
+    text: this.add.text(0, 0, '', {
+      font: '24px monospace',
+    }),
+    space: {
+      left: 15,
+      right: 15,
+      top: 10,
+      bottom: 10,
+    },
+  })
+    .show(this.lang.dontSave);
+}
+
 export function clearActive(arr: number[], table):void {
   for (let i = 0; i < arr.length; i += 1) {
     table.children[arr[i]].getElement('background')
@@ -347,4 +377,12 @@ export function setActiveItem(arr: number[], index: number, table):void {
   table.children[arr[index]].getElement('background')
     .setStrokeStyle(5, 0xFFA300)
     .setDepth(200);
+}
+
+export function saveGame():void {
+  notificationSave(this, this.rexUI);
+  const time = JSON.parse(localStorage.getItem('gaming_time'));
+  const deaths = JSON.parse(localStorage.getItem('deaths_count'));
+  const scene = this.lastScene;
+  makeSavedGamesInfo(time, deaths, scene);
 }

@@ -53,11 +53,19 @@ export default class GameOverMenu extends Phaser.Scene {
         },
         {
           name: this.lang.newGame,
-          handler: () => this.startScene('Scene1'),
+          handler: () => {
+            this.startScene('Scene1');
+            localStorage.setItem('gaming_time', JSON.stringify(0));
+            localStorage.setItem('deaths_count', JSON.stringify(0));
+          },
         },
         {
           name: this.lang.mainMenu,
-          handler: () => this.startScene('Menu'),
+          handler: () => {
+            this.startScene('Menu');
+            localStorage.setItem('gaming_time', JSON.stringify(0));
+            localStorage.setItem('deaths_count', JSON.stringify(0));
+          },
         }];
 
       createList.call(this);

@@ -208,7 +208,8 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('d', 'assets/control/d.svg');
     this.load.image('w', 'assets/control/w.svg');
     this.load.image('space', 'assets/control/space.svg');
-    this.load.image('flag', 'assets/decor/flag.png');
+    this.load.image('flag', 'assets/decor/pirate.svg');
+    this.load.image('clock', 'assets/decor/clock.svg');
 
     this.load.audio('wind', 'assets/sounds/wind.mp3');
     this.load.audio('wind2', 'assets/sounds/wind2.mp3');

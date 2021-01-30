@@ -9,6 +9,7 @@ export default {
   savedGames: 'Saved games',
   saveGame: 'Save game',
   save: 'Your game has been saved',
+  dontSave: 'You can\'t save the game after you\'ve finished it',
   soundVolume: 'Sound volume:',
   language: 'Language:',
   languageName: 'English',

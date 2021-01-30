@@ -34,6 +34,8 @@ export default class Scene6 extends Phaser.Scene {
 
   private pause: boolean;
 
+  private theEnd: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -109,6 +111,9 @@ export default class Scene6 extends Phaser.Scene {
     this.initDialogue();
 
     statisticInGame(this);
+
+    this.theEnd = false;
+    localStorage.setItem('end_up', JSON.stringify(this.theEnd));
   }
 
   public update(): void {
@@ -133,7 +138,11 @@ export default class Scene6 extends Phaser.Scene {
           this.doorOpened = true;
           this.sound.add('door').play({ loop: false });
           this.doorBlock.setY(0);
-          makeStatisticInfo();
+          if (!this.theEnd) {
+            makeStatisticInfo();
+            this.theEnd = true;
+            localStorage.setItem('end_up', JSON.stringify(this.theEnd));
+          }
         }
         this.doorClicked = true;
         setTimeout(() => this.doorClicked = false, 500);

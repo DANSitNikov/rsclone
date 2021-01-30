@@ -15,9 +15,4 @@ export default function init(number: number, x: number, y: number): void {
     this.scene.pause();
     this.scene.launch('PauseMenu', { key: `Scene${number}`, player: this.player });
   });
-
-  // scene.input.keyboard.on('keydown-ENTER', () => {
-  //   scene.scene.pause();
-  //   scene.scene.launch('GameControl', { key: `Scene${number}`, player: scene.player });
-  // });
 }
