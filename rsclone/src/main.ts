@@ -15,6 +15,7 @@ import Scene3 from './scene3';
 import Scene4 from './scene4';
 import Scene5 from './scene5';
 import Scene6 from './scene6';
+import EndGame from './endGame';
 import GameOverMenu from './menu-scenes/gameOverMenu';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
@@ -52,7 +53,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   },
 
   scene: [LoadScreen, Menu, Settings, Credits, Statistic, SavedGames, Scene1, Scene2,
-    Scene3, Scene4, Scene5, Scene6, PauseMenu, GameOverMenu],
+    Scene3, Scene4, Scene5, Scene6, PauseMenu, GameOverMenu, EndGame],
 
   backgroundColor: '#000000',
 };
