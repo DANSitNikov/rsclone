@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
+import { createNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -147,16 +148,7 @@ export default class Scene5 extends Phaser.Scene {
     this.spidey.anims.play('spidey');
     this.spideySpeed = -6;
     this.handsActive = false;
-    this.note = this.add.sprite(345, 774, 'note').setScale(0.8);
-    this.dialogue = this.add.sprite(800, 400, 'dialogueNote').setDepth(999);
-    this.dialogue.visible = false;
-    this.text = this.add
-      .text(480, 350, this.lang.scene5_tip, {
-        font: '22px monospace',
-      })
-      .setDepth(1000);
-    this.text.visible = false;
-    this.clickable = true;
+    createNote(this, 345, 774, 800, 400, 480, 350, this.lang.scene5_tip);
 
     this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6).setDepth(999);
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);

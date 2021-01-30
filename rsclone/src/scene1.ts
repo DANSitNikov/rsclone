@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
+import { createNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -67,21 +68,11 @@ export default class Scene1 extends Phaser.Scene {
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
 
     statisticInGame.call(this);
-
-    this.note = this.add.sprite(545, 824, 'note').setScale(0.8);
     this.player.player.setDepth(2);
 
     this.cloudOne = this.add.image(300, 110, 'cloud2').setAlpha(0.6).setScale(0.9);
 
-    this.dialogue = this.add.sprite(800, 200, 'dialogueNote').setDepth(999);
-    this.dialogue.visible = false;
-    this.text = this.add
-      .text(530, 100, this.lang.shoppingList, {
-        font: '22px monospace',
-      })
-      .setDepth(1000);
-    this.text.visible = false;
-    this.clickable = true;
+    createNote(this, 545, 824, 800, 200, 530, 100, this.lang.shoppingList);
 
     this.sound.play('home', { loop: true });
     this.atHome = true;
