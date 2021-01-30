@@ -11,12 +11,10 @@ function createNote(noteX: number, noteY: number,
     })
     .setDepth(1000);
   this.text.visible = false;
-	this.clickable = true;
-	console.log(typeof this);
-	console.log(typeof text);
+  this.clickable = true;
 }
 
-function showNote(action) {
+function showNote(action: boolean): void {
   if (
     Phaser.Geom.Intersects.RectangleToRectangle(
       this.note.getBounds(),
