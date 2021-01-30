@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
-import {
-  createList, createBtnHandlers, keuboardNavigation, List,
-} from '../utils/utilitites';
+import keuboardNavigation from '../utils/keyboardNav';
+import createBtnHandlers from '../utils/createBtnHandlers';
+import { createList, List } from '../utils/utilitites';
 
 export default class Menu extends Phaser.Scene {
   private btn = {
@@ -19,7 +19,7 @@ export default class Menu extends Phaser.Scene {
   }
 
   create(): void {
-    //this.sound.play('menu', {loop: true});
+    // this.sound.play('menu', {loop: true});
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.list = [

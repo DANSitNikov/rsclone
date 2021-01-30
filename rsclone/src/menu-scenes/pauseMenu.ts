@@ -1,7 +1,9 @@
 import * as Phaser from 'phaser';
+import keuboardNavigation from '../utils/keyboardNav';
+import createBtnHandlers from '../utils/createBtnHandlers';
 import {
   makeSavedGamesInfo, notification, makeDecor,
-  createList, createBtnHandlers, keuboardNavigation, List,
+  createList, List,
 } from '../utils/utilitites';
 
 export default class PauseMenu extends Phaser.Scene {
@@ -31,7 +33,7 @@ export default class PauseMenu extends Phaser.Scene {
   }
 
   create(): void {
-    makeDecor(this);
+    makeDecor.call(this);
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
     this.list = [
@@ -59,7 +61,7 @@ export default class PauseMenu extends Phaser.Scene {
       {
         name: this.lang.saveGame,
         handler: (): void => {
-          notification(this, this.rexUI);
+          notification.call(this);
           this.sound.add('save').play({ loop: false });
           const time = JSON.parse(localStorage.getItem('gaming_time'));
           const deaths = JSON.parse(localStorage.getItem('deaths_count'));

@@ -41,7 +41,7 @@ export default class Scene4 extends Phaser.Scene {
       repeat: -1,
     });
 
-    statisticInGame(this);
+    statisticInGame.call(this);
 
     this.waterHands.anims.play('waterHands', true);
     this.spikes = this.add.zone(1500, 600, 700, 150);

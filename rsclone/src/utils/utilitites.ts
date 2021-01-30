@@ -88,109 +88,6 @@ export function createList(): void {
   });
 }
 
-export function createBtnHandlers(): void {
-  this.list.forEach((item, index) => {
-    if ('label' in item) {
-      if (item.handler) {
-        item.label.on('pointerup', item.handler, this);
-      }
-      item.label.on(
-        'pointerover',
-        () => {
-          disableBtnActive(this.list[this.tabIndex].label);
-          this.tabIndex = index;
-          setBtnActive(item.label);
-        },
-        this,
-      );
-      item.label.on('pointerout', () => disableBtnActive(item.label), this);
-
-      if (item.handler) {
-        item.btn.on('pointerup', item.handler, this);
-      }
-      item.btn.on(
-        'pointerover',
-        () => {
-          disableBtnActive(this.list[this.tabIndex].label);
-          this.tabIndex = index;
-          setBtnActive(item.label);
-        },
-        this,
-      );
-      item.btn.on('pointerout', () => disableBtnActive(item.label), this);
-    } else if ('btn' in item) {
-      if (item.handler) {
-        item.btn.on('pointerup', item.handler, this);
-      }
-      item.btn.on(
-        'pointerover',
-        () => {
-          disableBtnActive(this.list[this.tabIndex].btn);
-          this.tabIndex = index;
-          setBtnActive(item.btn);
-        },
-        this,
-      );
-      item.btn.on('pointerout', () => disableBtnActive(item.btn), this);
-    }
-  });
-}
-
-function sliderArrowNav(e) {
-  const currentValue = this.volume.getValue();
-  if (!(e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;
-  if (this.tabIndex !== this.list.map((item) => item.label).indexOf(this.soundLabel)) return;
-  const n = e.key === 'ArrowLeft' ? -0.1 : 0.1;
-  this.volume.setValue(Math.round((currentValue + n) * 10) / 10);
-}
-
-export function keuboardNavigation(escBtn?: boolean, slider?: boolean): void {
-  if (escBtn) {
-    this.input.keyboard.on(
-      'keydown-ESC',
-      () => {
-        if (!this.pause) {
-          if (this.scene.key === 'PauseMenu') {
-            this.scene.stop();
-            this.scene.resume(this.lastScene);
-          } else {
-            this.scene.start('Menu');
-          }
-        } else {
-          this.scene.start('PauseMenu', { key: this.lastScene, player: this.player });
-        }
-      },
-      this,
-    );
-  }
-
-  this.input.keyboard.on(
-    'keydown-ENTER',
-    () => {
-      if (typeof this.list[this.tabIndex].handler === 'function') {
-        this.list[this.tabIndex].handler();
-      }
-    },
-    this,
-  );
-
-  this.input.keyboard.on(
-    'keydown',
-    (e: KeyboardEvent) => {
-      this.tabIndex = keyboardControl(
-        e,
-        this.tabIndex,
-        this.list.map((item) => item.label || item.btn),
-      );
-      if (slider) {
-        sliderArrowNav.call(this, e);
-      }
-    },
-    this,
-  );
-  setBtnActive(this.list[this.tabIndex].label || this.list[this.tabIndex].btn);
-}
-
 export function backToMenu(): void {
   if (!this.pause) {
     this.sound.play('click');
@@ -211,7 +108,8 @@ export function countDeath():void {
   localStorage.setItem('deaths_count', JSON.stringify(deathsCount));
 }
 
-function correctTime(time:number):string {
+export function correctTime(time:number):string {
+  if (time < 0) throw new Error('invalid time >:(');
   let resultTime: string;
 
   if (time < 59) {
@@ -236,18 +134,16 @@ function correctTime(time:number):string {
   return resultTime;
 }
 
-export function makeDecor(scene):void {
-  const thisScene = scene;
-
-  thisScene.flag = thisScene.add.sprite(1500, 70, 'flag').setScale(0.1);
+export function makeDecor():void {
+  this.flag = this.add.sprite(1500, 70, 'flag').setScale(0.1);
 
   const deathsCount = JSON.parse(localStorage.getItem('deaths_count'));
-  thisScene.deaths = thisScene.add.text(1600, 30, `${deathsCount}`, {
+  this.deaths = this.add.text(1600, 30, `${deathsCount}`, {
     font: '90px monospace',
   });
 
-  thisScene.count = JSON.parse(localStorage.getItem('gaming_time'));
-  thisScene.timeGame = thisScene.add.text(1150, 30, correctTime(thisScene.count), {
+  this.count = JSON.parse(localStorage.getItem('gaming_time'));
+  this.timeGame = this.add.text(1150, 30, correctTime(this.count), {
     font: '90px monospace',
   });
 }
@@ -300,30 +196,28 @@ export function makeSavedGamesInfo(time: number, deaths: number, scene: string):
   localStorage.setItem('saved_games', JSON.stringify(nextInfo));
 }
 
-export function statisticInGame(scene):void {
-  const currentScene = scene;
+export function statisticInGame():void {
+  this.deathStatus = false;
 
-  currentScene.deathStatus = false;
-
-  currentScene.events.on('resume', () => {
-    currentScene.time.paused = false;
+  this.events.on('resume', () => {
+    this.time.paused = false;
   });
 
   function callback():void {
     changeTime();
   }
 
-  currentScene.time.addEvent({ delay: 1000, loop: true, callback });
-  currentScene.time.paused = false;
+  this.time.addEvent({ delay: 1000, loop: true, callback });
+  this.time.paused = false;
 }
 
-export function notification(scene, UI): void {
-  const toast = UI.add.toast({
-    x: scene.game.renderer.width / 2,
+export function notification(): void {
+  this.rexUI.add.toast({
+    x: this.game.renderer.width / 2,
     y: 50,
 
-    background: UI.add.roundRectangle(0, 0, 2, 2, 20, 0x000000),
-    text: scene.add.text(0, 0, '', {
+    background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0x000000),
+    text: this.add.text(0, 0, '', {
       font: '24px monospace',
     }),
     space: {
@@ -333,10 +227,10 @@ export function notification(scene, UI): void {
       bottom: 10,
     },
   })
-    .show(scene.lang.save);
+    .show(this.lang.save);
 }
 
-export function clearActive(arr: number[], table):void {
+export function clearActive(arr: number[], table:{children}):void {
   for (let i = 0; i < arr.length; i += 1) {
     table.children[arr[i]].getElement('background')
       .setStrokeStyle(2, 0xffffff)
@@ -344,8 +238,15 @@ export function clearActive(arr: number[], table):void {
   }
 }
 
-export function setActiveItem(arr: number[], index: number, table):void {
+export function setActiveItem(arr: number[], index: number, table:{children}):void {
   table.children[arr[index]].getElement('background')
     .setStrokeStyle(5, 0xFFA300)
     .setDepth(200);
+}
+
+export function moveCloud(
+  cloudX: number, speed: number,
+): number {
+  return cloudX > window.innerWidth + 400
+    ? -500 : cloudX + speed;
 }

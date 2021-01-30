@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { countDeath, statisticInGame } from './utils/utilitites';
+import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -47,8 +47,7 @@ export default class Scene3 extends Phaser.Scene {
     const x = 130; // player position
     const y = 560;
     initScene.call(this, 3, x, y);
-    this.sound.play('sea', {loop: true});
-
+    this.sound.play('sea', { loop: true });
 
     this.boat = this.matter.add.sprite(100, 670, 'boatCollides');
     this.boat.setIgnoreGravity(true).setFixedRotation();
@@ -103,7 +102,7 @@ export default class Scene3 extends Phaser.Scene {
     this.water = this.add.sprite(617, 824, 'water2', 1);
     this.water.anims.play('water2', true);
 
-    statisticInGame(this);
+    statisticInGame.call(this);
 
     this.cloudOne = this.add.image(300, 160, 'cloud2').setAlpha(0.6).setScale(0.9);
     this.cloudTwo = this.add.image(1200, 85, 'cloud1').setAlpha(0.6).setScale(0.8);
@@ -162,8 +161,8 @@ export default class Scene3 extends Phaser.Scene {
 
     if (boatVelocity.x > boatSpeed) this.boat.setVelocityX(boatSpeed - 2);
 
-    this.cloudOne.x = this.moveCloud(this.cloudOne.x, 0.8);
-    this.cloudTwo.x = this.moveCloud(this.cloudTwo.x, 0.45);
+    this.cloudOne.x = moveCloud(this.cloudOne.x, 0.8);
+    this.cloudTwo.x = moveCloud(this.cloudTwo.x, 0.45);
   }
 
   public activeFish():void {
@@ -197,9 +196,5 @@ export default class Scene3 extends Phaser.Scene {
       rotationOffset: 30,
     });
     this.fish.anims.play('cuttlefish');
-  }
-
-  public moveCloud(cloudX:number, speed:number):number {
-    return cloudX > window.innerWidth + 400 ? -500 : cloudX + speed;
   }
 }
