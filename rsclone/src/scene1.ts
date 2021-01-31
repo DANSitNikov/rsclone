@@ -23,11 +23,11 @@ export default class Scene1 extends Phaser.Scene {
 
   private cloudOne;
 
-  private note: Phaser.GameObjects.Sprite;
+  private notes: Phaser.GameObjects.Sprite[];
 
   private dialogue: Phaser.GameObjects.Sprite;
 
-  private text: Phaser.GameObjects.Text;
+  private texts: Phaser.GameObjects.Text[];
 
   private clickable: boolean;
 
@@ -72,7 +72,11 @@ export default class Scene1 extends Phaser.Scene {
 
     this.cloudOne = this.add.image(300, 110, 'cloud2').setAlpha(0.6).setScale(0.9);
 
-    createNote.call(this, 545, 824, 800, 200, 530, 100, this.lang.shoppingList);
+    this.dialogue = this.add.sprite(800, 200, 'dialogueNote')
+      .setDepth(999)
+      .setVisible(false);
+    this.dialogue.visible = false;
+    createNote.call(this, 545, 824, 530, 100, this.lang.shoppingList);
 
     this.sound.play('home', { loop: true });
     this.atHome = true;
@@ -81,6 +85,7 @@ export default class Scene1 extends Phaser.Scene {
 
   public update(): void {
     this.changeLang();
+    const intersects = Phaser.Geom.Intersects.RectangleToRectangle;
 
     const cursors = this.input.keyboard.createCursorKeys();
     const keyboardKeys: {
@@ -91,16 +96,11 @@ export default class Scene1 extends Phaser.Scene {
 
     const action = cursors.space.isDown || keyboardKeys.action.isDown;
 
-    this.killOnSpikes(this.spikes1);
-    this.killOnSpikes(this.spikes2);
+    this.killOnSpikes(intersects, this.spikes1);
+    this.killOnSpikes(intersects, this.spikes2);
     this.cloudOne.x = moveCloud(this.cloudOne.x, 0.7);
 
-    if (
-      !Phaser.Geom.Intersects.RectangleToRectangle(
-        this.homeZone.getBounds(),
-        this.player.player.getBounds(),
-      )
-    ) {
+    if (!intersects(this.homeZone.getBounds(), this.player.player.getBounds())) {
       if (this.atHome) {
         this.atHome = false;
         this.sound.stopAll();
@@ -115,13 +115,8 @@ export default class Scene1 extends Phaser.Scene {
     showNote.call(this, action);
   }
 
-  private killOnSpikes(spikeid): void {
-    if (
-      Phaser.Geom.Intersects.RectangleToRectangle(
-        spikeid.getBounds(),
-        this.player.player.getBounds(),
-      )
-    ) {
+  private killOnSpikes(intersects, spikeid): void {
+    if (intersects(spikeid.getBounds(), this.player.player.getBounds())) {
       this.player.die();
       this.time.paused = true;
       if (!this.deathStatus) {
@@ -134,7 +129,7 @@ export default class Scene1 extends Phaser.Scene {
   private changeLang() {
     if (!this.pause) return;
     this.lang = this.registry.get('lang');
-    this.text.setText(this.lang.shoppingList);
+    this.texts[0].setText(this.lang.shoppingList);
     this.pause = false;
   }
 }
