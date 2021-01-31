@@ -27,7 +27,7 @@ export default class Menu extends Phaser.Scene {
         name: this.lang.play,
         handler: (): void => {
           this.sound.play('click');
-          this.scene.start('EndGame');
+          this.scene.start('Scene1');
         },
       },
       {
