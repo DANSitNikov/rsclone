@@ -17,6 +17,7 @@ import Scene5 from './scene5';
 import Scene6 from './scene6';
 import EndGame from './endGame';
 import PreloaderTheEnd from './preloaderTheEnd';
+import GameControl from './gameControlWindow';
 import GameOverMenu from './menu-scenes/gameOverMenu';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
@@ -52,9 +53,8 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     target: 60,
     forceSetTimeOut: true,
   },
-
   scene: [LoadScreen, Menu, Settings, Credits, Statistic, SavedGames, Scene1, Scene2,
-    Scene3, Scene4, Scene5, Scene6, PauseMenu, GameOverMenu, EndGame, PreloaderTheEnd],
+    Scene3, Scene4, Scene5, Scene6, PauseMenu, GameOverMenu, GameControl, EndGame, PreloaderTheEnd],
 
   backgroundColor: '#000000',
 };

@@ -229,6 +229,7 @@ export default class SavedGames extends Phaser.Scene {
       });
 
       keyObjEnter.on('down', () => {
+        this.sound.play('click');
         if (index === numbers.length || index === -1) {
           this.backToMenu();
         } else {
@@ -246,11 +247,15 @@ export default class SavedGames extends Phaser.Scene {
           this.scene.start(`Scene${item.data[2]}`);
           localStorage.setItem('deaths_count', JSON.stringify(item.data[1]));
           localStorage.setItem('gaming_time', JSON.stringify(item.data[0]));
+          this.sound.play('click');
           keyObjEnter.destroy();
         }
       });
 
-      this.backButton.on('pointerup', this.backToMenu, this);
+      this.backButton.on('pointerup', () => {
+        this.backToMenu();
+        this.sound.play('click');
+      }, this);
       this.backButton.on('pointerover', () => {
         setBtnActive(this.backButton);
         const table = this.table.getElement('table');

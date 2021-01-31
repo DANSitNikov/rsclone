@@ -40,12 +40,14 @@ export default class Menu extends Phaser.Scene {
       {
         name: this.lang.statistic,
         handler: (): void => {
+          this.sound.play('click');
           this.scene.start('Statistic', { pause: false });
         },
       },
       {
         name: this.lang.savedGames,
         handler: (): void => {
+          this.sound.play('click');
           this.scene.start('Saved_games', { pause: false });
         },
       },

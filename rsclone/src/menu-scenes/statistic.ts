@@ -131,11 +131,15 @@ export default class Statistic extends Phaser.Scene {
     }
 
     setBtnActive(this.backButton);
-    this.backButton.on('pointerup', this.backToMenu, this);
+    this.backButton.on('pointerup', () => {
+      this.backToMenu();
+      this.sound.play('click');
+    }, this);
     this.backButton.on('pointerover', () => setBtnActive(this.backButton), this);
     this.backButton.on('pointerout', () => disableBtnActive(this.backButton), this);
     this.input.keyboard.on('keydown-ESC', this.backToMenu, this);
     this.input.keyboard.on('keydown-ENTER', () => {
+      this.sound.play('click');
       this.backToMenu();
     }, this);
     this.input.keyboard.on('keydown', (e) => {
