@@ -61,11 +61,11 @@ export default class Scene5 extends Phaser.Scene {
 
   private getDirection;
 
-  private note: Phaser.GameObjects.Sprite;
+  private notes: Phaser.GameObjects.Sprite[];
 
   private dialogue: Phaser.GameObjects.Sprite;
 
-  private text: Phaser.GameObjects.Text;
+  private texts: Phaser.GameObjects.Text[];
 
   private clickable: boolean;
 
@@ -83,6 +83,9 @@ export default class Scene5 extends Phaser.Scene {
     const x = 0; // player position
     const y = 552;
     initScene.call(this, 5, x, y);
+    this.dialogue = this.add.sprite(800, 200, 'dialogueNote')
+      .setDepth(999)
+      .setVisible(false);
     this.sound.play('danger', { loop: true });
     this.ladder = this.add.zone(1540, 630, 77, 513);
     this.switch = this.add.sprite(590, 230, 'switchRed').setDepth(1);
@@ -148,11 +151,11 @@ export default class Scene5 extends Phaser.Scene {
     this.spidey.anims.play('spidey');
     this.spideySpeed = -6;
     this.handsActive = false;
-    createNote.call(this, 345, 774, 800, 400, 480, 350, this.lang.scene5_tip);
+    createNote.call(this, 145, 710, 480, 100, this.lang.scene5_tip);
 
-    this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6).setDepth(999);
-    this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);
-    this.light = this.add.image(842, 522, 'bgLight').setDepth(999);
+    this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6).setDepth(990);
+    this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(990);
+    this.light = this.add.image(842, 522, 'bgLight').setDepth(991);
     this.light.visible = false;
     this.sound.play('spidey', { loop: true, volume: 0.3 });
   }

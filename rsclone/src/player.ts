@@ -170,17 +170,22 @@ export default class Player {
     );
     // ladder
     if (this.scene.ladder) {
-      if (
-        Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, this.scene.ladder.getBounds())
-      ) {
-        if (keys.up) {
-          this.player.setVelocityY(-speed / 1.5);
-          this.player.anims.play('climb', true); // there will be ladder animation
-          if (this.soundWalk) {
-            this.makeSound(`ladder${this.soundQueue.ladder}`);
-            this.soundQueue.ladder = (Number(this.soundQueue.ladder) + 1) % 4;
+      const isPlayerTouchingLadder = (ladder) => {
+        if (Phaser.Geom.Intersects.LineToRectangle(PlayerVerticalCenter, ladder)) {
+          if (keys.up) {
+            this.player.setVelocityY(-speed / 1.5);
+            this.player.anims.play('climb', true); // there will be ladder animation
+            if (this.soundWalk) {
+              this.makeSound(`ladder${this.soundQueue.ladder}`);
+              this.soundQueue.ladder = (Number(this.soundQueue.ladder) + 1) % 4;
+            }
           }
         }
+      };
+      if (Array.isArray(this.scene.ladder)) {
+        this.scene.ladder.forEach((ladder) => isPlayerTouchingLadder(ladder.getBounds()));
+      } else {
+        isPlayerTouchingLadder(this.scene.ladder.getBounds());
       }
     }
 

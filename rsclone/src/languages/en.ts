@@ -33,4 +33,10 @@ export default {
   scene5_tip: 'It seems the black slime afraids of light...',
   scene6_greeting: 'Hey, you still managed to come!',
   scene6_greeting1: 'I could not do otherwise...',
+  note1: 'Safe house we are in thee,\n in the beginning we were three.',
+  note2: 'The harvest was grown, we multiplied,\n plenty of space, now we had five.',
+  note3: 'Into dangerous lands we took the tour, \n as a results we had only four.',
+  note4: 'We found the egg, thought it was from space\n Now our home is dangerous place',
+  note5: 'Egg turned to a monster - four legs, vile face \n Two were devoured, three escaped from its maze',
+  note6: 'The monster was screaming and yelling at light\n Finally only we two survived...'
 };
