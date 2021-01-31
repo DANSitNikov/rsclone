@@ -32,4 +32,13 @@ export default {
   shoppingList: '購物清單：\n1）手套，\n2）雜耍球，\n3）護手霜...',
   scene6_greeting: '嘿，你還是設法來的！',
   scene6_greeting1: '我不能否則。',
+  teamTitle: '球隊',
+  team: 'Alisa Pavlova\n\nSaidazizkhon Akbarov\n\nDaniil Sitnikov\n\nGregory Moskalev\n\nSofya Ostrovskaya',
+  heroesTitle: '主角',
+  heroes: '長腿的\n\n長手',
+  enemiesTitle: '敵人',
+  enemies: '蜘蛛: \'Andrew\'\n\n烏賊\n\n惡魔之手\n\n水手\n\n尖刺',
+  gratitudeTitle: '謝謝',
+  gratitude: '感謝我們團隊中的每個人為項目做出的巨大貢獻\n\n感謝每個角色（好或壞）參與遊戲\n\n特別感謝所有玩過此遊戲的人. 真的很感激!',
+  theEnd: '結束',
 };

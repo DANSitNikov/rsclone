@@ -32,4 +32,13 @@ export default {
   shoppingList: 'Список покупок: \n1) перчатки, \n2) мячи для жонглирования, \n3) крем для рук...',
   scene6_greeting: 'Привет, ты все-таки пришел!',
   scene6_greeting1: 'Я не мог поступить иначе...',
+  teamTitle: 'Команда',
+  team: 'Alisa Pavlova\n\nSaidazizkhon Akbarov\n\nDaniil Sitnikov\n\nGregory Moskalev\n\nSofya Ostrovskaya',
+  heroesTitle: 'Главные герои',
+  heroes: 'Длинноножка\n\nДлинноручка',
+  enemiesTitle: 'Враги',
+  enemies: 'Паук: \'Andrew\'\n\nКаракатица\n\nРуки демонов\n\nВодяные руки\n\nОстрые шипы',
+  gratitudeTitle: 'Благодарность',
+  gratitude: 'Спасибо всем в нашей команде за большой вклад в проект\n\nСпасибо каждому персонажу (хорошему или плохому) за участие в игре\n\nИ особая благодарность всем тем, кто играл в эту игру. Действительно ценим это!',
+  theEnd: 'Конец',
 };

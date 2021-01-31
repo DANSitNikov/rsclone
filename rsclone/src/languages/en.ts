@@ -32,4 +32,13 @@ export default {
   shoppingList: 'Shopping list: \n1) gloves, \n2) juggling balls, \n3) hand cream',
   scene6_greeting: 'Hey, you still managed to come!',
   scene6_greeting1: 'I could not do otherwise...',
+  teamTitle: 'Team',
+  team: 'Alisa Pavlova\n\nSaidazizkhon Akbarov\n\nDaniil Sitnikov\n\nGregory Moskalev\n\nSofya Ostrovskaya',
+  heroesTitle: 'Main heroes',
+  heroes: 'Long Legs\n\nLong Hands',
+  enemiesTitle: 'Enemies',
+  enemies: 'Spider: \'Andrew\'\n\nCuttlefish\n\nDemons hands\n\nWater hands\n\nSharp edges',
+  gratitudeTitle: 'Gratitude',
+  gratitude: 'Thanks to everyone in our team for their great contribution to the project\n\nThanks to to every character (good or bad) for being a part of the game\n\nAnd special thanks to everyone who has played the game. Really appreciate that!',
+  theEnd: 'The End',
 };
