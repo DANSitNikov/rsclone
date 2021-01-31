@@ -38,5 +38,5 @@ export default {
   note3: 'Into dangerous lands we took the tour, \n as a results we had only four.',
   note4: 'We found the egg, thought it was from space\n Now our home is dangerous place',
   note5: 'Egg turned to a monster - four legs, vile face \n Two were devoured, three escaped from its maze',
-  note6: 'The monster was screaming and yelling at light\n Finally only we two survived...'
+  note6: 'The monster was screaming and yelling at light\n Finally only we two survived...',
 };

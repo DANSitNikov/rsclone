@@ -18,5 +18,4 @@ export default function init(number: number, x: number, y: number): void {
     this.scene.pause();
     this.scene.launch('PauseMenu', { key: `Scene${number}`, player: this.player });
   });
-
 }

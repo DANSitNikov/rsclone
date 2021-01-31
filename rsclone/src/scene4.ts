@@ -1,8 +1,8 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import {countDeath, moveCloud, statisticInGame} from './utils/utilitites';
+import { countDeath, moveCloud, statisticInGame } from './utils/utilitites';
 import Player from './player';
-import {createNote, showNote} from "./utils/notes";
+import { createNote, showNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -27,7 +27,7 @@ export default class Scene4 extends Phaser.Scene {
 
   private lang: Record<string, string>;
 
-  private pause: Boolean;
+  private pause: boolean;
 
   private dialogue: Phaser.GameObjects.Sprite;
 
@@ -42,7 +42,7 @@ export default class Scene4 extends Phaser.Scene {
 
     this.ladder = [
       this.add.zone(840, 790, 77, 520),
-      this.add.zone(380, 780, 77, 520)
+      this.add.zone(380, 780, 77, 520),
     ];
 
     this.dialogue = this.add.sprite(800, 200, 'dialogueNote')
@@ -55,8 +55,6 @@ export default class Scene4 extends Phaser.Scene {
     createNote.call(this, 1530, 710, 530, 100, this.lang.note4);
     createNote.call(this, 945, 400, 450, 100, this.lang.note5);
     createNote.call(this, 1345, 324, 480, 100, this.lang.note6);
-
-
 
     statisticInGame.call(this);
   }
@@ -79,7 +77,7 @@ export default class Scene4 extends Phaser.Scene {
   private changeLang() {
     if (!this.pause) return;
     this.lang = this.registry.get('lang');
-    this.texts = this.texts.map( (text, index) => text.setText(this.lang[`note${index + 1}`]));
+    this.texts = this.texts.map((text, index) => text.setText(this.lang[`note${index + 1}`]));
     this.pause = false;
   }
 }

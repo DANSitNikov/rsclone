@@ -49,7 +49,6 @@ export default class Scene1 extends Phaser.Scene {
 
     initScene.call(this, 1, x, y);
 
-
     this.lang = this.registry.get('lang');
 
     this.anims.create({

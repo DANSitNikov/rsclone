@@ -14,8 +14,6 @@ function createNote(noteX: number, noteY: number,
 function showNote(action: boolean): void {
   const intersects = Phaser.Geom.Intersects.RectangleToRectangle;
 
-
-
   this.notes.forEach((note, index) => {
     if (intersects(note.getBounds(), this.player.player.getBounds())) {
       note.setTexture('noteActive');
@@ -27,18 +25,14 @@ function showNote(action: boolean): void {
         setTimeout(() => {
           this.clickable = true;
         }, 200);
-
       }
     } else {
       note.setTexture('note');
       this.dialogue.setVisible(false);
       this.texts[index].visible = false;
     }
-  })
-  if (this.texts.find(text => text.visible)) this.dialogue.visible = true;
-
-
-
+  });
+  if (this.texts.find((text) => text.visible)) this.dialogue.visible = true;
 }
 
 export { createNote, showNote };
