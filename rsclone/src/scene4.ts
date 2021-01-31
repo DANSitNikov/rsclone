@@ -44,6 +44,7 @@ export default class Scene4 extends Phaser.Scene {
       this.add.zone(840, 790, 77, 520),
       this.add.zone(380, 780, 77, 520),
     ];
+    this.player.player.setDepth(2);
 
     this.dialogue = this.add.sprite(800, 200, 'dialogueNote')
       .setDepth(999)
