@@ -15,7 +15,7 @@ import Scene3 from './scene3';
 import Scene4 from './scene4';
 import Scene5 from './scene5';
 import Scene6 from './scene6';
-import GameControl from './menu-scenes/gameControlWindow';
+import GameControl from './gameControlWindow';
 import GameOverMenu from './menu-scenes/gameOverMenu';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {

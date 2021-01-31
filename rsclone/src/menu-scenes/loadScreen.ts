@@ -202,11 +202,14 @@ export default class LoadScreen extends Phaser.Scene {
 
     this.load.image('angry-fish', 'assets/enemies/fish.svg');
 
-    this.load.image('backControl', 'assets/control/back.jpg');
-    this.load.image('arrow', 'assets/control/arrow.svg');
+    this.load.image('backControl', 'assets/control/controls.png');
+    this.load.image('arrowUP', 'assets/control/arrowUP.svg');
+    this.load.image('arrowRIGHT', 'assets/control/arrowRIGHT.svg');
+    this.load.image('arrowLEFT', 'assets/control/arrowLEFT.svg');
     this.load.image('a', 'assets/control/a.svg');
     this.load.image('d', 'assets/control/d.svg');
     this.load.image('w', 'assets/control/w.svg');
+    this.load.image('e', 'assets/control/e.svg');
     this.load.image('space', 'assets/control/space.svg');
     this.load.image('flag', 'assets/decor/pirate.svg');
     this.load.image('clock', 'assets/decor/clock.svg');

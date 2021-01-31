@@ -68,7 +68,7 @@ export default class Scene1 extends Phaser.Scene {
 
     if (!JSON.parse(localStorage.getItem('showControl'))) {
       this.scene.pause();
-      this.scene.launch('GameControl', { key: 'Scene1', player: this.player });
+      this.scene.launch('GameControl', { key: 'GameControl', player: this.player });
     }
 
     statisticInGame.call(this);
