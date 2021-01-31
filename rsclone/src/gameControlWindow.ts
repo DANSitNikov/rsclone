@@ -74,6 +74,8 @@ export default class GameControl extends Phaser.Scene {
       },
     });
 
+    const makeSound = () => this.sound.add('save').play({ loop: false });
+
     const buttons = this.rexUI.add.buttons({
       x: this.game.renderer.width / 2,
       y: this.game.renderer.height / 2 + 220,
@@ -87,6 +89,7 @@ export default class GameControl extends Phaser.Scene {
       type: ((CheckboxesMode) ? 'checkboxes' : 'radio'),
       setValueCallback(button) {
         const param = !JSON.parse(localStorage.getItem('showControl'));
+        makeSound();
         button.getElement('icon')
           .setFillStyle((param) ? 0xffa300 : undefined);
         localStorage.setItem('showControl', JSON.stringify(param));
@@ -104,6 +107,7 @@ export default class GameControl extends Phaser.Scene {
     const setActive = () => {
       const buttonObjects = buttons.getElement('buttons[0]');
       const parameter = !JSON.parse(localStorage.getItem('showControl'));
+      this.sound.add('save').play({ loop: false });
       buttonObjects.getElement('icon')
         .setFillStyle((parameter) ? 0xffa300 : undefined);
       localStorage.setItem('showControl', JSON.stringify(parameter));
