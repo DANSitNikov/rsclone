@@ -67,6 +67,11 @@ export default class Scene1 extends Phaser.Scene {
     this.spikes1 = this.add.zone(1048, 940, 200, 150);
     this.spikes2 = this.add.zone(1420, 670, 160, 20);
 
+    if (!JSON.parse(localStorage.getItem('showControl'))) {
+      this.scene.pause();
+      this.scene.launch('GameControl', { key: 'GameControl', player: this.player });
+    }
+
     statisticInGame.call(this);
     this.player.player.setDepth(2);
 

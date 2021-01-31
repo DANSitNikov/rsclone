@@ -135,17 +135,27 @@ export function correctTime(time:number):string {
 }
 
 export function makeDecor():void {
-  this.flag = this.add.sprite(1500, 70, 'flag').setScale(0.1);
+  this.flag = this.add.sprite(1500, 65, 'flag').setScale(0.1);
+  this.clock = this.add.sprite(1200, 65, 'clock').setScale(0.08);
 
   const deathsCount = JSON.parse(localStorage.getItem('deaths_count'));
-  this.deaths = this.add.text(1600, 30, `${deathsCount}`, {
-    font: '90px monospace',
-  });
-
   this.count = JSON.parse(localStorage.getItem('gaming_time'));
-  this.timeGame = this.add.text(1150, 30, correctTime(this.count), {
-    font: '90px monospace',
-  });
+
+  const result = (deaths: string, time: string) => {
+    this.deaths = this.add.text(1550, 30, deaths, {
+      font: '70px monospace',
+    });
+    this.timeGame = this.add.text(1250, 30, time, {
+      font: '70px monospace',
+    });
+  };
+
+  if (typeof deathsCount !== 'number') {
+    const resultInfo = JSON.parse(localStorage.getItem('game_result'));
+    result(`${resultInfo[2]}`, resultInfo[1]);
+  } else {
+    result(`${deathsCount}`, correctTime(this.count));
+  }
 }
 
 export function changeTime():void {
@@ -174,6 +184,7 @@ export function makeStatisticInfo():void {
     nextStatistic.pop();
   }
 
+  localStorage.setItem('game_result', JSON.stringify(gameResult));
   localStorage.setItem('statistic', JSON.stringify(nextStatistic));
   localStorage.removeItem('gaming_time');
   localStorage.removeItem('deaths_count');
@@ -211,8 +222,8 @@ export function statisticInGame():void {
   this.time.paused = false;
 }
 
-export function notification(): void {
-  this.rexUI.add.toast({
+function createMessage():void {
+  return this.rexUI.add.toast({
     x: this.game.renderer.width / 2,
     y: 50,
 
@@ -226,8 +237,17 @@ export function notification(): void {
       top: 10,
       bottom: 10,
     },
-  })
+  });
+}
+
+export function notificationSave(): void {
+  createMessage.call(this)
     .show(this.lang.save);
+}
+
+export function notificationDontSave(): void {
+  createMessage.call(this)
+    .show(this.lang.dontSave);
 }
 
 export function clearActive(arr: number[], table:{children}):void {
@@ -242,6 +262,14 @@ export function setActiveItem(arr: number[], index: number, table:{children}):vo
   table.children[arr[index]].getElement('background')
     .setStrokeStyle(5, 0xFFA300)
     .setDepth(200);
+}
+
+export function saveGame():void {
+  notificationSave.call(this);
+  const time = JSON.parse(localStorage.getItem('gaming_time'));
+  const deaths = JSON.parse(localStorage.getItem('deaths_count'));
+  const scene = this.lastScene;
+  makeSavedGamesInfo(time, deaths, scene);
 }
 
 export function moveCloud(
