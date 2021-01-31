@@ -1,7 +1,8 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { countDeath, statisticInGame } from './utils/utilitites';
+import { countDeath, moveCloud, statisticInGame } from './utils/utilitites';
 import Player from './player';
+import { createNote, showNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -20,49 +21,63 @@ export default class Scene4 extends Phaser.Scene {
 
   private deathStatus: boolean;
 
+  private ladder: Phaser.GameObjects.Zone[];
+
+  private texts: Phaser.GameObjects.Text[];
+
+  private lang: Record<string, string>;
+
+  private pause: boolean;
+
+  private dialogue: Phaser.GameObjects.Sprite;
+
   constructor() {
     super(sceneConfig);
   }
 
   public create(): void {
-    initScene.call(this, 4, 0, 300);
+    initScene.call(this, 4, 0, 500);
     this.sound.play('mourn', { loop: true });
+    this.lang = this.registry.get('lang');
 
-    this.waterHands = this.add.sprite(170, 710, 'demonHand').setScale(0.5, 0.6);
-    this.anims.create({
-      key: 'waterHands',
-      frames: this.anims.generateFrameNames('waterHands', {
-        start: 1,
-        end: 6,
-        prefix: '',
-        suffix: '.png',
-      }),
-      frameRate: 7,
-      repeat: -1,
-    });
+    this.ladder = [
+      this.add.zone(840, 790, 77, 520),
+      this.add.zone(380, 780, 77, 520),
+    ];
+
+    this.dialogue = this.add.sprite(800, 200, 'dialogueNote')
+      .setDepth(999)
+      .setVisible(false);
+
+    createNote.call(this, 635, 224, 530, 100, this.lang.note1);
+    createNote.call(this, 145, 804, 530, 100, this.lang.note2);
+    createNote.call(this, 545, 924, 530, 100, this.lang.note3);
+    createNote.call(this, 1530, 710, 530, 100, this.lang.note4);
+    createNote.call(this, 945, 400, 450, 100, this.lang.note5);
+    createNote.call(this, 1345, 324, 480, 100, this.lang.note6);
 
     statisticInGame.call(this);
-
-    this.waterHands.anims.play('waterHands', true);
-    this.spikes = this.add.zone(1500, 600, 700, 150);
-    this.spikes2 = this.add.zone(170, 760, 100, 150);
   }
 
   public update(): void {
-    this.killOnSpikes(this.spikes);
-    this.killOnSpikes(this.spikes2);
+    this.changeLang();
+
+    const cursors = this.input.keyboard.createCursorKeys();
+    const keyboardKeys: {
+      action?
+    } = this.input.keyboard.addKeys({
+      action: 'e',
+    });
+
+    const action = cursors.space.isDown || keyboardKeys.action.isDown;
+
+    showNote.call(this, action);
   }
 
-  private killOnSpikes(spikeid): void {
-    if (Phaser.Geom.Intersects.RectangleToRectangle(
-      spikeid.getBounds(), this.player.player.getBounds(),
-    )) {
-      this.player.die();
-      this.time.paused = true;
-      if (!this.deathStatus) {
-        countDeath();
-        this.deathStatus = true;
-      }
-    }
+  private changeLang() {
+    if (!this.pause) return;
+    this.lang = this.registry.get('lang');
+    this.texts = this.texts.map((text, index) => text.setText(this.lang[`note${index + 1}`]));
+    this.pause = false;
   }
 }

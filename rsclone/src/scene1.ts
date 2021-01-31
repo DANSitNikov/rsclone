@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
+import { createNote, showNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -22,11 +23,11 @@ export default class Scene1 extends Phaser.Scene {
 
   private cloudOne;
 
-  private note: Phaser.GameObjects.Sprite;
+  private notes: Phaser.GameObjects.Sprite[];
 
   private dialogue: Phaser.GameObjects.Sprite;
 
-  private text: Phaser.GameObjects.Text;
+  private texts: Phaser.GameObjects.Text[];
 
   private clickable: boolean;
 
@@ -72,21 +73,15 @@ export default class Scene1 extends Phaser.Scene {
     }
 
     statisticInGame.call(this);
-
-    this.note = this.add.sprite(545, 824, 'note').setScale(0.8);
     this.player.player.setDepth(2);
 
     this.cloudOne = this.add.image(300, 110, 'cloud2').setAlpha(0.6).setScale(0.9);
 
-    this.dialogue = this.add.sprite(800, 200, 'dialogueNote').setDepth(999);
+    this.dialogue = this.add.sprite(800, 200, 'dialogueNote')
+      .setDepth(999)
+      .setVisible(false);
     this.dialogue.visible = false;
-    this.text = this.add
-      .text(530, 100, this.lang.shoppingList, {
-        font: '22px monospace',
-      })
-      .setDepth(1000);
-    this.text.visible = false;
-    this.clickable = true;
+    createNote.call(this, 545, 824, 530, 100, this.lang.shoppingList);
 
     this.sound.play('home', { loop: true });
     this.atHome = true;
@@ -95,6 +90,7 @@ export default class Scene1 extends Phaser.Scene {
 
   public update(): void {
     this.changeLang();
+    const intersects = Phaser.Geom.Intersects.RectangleToRectangle;
 
     const cursors = this.input.keyboard.createCursorKeys();
     const keyboardKeys: {
@@ -105,16 +101,11 @@ export default class Scene1 extends Phaser.Scene {
 
     const action = cursors.space.isDown || keyboardKeys.action.isDown;
 
-    this.killOnSpikes(this.spikes1);
-    this.killOnSpikes(this.spikes2);
+    this.killOnSpikes(intersects, this.spikes1);
+    this.killOnSpikes(intersects, this.spikes2);
     this.cloudOne.x = moveCloud(this.cloudOne.x, 0.7);
 
-    if (
-      !Phaser.Geom.Intersects.RectangleToRectangle(
-        this.homeZone.getBounds(),
-        this.player.player.getBounds(),
-      )
-    ) {
+    if (!intersects(this.homeZone.getBounds(), this.player.player.getBounds())) {
       if (this.atHome) {
         this.atHome = false;
         this.sound.stopAll();
@@ -126,43 +117,11 @@ export default class Scene1 extends Phaser.Scene {
       this.sound.play('home', { loop: true });
     }
 
-    if (
-      Phaser.Geom.Intersects.RectangleToRectangle(
-        this.note.getBounds(),
-        this.player.player.getBounds(),
-      )
-    ) {
-      if (
-        Phaser.Geom.Intersects.RectangleToRectangle(
-          this.note.getBounds(),
-          this.player.player.getBounds(),
-        )
-      ) {
-        this.note.setTexture('noteActive');
-        if (action && this.clickable) {
-          this.sound.play(`note${1 + +this.dialogue.visible}`);
-          this.dialogue.visible = !this.dialogue.visible;
-          this.text.visible = !this.text.visible;
-          this.clickable = false;
-          setTimeout(() => {
-            this.clickable = true;
-          }, 200);
-        }
-      } else {
-        this.note.setTexture('note');
-        this.dialogue.visible = false;
-        this.text.visible = false;
-      }
-    }
+    showNote.call(this, action);
   }
 
-  private killOnSpikes(spikeid): void {
-    if (
-      Phaser.Geom.Intersects.RectangleToRectangle(
-        spikeid.getBounds(),
-        this.player.player.getBounds(),
-      )
-    ) {
+  private killOnSpikes(intersects, spikeid): void {
+    if (intersects(spikeid.getBounds(), this.player.player.getBounds())) {
       this.player.die();
       this.time.paused = true;
       if (!this.deathStatus) {
@@ -175,7 +134,7 @@ export default class Scene1 extends Phaser.Scene {
   private changeLang() {
     if (!this.pause) return;
     this.lang = this.registry.get('lang');
-    this.text.setText(this.lang.shoppingList);
+    this.texts[0].setText(this.lang.shoppingList);
     this.pause = false;
   }
 }
