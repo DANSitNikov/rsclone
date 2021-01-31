@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
+import { createNote, showNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -60,6 +61,16 @@ export default class Scene5 extends Phaser.Scene {
 
   private getDirection;
 
+  private note: Phaser.GameObjects.Sprite;
+
+  private dialogue: Phaser.GameObjects.Sprite;
+
+  private text: Phaser.GameObjects.Text;
+
+  private clickable: boolean;
+
+  private lang: Record<string, string>;
+
   constructor() {
     super(sceneConfig);
     this.getDirection = (hand: Phaser.GameObjects.Sprite):number => {
@@ -86,6 +97,8 @@ export default class Scene5 extends Phaser.Scene {
     this.wall = this.matter.add.sprite(1665, 490, 'plort1').setScale(0.1, 1);
     this.wall.setStatic(true);
     this.wall.setVisible(false);
+
+    this.lang = this.registry.get('lang');
 
     this.anims.create({
       key: 'spidey',
@@ -135,6 +148,7 @@ export default class Scene5 extends Phaser.Scene {
     this.spidey.anims.play('spidey');
     this.spideySpeed = -6;
     this.handsActive = false;
+    createNote.call(this, 345, 774, 800, 400, 480, 350, this.lang.scene5_tip);
 
     this.cloudOne = this.add.image(300, 180, 'cloud2').setAlpha(0.6).setDepth(999);
     this.cloudTwo = this.add.image(1200, 105, 'cloud1').setAlpha(0.6).setDepth(999);
@@ -228,6 +242,8 @@ export default class Scene5 extends Phaser.Scene {
       this.handZone2.y += this.hand2Speed;
       this.handZone3.y += this.hand3Speed;
     }
+
+    showNote.call(this, action);
   }
 
   private startHands() {
