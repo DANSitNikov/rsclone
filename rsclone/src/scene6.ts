@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { makeStatisticInfo, statisticInGame } from './utils/utilitites';
+import set = Reflect.set;
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -184,19 +185,8 @@ export default class Scene6 extends Phaser.Scene {
         this.dialogue.setTexture('dialogueLeg');
         this.text.setText(this.lang.scene6_greeting1);
         this.text.x = 560;
-        if (this.controlUpdate) {
-          this.clicksControl += 1;
-          this.controlUpdate = false;
-          this.input.keyboard.on('keyup-SPACE', () => {
-            this.controlUpdate = true;
-            if (this.clicksControl === 2) {
-              this.scene.launch('PreloaderTheEnd', { key: 'Scene6', player: this.player });
-            }
-          });
-        }
+        setTimeout(() => this.scene.launch('PreloaderTheEnd', { key: 'Scene6', player: this.player }), 1000);
       }
-    } else {
-      this.initDialogue();
     }
   }
 
