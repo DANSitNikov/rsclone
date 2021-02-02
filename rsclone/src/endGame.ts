@@ -91,7 +91,8 @@ export default class EndGame extends Phaser.Scene {
       align: 'center',
     }).setOrigin(0.5);
 
-    this.sound.add('theEnd').play();
+    this.sound.play('theEnd');
+    console.log('end')
     this.input.keyboard.on('keydown-ESC', () => {
       this.backToMenu();
     });

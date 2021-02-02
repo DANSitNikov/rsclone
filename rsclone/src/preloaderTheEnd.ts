@@ -31,10 +31,12 @@ export default class PreloaderTheEnd extends Phaser.Scene {
     const go = setInterval(() => {
       alpha += 0.02;
       graphics.setAlpha(alpha);
+      this.sound.volume = this.sound.volume >= 0 ? this.sound.volume - 0.01 : 0;
       if (alpha >= 1) {
+
         clearInterval(go);
         this.scene.stop('Scene6');
-        this.game.sound.stopAll();
+        this.sound.stopAll();
         this.scene.start('EndGame', { key: 'Scene6', pause: true, player: this.player });
       }
     }, 50);

@@ -43,6 +43,8 @@ export default class Scene6 extends Phaser.Scene {
 
   private controlUpdate: boolean;
 
+  private end: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -125,6 +127,7 @@ export default class Scene6 extends Phaser.Scene {
 
     this.theEnd = false;
     localStorage.setItem('end_up', JSON.stringify(this.theEnd));
+    this.end = false;
   }
 
   public update(): void {
@@ -185,7 +188,12 @@ export default class Scene6 extends Phaser.Scene {
         this.dialogue.setTexture('dialogueLeg');
         this.text.setText(this.lang.scene6_greeting1);
         this.text.x = 560;
-        setTimeout(() => this.scene.launch('PreloaderTheEnd', { key: 'Scene6', player: this.player }), 1000);
+        if (!this.end) {
+          this.end = true;
+          setTimeout(() => this.scene.launch('PreloaderTheEnd', { key: 'Scene6', player: this.player }), 1000);
+        }
+
+
       }
     }
   }
