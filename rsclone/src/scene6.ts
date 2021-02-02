@@ -38,6 +38,10 @@ export default class Scene6 extends Phaser.Scene {
 
   private atHome: boolean;
 
+  private clicksControl: number;
+
+  private controlUpdate: boolean;
+
   constructor() {
     super(sceneConfig);
   }
@@ -116,6 +120,8 @@ export default class Scene6 extends Phaser.Scene {
     this.atHome = false;
     statisticInGame.call(this);
 
+    this.controlUpdate = true;
+
     this.theEnd = false;
     localStorage.setItem('end_up', JSON.stringify(this.theEnd));
   }
@@ -178,6 +184,16 @@ export default class Scene6 extends Phaser.Scene {
         this.dialogue.setTexture('dialogueLeg');
         this.text.setText(this.lang.scene6_greeting1);
         this.text.x = 560;
+        if (this.controlUpdate) {
+          this.clicksControl += 1;
+          this.controlUpdate = false;
+          this.input.keyboard.on('keyup-SPACE', () => {
+            this.controlUpdate = true;
+            if (this.clicksControl === 2) {
+              this.scene.launch('PreloaderTheEnd', { key: 'Scene6', player: this.player });
+            }
+          });
+        }
       }
     } else {
       this.initDialogue();
@@ -189,6 +205,7 @@ export default class Scene6 extends Phaser.Scene {
     this.text.setText(this.lang.scene6_greeting);
     this.dialogue.visible = false;
     this.text.visible = false;
+    this.clicksControl = 0;
   }
 
   private changeLang() {

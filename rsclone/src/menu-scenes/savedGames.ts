@@ -234,7 +234,9 @@ export default class SavedGames extends Phaser.Scene {
           this.backToMenu();
         } else {
           const item = this.table.items[numbers[index] - 1];
-          this.scene.start(`Scene${item.data[2]}`);
+          setTimeout(() => {
+            this.scene.start(`Scene${item.data[2]}`);
+          }, 50);
           localStorage.setItem('deaths_count', JSON.stringify(item.data[1]));
           localStorage.setItem('gaming_time', JSON.stringify(item.data[0]));
         }

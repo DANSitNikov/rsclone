@@ -90,7 +90,6 @@ export function createList(): void {
 
 export function backToMenu(): void {
   if (!this.pause) {
-    this.sound.play('click');
     if (this.scene.key === 'PauseMenu') {
       this.scene.stop();
       this.scene.start(this.lastScene, { test: 'test' });
@@ -100,6 +99,7 @@ export function backToMenu(): void {
   } else {
     this.scene.start('PauseMenu', { key: this.lastScene, player: this.player });
   }
+  this.sound.play('click');
 }
 
 export function countDeath():void {
