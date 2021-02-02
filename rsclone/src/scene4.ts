@@ -11,12 +11,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene4 extends Phaser.Scene {
-  private waterHands: Phaser.GameObjects.Sprite;
-
-  private spikes: Phaser.GameObjects.Zone;
-
-  private spikes2: Phaser.GameObjects.Zone;
-
   private player: Player;
 
   private deathStatus: boolean;
