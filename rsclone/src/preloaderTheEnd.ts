@@ -33,7 +33,6 @@ export default class PreloaderTheEnd extends Phaser.Scene {
       graphics.setAlpha(alpha);
       this.sound.volume = this.sound.volume >= 0 ? this.sound.volume - 0.01 : 0;
       if (alpha >= 1) {
-
         clearInterval(go);
         this.scene.stop('Scene6');
         this.sound.stopAll();

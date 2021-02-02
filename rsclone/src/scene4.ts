@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { countDeath, moveCloud, statisticInGame } from './utils/utilitites';
+import { statisticInGame } from './utils/utilitites';
 import Player from './player';
 import { createNote, showNote } from './utils/notes';
 

@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
 import { countDeath, statisticInGame, moveCloud } from './utils/utilitites';
+import { createNote, showNote } from './utils/notes';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -37,11 +38,20 @@ export default class Scene2 extends Phaser.Scene {
 
   private cloudTwo: Phaser.GameObjects.Image;
 
+  private notes: Phaser.GameObjects.Sprite[];
+
+  private dialogue: Phaser.GameObjects.Sprite;
+
+  private texts: Phaser.GameObjects.Text[];
+
+  private lang: Record<string, string>;
+
   constructor() {
     super(sceneConfig);
   }
 
   public create(): void {
+    this.lang = this.registry.get('lang');
     const x = 0; // player position
     const y = 350;
     initScene.call(this, 2, x, y);
@@ -130,9 +140,15 @@ export default class Scene2 extends Phaser.Scene {
     this.water.anims.play('water', true);
 
     statisticInGame.call(this);
+    this.player.player.setDepth(2);
 
     this.cloudOne = this.add.image(300, 160, 'cloud2').setAlpha(0.6).setScale(0.9);
     this.cloudTwo = this.add.image(1200, 85, 'cloud1').setAlpha(0.6).setScale(0.8);
+    this.dialogue = this.add.sprite(800, 200, 'dialogueNote')
+      .setDepth(999)
+      .setVisible(false);
+    this.dialogue.visible = false;
+    createNote.call(this, 505, 579, 530, 100, this.lang.shoppingList);
   }
 
   public update(): void {
@@ -182,6 +198,14 @@ export default class Scene2 extends Phaser.Scene {
     }
     this.cloudOne.x = moveCloud(this.cloudOne.x, 0.8);
     this.cloudTwo.x = moveCloud(this.cloudTwo.x, 0.45);
+    const cursors = this.input.keyboard.createCursorKeys();
+    const keyboardKeys: {
+      action?
+    } = this.input.keyboard.addKeys({
+      action: 'e',
+    });
+    const action = cursors.space.isDown || keyboardKeys.action.isDown;
+    showNote.call(this, action);
   }
 
   public activeFishFunc():void {
