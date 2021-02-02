@@ -41,12 +41,14 @@ export default class PauseMenu extends Phaser.Scene {
         name: this.lang.resume,
         handler: (): void => {
           this.scene.stop();
+          this.sound.play('click');
           this.scene.resume(this.lastScene);
         },
       },
       {
         name: this.lang.settings,
         handler: (): void => {
+          this.sound.play('click');
           this.scene.start('Settings', { key: this.lastScene, pause: true, player: this.player });
           this.scene.bringToTop('Settings');
         },
@@ -54,6 +56,7 @@ export default class PauseMenu extends Phaser.Scene {
       {
         name: this.lang.statistic,
         handler: (): void => {
+          this.sound.play('click');
           this.scene.start('Statistic', { key: this.lastScene, pause: true, player: this.player });
           this.scene.bringToTop('Statistic');
         },
@@ -61,8 +64,7 @@ export default class PauseMenu extends Phaser.Scene {
       {
         name: this.lang.saveGame,
         handler: (): void => {
-          this.sound.add('save').play({ loop: false });
-
+          this.sound.play('click');
           if (this.lastScene !== 'Scene6') {
             saveGame.call(this);
           }
@@ -79,6 +81,7 @@ export default class PauseMenu extends Phaser.Scene {
         name: this.lang.mainMenu,
         handler: (): void => {
           this.game.sound.stopAll();
+          this.sound.play('click');
 
           this.player.stop();
           localStorage.setItem('gaming_time', JSON.stringify(0));
