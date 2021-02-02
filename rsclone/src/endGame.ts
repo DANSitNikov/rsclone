@@ -36,14 +36,17 @@ export default class EndGame extends Phaser.Scene {
 
   private story;
 
+  private soundVolume;
+
   constructor() {
     super(sceneConfig);
   }
 
-  init(data :{ key: string; pause: boolean; player }): void {
+  init(data :{ key: string; pause: boolean; player, soundVolume }): void {
     this.lastScene = data.key;
     this.pause = data.pause;
     this.player = data.player;
+    this.soundVolume = data.soundVolume;
   }
 
   public create(): void {
@@ -106,12 +109,16 @@ export default class EndGame extends Phaser.Scene {
     }).setOrigin(0.5);
 
     this.sound.play('theEnd');
+    this.sound.volume = 0;
     this.input.keyboard.on('keydown-ESC', () => {
       this.backToMenu();
     });
   }
 
   public update():void {
+    if (this.sound.volume < this.soundVolume) {
+      this.sound.volume += 0.001;
+    }
     this.storyTitle.y -= 0.9;
     this.story.y -= 0.9;
     this.teamTitle.y -= 0.9;
@@ -133,5 +140,7 @@ export default class EndGame extends Phaser.Scene {
     this.player.stop();
     this.scene.stop('Scene6');
     this.scene.start('Menu');
+    localStorage.setItem('gaming_time', JSON.stringify(0));
+    localStorage.setItem('deaths_count', JSON.stringify(0));
   }
 }
