@@ -59,12 +59,12 @@ export default class EndGame extends Phaser.Scene {
       align: 'center',
     }).setOrigin(0.5);
 
-    this.teamTitle = this.add.text(this.game.renderer.width / 2, 1500, this.lang.teamTitle, {
+    this.teamTitle = this.add.text(this.game.renderer.width / 2, 1550, this.lang.teamTitle, {
       font: '42px monospace',
       align: 'center',
     }).setOrigin(0.5);
 
-    this.team = this.add.text(this.game.renderer.width / 2, 1700, this.lang.team, {
+    this.team = this.add.text(this.game.renderer.width / 2, 1750, this.lang.team, {
       font: '28px monospace',
       align: 'center',
     }).setOrigin(0.5);
