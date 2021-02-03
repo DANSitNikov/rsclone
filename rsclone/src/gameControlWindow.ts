@@ -69,6 +69,12 @@ export default class GameControl extends Phaser.Scene {
 
     this.list = [
       {
+        btn: this.add.text(this.game.renderer.width / 2 + 360, this.game.renderer.height / 2 - 330, '✕', {
+          font: '60px monospace',
+        }).setInteractive(),
+        handler: () => this.closeWindowHandler(),
+      },
+      {
         btn: this.checkboxLabel,
         handler: () => {
           makeSound();
@@ -80,12 +86,6 @@ export default class GameControl extends Phaser.Scene {
             this.checkbox.setText('');
           }
         },
-      },
-      {
-        btn: this.add.text(this.game.renderer.width / 2 + 360, this.game.renderer.height / 2 - 330, '✕', {
-          font: '60px monospace',
-        }).setInteractive(),
-        handler: () => this.closeWindowHandler(),
       },
     ];
 
