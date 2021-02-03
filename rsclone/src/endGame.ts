@@ -62,48 +62,48 @@ export default class EndGame extends Phaser.Scene {
       align: 'center',
     }).setOrigin(0.5);
 
-    this.teamTitle = this.add.text(this.game.renderer.width / 2, 1550, this.lang.teamTitle, {
+    this.teamTitle = this.add.text(this.game.renderer.width / 2, 1650, this.lang.teamTitle, {
       font: '42px monospace',
       align: 'center',
     }).setOrigin(0.5);
 
-    this.team = this.add.text(this.game.renderer.width / 2, 1750, this.lang.team, {
+    this.team = this.add.text(this.game.renderer.width / 2, 1850, this.lang.team, {
       font: '28px monospace',
       align: 'center',
     }).setOrigin(0.5);
 
-    this.heroesTitle = this.add.text(this.game.renderer.width / 2, 2000, this.lang.heroesTitle, {
+    this.heroesTitle = this.add.text(this.game.renderer.width / 2, 2100, this.lang.heroesTitle, {
       font: '42px monospace',
       align: 'center',
     }).setOrigin(0.5);
 
-    this.mainHeroes = this.add.text(this.game.renderer.width / 2, 2100, this.lang.heroes, {
+    this.mainHeroes = this.add.text(this.game.renderer.width / 2, 2200, this.lang.heroes, {
       font: '28px monospace',
       align: 'center',
     }).setOrigin(0.5);
 
-    this.enemiesTitle = this.add.text(this.game.renderer.width / 2, 2300, this.lang.enemiesTitle, {
+    this.enemiesTitle = this.add.text(this.game.renderer.width / 2, 2400, this.lang.enemiesTitle, {
       font: '42px monospace',
       align: 'center',
     }).setOrigin(0.5);
 
-    this.enemies = this.add.text(this.game.renderer.width / 2, 2500, this.lang.enemies, {
+    this.enemies = this.add.text(this.game.renderer.width / 2, 2600, this.lang.enemies, {
       font: '28px monospace',
       align: 'center',
     }).setOrigin(0.5);
 
-    this.gratitudeTitle = this.add.text(this.game.renderer.width / 2, 2850,
+    this.gratitudeTitle = this.add.text(this.game.renderer.width / 2, 2950,
       this.lang.gratitudeTitle, {
         font: '42px monospace',
         align: 'center',
       }).setOrigin(0.5);
 
-    this.gratitude = this.add.text(this.game.renderer.width / 2, 3000, this.lang.gratitude, {
+    this.gratitude = this.add.text(this.game.renderer.width / 2, 3100, this.lang.gratitude, {
       font: '28px monospace',
       align: 'center',
     }).setOrigin(0.5);
 
-    this.theEnd = this.add.text(this.game.renderer.width / 2, 3250, this.lang.theEnd, {
+    this.theEnd = this.add.text(this.game.renderer.width / 2, 3650, this.lang.theEnd, {
       font: '50px monospace',
       align: 'center',
     }).setOrigin(0.5);
@@ -113,23 +113,26 @@ export default class EndGame extends Phaser.Scene {
     this.input.keyboard.on('keydown-ESC', () => {
       this.backToMenu();
     });
+    console.log(this.sound.volume)
+    console.log(this.soundVolume)
   }
 
   public update():void {
     if (this.sound.volume < this.soundVolume) {
       this.sound.volume += 0.001;
+      console.log('go');
     }
-    this.storyTitle.y -= 0.9;
-    this.story.y -= 0.9;
-    this.teamTitle.y -= 0.9;
-    this.team.y -= 0.9;
-    this.heroesTitle.y -= 0.9;
-    this.mainHeroes.y -= 0.9;
-    this.enemiesTitle.y -= 0.9;
-    this.enemies.y -= 0.9;
-    this.gratitudeTitle.y -= 0.9;
-    this.gratitude.y -= 0.9;
-    this.theEnd.y -= 0.9;
+    this.storyTitle.y -= 0.85;
+    this.story.y -= 0.85;
+    this.teamTitle.y -= 0.85;
+    this.team.y -= 0.85;
+    this.heroesTitle.y -= 0.85;
+    this.mainHeroes.y -= 0.85;
+    this.enemiesTitle.y -= 0.85;
+    this.enemies.y -= 0.85;
+    this.gratitudeTitle.y -= 0.85;
+    this.gratitude.y -= 0.85;
+    this.theEnd.y -= 0.85;
     if (this.theEnd.y <= 440) {
       this.backToMenu();
     }
