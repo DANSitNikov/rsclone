@@ -2,7 +2,6 @@ import * as Phaser from 'phaser';
 import initScene from './initScene';
 import Player from './player';
 import { makeStatisticInfo, statisticInGame } from './utils/utilitites';
-import set = Reflect.set;
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -190,10 +189,8 @@ export default class Scene6 extends Phaser.Scene {
         this.text.x = 560;
         if (!this.end) {
           this.end = true;
-          setTimeout(() => this.scene.launch('PreloaderTheEnd', { key: 'Scene6', player: this.player }), 1000);
+          setTimeout(() => this.scene.launch('PreloaderTheEnd', { key: 'Scene6', player: this.player }), 2500);
         }
-
-
       }
     }
   }

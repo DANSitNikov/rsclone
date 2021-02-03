@@ -81,7 +81,7 @@ export default class Scene1 extends Phaser.Scene {
       .setDepth(999)
       .setVisible(false);
     this.dialogue.visible = false;
-    createNote.call(this, 545, 824, 530, 100, this.lang.shoppingList);
+    createNote.call(this, 545, 824, 480, 115, this.lang.scene1_note);
 
     this.sound.play('home', { loop: true });
     this.atHome = true;
@@ -134,7 +134,7 @@ export default class Scene1 extends Phaser.Scene {
   private changeLang() {
     if (!this.pause) return;
     this.lang = this.registry.get('lang');
-    this.texts[0].setText(this.lang.shoppingList);
+    this.texts[0].setText(this.lang.scene1_note);
     this.pause = false;
   }
 }

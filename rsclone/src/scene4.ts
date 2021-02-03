@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import initScene from './initScene';
-import { countDeath, moveCloud, statisticInGame } from './utils/utilitites';
+import { statisticInGame } from './utils/utilitites';
 import Player from './player';
 import { createNote, showNote } from './utils/notes';
 
@@ -11,6 +11,12 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class Scene4 extends Phaser.Scene {
+  private waterHands: Phaser.GameObjects.Sprite;
+
+  private spikes: Phaser.GameObjects.Zone;
+
+  private spikes2: Phaser.GameObjects.Zone;
+
   private player: Player;
 
   private deathStatus: boolean;
