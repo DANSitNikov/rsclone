@@ -19,6 +19,8 @@ export default class Scene5 extends Phaser.Scene {
 
   private ladder: Phaser.GameObjects.Zone;
 
+  private pause: boolean;
+
   private switchStatus: boolean;
 
   private switchClicked: boolean;
@@ -247,6 +249,7 @@ export default class Scene5 extends Phaser.Scene {
     }
 
     showNote.call(this, action);
+    this.changeLang();
   }
 
   private startHands() {
@@ -288,5 +291,12 @@ export default class Scene5 extends Phaser.Scene {
     setTimeout(() => {
       this.hands3.anims.play('handMove');
     }, 150);
+  }
+
+  private changeLang() {
+    if (!this.pause) return;
+    this.lang = this.registry.get('lang');
+    this.texts[0].setText(this.lang.scene1_note);
+    this.pause = false;
   }
 }
