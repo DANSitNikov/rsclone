@@ -1,11 +1,18 @@
 import * as Phaser from 'phaser';
+import keuboardNavigation from './utils/keyboardNav';
+import createBtnHandlers from './utils/createBtnHandlers';
+import { List } from './utils/utilitites';
 
 export default class GameControl extends Phaser.Scene {
   private lang: Record<string, string>;
 
-  private rexUI;
-
   private tabIndex: number;
+
+  private checkbox:Phaser.GameObjects.Sprite;
+
+  private checkboxLabel: Phaser.GameObjects.Text;
+
+  private list: List;
 
   constructor() {
     super({ key: 'GameControl', active: false });
@@ -55,80 +62,39 @@ export default class GameControl extends Phaser.Scene {
         font: '40px monospace',
       });
 
-    const COLOR_DARK = 0x260e04;
-
-    const CheckboxesMode = true;
-    localStorage.setItem('showControl', JSON.stringify(true));
-
-    const createButton = (scene, text) => scene.rexUI.add.label({
-      width: 100,
-      height: 40,
-      text: scene.add.text(0, 0, text, {
-        fontSize: 18,
-      }),
-      icon: scene.add.circle(0, 0, 15).setStrokeStyle(1, COLOR_DARK),
-      space: {
-        left: 10,
-        right: 10,
-        icon: 10,
-      },
-    });
-
     const makeSound = () => this.sound.add('save').play({ loop: false });
 
-    const buttons = this.rexUI.add.buttons({
-      x: this.game.renderer.width / 2,
-      y: this.game.renderer.height / 2 + 220,
+    this.checkbox = this.add.sprite(this.game.renderer.width / 2 - 210, this.game.renderer.height / 2 + 200, 'checkboxOutline').setOrigin(0, 0.1).setInteractive();
+    this.checkboxLabel = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2 + 200, this.lang.doNotShowAgain, { font: '30px monospace' }).setOrigin(0.5, 0).setInteractive();
 
-      orientation: 'y',
-
-      buttons: [
-        createButton(this, this.lang.doNotShowAgain),
-      ],
-
-      type: ((CheckboxesMode) ? 'checkboxes' : 'radio'),
-      setValueCallback(button) {
-        const param = !JSON.parse(localStorage.getItem('showControl'));
-        makeSound();
-        button.getElement('icon')
-          .setFillStyle((param) ? 0xffa300 : undefined);
-        localStorage.setItem('showControl', JSON.stringify(param));
-        button.getElement('text').setStyle({ font: '30px monospace' });
+    this.list = [
+      {
+        btn: this.add.text(this.game.renderer.width / 2 + 360, this.game.renderer.height / 2 - 330, '✕', {
+          font: '60px monospace',
+        }).setInteractive(),
+        handler: () => this.closeWindowHandler(),
       },
+      {
+        btn: this.checkboxLabel,
+        handler: () => {
+          makeSound();
+          const param = !JSON.parse(localStorage.getItem('showControl'));
+          localStorage.setItem('showControl', JSON.stringify(param));
+          if (param) {
+            this.checkbox.setTexture('checkbox').setTint(0xffa300);
+          } else {
+            this.checkbox.setTexture('checkboxOutline').clearTint();
+          }
+        },
+      },
+    ];
 
-    })
-      .layout();
+    createBtnHandlers.call(this);
+    keuboardNavigation.call(this, [true]);
+  }
 
-    this.input.keyboard.on('keydown-ESC', () => {
-      this.scene.stop();
-      this.scene.resume('Scene1');
-    }, this);
-
-    const setActive = () => {
-      const buttonObjects = buttons.getElement('buttons[0]');
-      const parameter = !JSON.parse(localStorage.getItem('showControl'));
-      this.sound.add('save').play();
-      buttonObjects.getElement('icon')
-        .setFillStyle((parameter) ? 0xffa300 : undefined);
-      localStorage.setItem('showControl', JSON.stringify(parameter));
-    };
-
-    const close = this.add.text(this.game.renderer.width / 2 + 350, this.game.renderer.height / 2 - 330, 'X', {
-      font: '60px monospace',
-    }).setInteractive();
-
-    close.on('pointerup', () => {
-      this.scene.stop();
-      this.sound.play('click');
-      this.scene.resume('Scene1');
-    });
-
-    this.input.keyboard.on('keydown-ENTER', () => {
-      setActive();
-    });
-
-    this.input.keyboard.on('keydown-SPACE', () => {
-      setActive();
-    });
+  closeWindowHandler():void {
+    this.scene.stop();
+    this.scene.resume('Scene1');
   }
 }
