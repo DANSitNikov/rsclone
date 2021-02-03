@@ -44,6 +44,8 @@ export default class Scene2 extends Phaser.Scene {
 
   private texts: Phaser.GameObjects.Text[];
 
+  private pause: boolean;
+
   private lang: Record<string, string>;
 
   constructor() {
@@ -206,6 +208,7 @@ export default class Scene2 extends Phaser.Scene {
     });
     const action = cursors.space.isDown || keyboardKeys.action.isDown;
     showNote.call(this, action);
+    this.changeLang();
   }
 
   public activeFishFunc():void {
@@ -213,5 +216,12 @@ export default class Scene2 extends Phaser.Scene {
     this.fish.resumeFollow();
     this.pauseFish = false;
     this.fish.anims.play('cuttlefish', true);
+  }
+
+  private changeLang() {
+    if (!this.pause) return;
+    this.lang = this.registry.get('lang');
+    this.texts[0].setText(this.lang.scene1_note);
+    this.pause = false;
   }
 }

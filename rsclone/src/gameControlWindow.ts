@@ -93,7 +93,7 @@ export default class GameControl extends Phaser.Scene {
         button.getElement('icon')
           .setFillStyle((param) ? 0xffa300 : undefined);
         localStorage.setItem('showControl', JSON.stringify(param));
-        button.getElement('text').setStyle({ font: '30px monospace', color: '#ffa300' });
+        button.getElement('text').setStyle({ font: '30px monospace' });
       },
 
     })
@@ -107,11 +107,21 @@ export default class GameControl extends Phaser.Scene {
     const setActive = () => {
       const buttonObjects = buttons.getElement('buttons[0]');
       const parameter = !JSON.parse(localStorage.getItem('showControl'));
-      this.sound.add('save').play({ loop: false });
+      this.sound.add('save').play();
       buttonObjects.getElement('icon')
         .setFillStyle((parameter) ? 0xffa300 : undefined);
       localStorage.setItem('showControl', JSON.stringify(parameter));
     };
+
+    const close = this.add.text(this.game.renderer.width / 2 + 350, this.game.renderer.height / 2 - 330, 'X', {
+      font: '60px monospace',
+    }).setInteractive();
+
+    close.on('pointerup', () => {
+      this.scene.stop();
+      this.sound.play('click');
+      this.scene.resume('Scene1');
+    });
 
     this.input.keyboard.on('keydown-ENTER', () => {
       setActive();

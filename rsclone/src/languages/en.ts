@@ -51,7 +51,7 @@ export default {
   enemies: 'Spider: \'Andrew\'\n\nCuttlefish\n\nDemons hands\n\nWater hands\n\nSharp edges',
   gratitudeTitle: 'Gratitude',
   gratitude: 'Thanks to everyone in our team for their great contribution to the project\n\nThanks to to every character (good or bad) for being a part of the game\n\nAnd special thanks to everyone who has played the game. Really appreciate that!',
-  theEnd: 'The End',
+  theEnd: 'to be continued...',
   note1: 'Safe house we are in thee,\n in the beginning we were three.',
   note2: 'The harvest was grown, we multiplied,\n plenty of space, now we had five.',
   note3: 'Into dangerous lands we took the tour, \n as a results we had only four.',
