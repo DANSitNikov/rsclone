@@ -8,7 +8,7 @@ export default class GameControl extends Phaser.Scene {
 
   private tabIndex: number;
 
-  private checkbox:Phaser.GameObjects.Text;
+  private checkbox:Phaser.GameObjects.Sprite;
 
   private checkboxLabel: Phaser.GameObjects.Text;
 
@@ -64,7 +64,7 @@ export default class GameControl extends Phaser.Scene {
 
     const makeSound = () => this.sound.add('save').play({ loop: false });
 
-    this.checkbox = this.add.text(this.game.renderer.width / 2 - 210, this.game.renderer.height / 2 + 200, '', { font: '60px monospace' }).setOrigin(0, 0.3).setTint(0xffa300).setInteractive();
+    this.checkbox = this.add.sprite(this.game.renderer.width / 2 - 210, this.game.renderer.height / 2 + 200, 'checkboxOutline').setOrigin(0, 0.1).setInteractive();
     this.checkboxLabel = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2 + 200, this.lang.doNotShowAgain, { font: '30px monospace' }).setOrigin(0.5, 0).setInteractive();
 
     this.list = [
@@ -81,9 +81,9 @@ export default class GameControl extends Phaser.Scene {
           const param = !JSON.parse(localStorage.getItem('showControl'));
           localStorage.setItem('showControl', JSON.stringify(param));
           if (param) {
-            this.checkbox.setText('✓');
+            this.checkbox.setTexture('checkbox').setTint(0xffa300);
           } else {
-            this.checkbox.setText('');
+            this.checkbox.setTexture('checkboxOutline').clearTint();
           }
         },
       },

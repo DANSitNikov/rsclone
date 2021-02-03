@@ -204,6 +204,8 @@ export default class LoadScreen extends Phaser.Scene {
     this.load.image('arrowUP', 'assets/control/arrowUP.svg');
     this.load.image('arrowRIGHT', 'assets/control/arrowRIGHT.svg');
     this.load.image('arrowLEFT', 'assets/control/arrowLEFT.svg');
+    this.load.image('checkbox', 'assets/control/check_box-white-48dp.svg');
+    this.load.image('checkboxOutline', 'assets/control/check_box_outline_blank-white-48dp.svg');
     this.load.image('a', 'assets/control/a.svg');
     this.load.image('d', 'assets/control/d.svg');
     this.load.image('w', 'assets/control/w.svg');
