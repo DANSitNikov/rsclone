@@ -113,14 +113,11 @@ export default class EndGame extends Phaser.Scene {
     this.input.keyboard.on('keydown-ESC', () => {
       this.backToMenu();
     });
-    console.log(this.sound.volume)
-    console.log(this.soundVolume)
   }
 
   public update():void {
     if (this.sound.volume < this.soundVolume) {
       this.sound.volume += 0.001;
-      console.log('go');
     }
     this.storyTitle.y -= 0.85;
     this.story.y -= 0.85;
