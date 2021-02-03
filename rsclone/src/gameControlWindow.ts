@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { disableBtnActive, setBtnActive } from './utils/utilitites';
 
 export default class GameControl extends Phaser.Scene {
   private lang: Record<string, string>;
@@ -122,6 +123,9 @@ export default class GameControl extends Phaser.Scene {
       this.sound.play('click');
       this.scene.resume('Scene1');
     });
+
+    close.on('pointerover', () => setBtnActive(close));
+    close.on('pointerout', () => disableBtnActive(close));
 
     this.input.keyboard.on('keydown-ENTER', () => {
       setActive();
