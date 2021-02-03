@@ -113,7 +113,7 @@ export default class GameControl extends Phaser.Scene {
       localStorage.setItem('showControl', JSON.stringify(parameter));
     };
 
-    const close = this.add.text(this.game.renderer.width / 2 + 350, this.game.renderer.height / 2 - 330, 'X', {
+    const close = this.add.text(this.game.renderer.width / 2 + 360, this.game.renderer.height / 2 - 330, '✕', {
       font: '60px monospace',
     }).setInteractive();
 
