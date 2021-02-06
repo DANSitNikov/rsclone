@@ -14,6 +14,8 @@ export default class GameControl extends Phaser.Scene {
 
   private list: List;
 
+  private lastScene;
+
   constructor() {
     super({ key: 'GameControl', active: false });
   }
@@ -21,6 +23,7 @@ export default class GameControl extends Phaser.Scene {
   public create():void {
     this.tabIndex = 0;
     this.lang = this.registry.get('lang');
+    this.lastScene = 'Scene1';
 
     this.add
       .text(

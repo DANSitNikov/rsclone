@@ -14,7 +14,7 @@ export default function keuboardNavigation(escBtn?: boolean, slider?: boolean): 
       'keydown-ESC',
       () => {
         if (!this.pause) {
-          if (this.scene.key === 'PauseMenu') {
+          if (this.scene.key === 'PauseMenu' || this.scene.key === 'GameControl') {
             this.scene.stop();
             this.scene.resume(this.lastScene);
           } else {
