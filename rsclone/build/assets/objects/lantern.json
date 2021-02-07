@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "lantern.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 441,
+				"h": 148
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 166,
+						"h": 167
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 10,
+						"w": 145,
+						"h": 146
+					},
+					"frame": {
+						"x": 1,
+						"y": 8,
+						"w": 145,
+						"h": 146
+					}
+				},
+				{
+					"filename": "1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 166,
+						"h": 167
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 12,
+						"w": 151,
+						"h": 146
+					},
+					"frame": {
+						"x": 148,
+						"y": 7,
+						"w": 151,
+						"h": 146
+					}
+				},
+				{
+					"filename": "2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 166,
+						"h": 167
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 8,
+						"w": 139,
+						"h": 146
+					},
+					"frame": {
+						"x": 301,
+						"y": 6,
+						"w": 139,
+						"h": 140
+					}
+				},
+				{
+					"filename": "4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 166,
+						"h": 167
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 8,
+						"w": 139,
+						"h": 146
+					},
+					"frame": {
+						"x": 301,
+						"y": 6,
+						"w": 139,
+						"h": 140
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:b43288dc1e7685f4227135586d0fa8de:68f4ccffa1cbff184e3578809a815c2b:4c78a81b6fd9dc8487f4fa34ff302ddb$"
+	}
+}

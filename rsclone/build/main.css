@@ -1,0 +1,31 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+html,
+body,
+canvas {
+  background: black;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+footer{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+}
+
+.rs-school-link{
+  width: fit-content;
+  display: block;
+  margin: 1rem;
+}
+
+.rs-school-logo{
+  width: 6rem;
+}
+

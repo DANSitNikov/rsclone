@@ -1,0 +1,83 @@
+{
+	"textures": [
+		{
+			"image": "playerJump.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 195,
+				"h": 179
+			},
+			"scale": 0.5,
+			"frames": [
+				{
+					"filename": "1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 60,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 17,
+						"w": 68,
+						"h": 177
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 68,
+						"h": 177
+					}
+				},
+				{
+					"filename": "3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 60,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 19,
+						"w": 48,
+						"h": 158
+					},
+					"frame": {
+						"x": 71,
+						"y": 1,
+						"w": 48,
+						"h": 158
+					}
+				},
+				{
+					"filename": "2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 60,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 18,
+						"w": 73,
+						"h": 131
+					},
+					"frame": {
+						"x": 121,
+						"y": 1,
+						"w": 73,
+						"h": 131
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e9bf02a062544a3729b5d0451195b721:53c9a15b344f42804facf479c4ae8cd2:696466e98e52c694d50811d0d695f537$"
+	}
+}
